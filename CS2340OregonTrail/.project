@@ -15,11 +15,4 @@
 		<nature>org.python.pydev.pythonNature</nature>
 		<nature>org.python.pydev.django.djangoNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>README</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/README</locationURI>
-		</link>
-	</linkedResources>
 </projectDescription>

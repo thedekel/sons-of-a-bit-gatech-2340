@@ -5,9 +5,16 @@ from django.db import models
 #Party
 class Party(models.Model):
     name = models.CharField(max_length=25)
+    money = models.IntegerField()
+    
+#Profession    
+class Profession(models.Model):
+    name = models.CharField(max_length=25)
+    
 #Character
 class Character(models.Model):
     name = models.CharField(max_length=25)
+    profession = models.ForeighKey(Profession)
     status = models.IntegerField()
     health = models.IntegerField()
     isLeader = models.BooleanField()
@@ -20,6 +27,7 @@ class Store(models.Model):
     capacity = models.IntegerField()
     isVendor = models.BooleanField()
     price_mult = models.FloatField()
+    
 #item
 class Item(models.Model):
     name = models.CharField(max_length=25)
