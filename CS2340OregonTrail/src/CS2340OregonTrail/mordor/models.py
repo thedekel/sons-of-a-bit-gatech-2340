@@ -6,6 +6,8 @@ from django.db import models
 class Party(models.Model):
     name = models.CharField(max_length=25)
     money = models.IntegerField()
+    pace = models.FloatField() 
+    rations = models.FloatField()
     
 #Profession    
 class Profession(models.Model):
@@ -14,7 +16,7 @@ class Profession(models.Model):
 #Character
 class Character(models.Model):
     name = models.CharField(max_length=25)
-    profession = models.ForeignKey(Profession)
+    profession = models.CharField(max_length=25) #models.ForeignKey(Profession)
     status = models.IntegerField()
     health = models.IntegerField()
     isLeader = models.BooleanField()

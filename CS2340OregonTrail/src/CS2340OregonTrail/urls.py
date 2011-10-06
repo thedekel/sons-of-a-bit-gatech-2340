@@ -6,6 +6,9 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
+    url(r'^start\.php', 'mordor.views.start'),
+    url(r'^config\.php', 'mordor.views.config'),
+    url(r'^start/submit\.php', 'mordor.views.submit'),
     # url(r'^$', 'CS2340OregonTrail.views.home', name='home'),
     # url(r'^CS2340OregonTrail/', include('CS2340OregonTrail.foo.urls')),
 
