@@ -5,10 +5,16 @@ from django.http import HttpResponse
 from mordor.models import Party, Character
 
 def start(request):
-    return render_to_response("mordor/start.html", {},context_instance=RequestContext(request))
+    """
+    This function opens up the "create a new party page"
+    """
+    return render_to_response("mordor/styletest.html", {},context_instance=RequestContext(request))
     
 
 def submit(request):
+    """
+    Handler function for receiving sumbission from the new party screen. 
+    """
     try:
         if (request.POST['pp']):
             p = Party.objects.get(name=request.POST['pp'])
@@ -32,4 +38,7 @@ def submit(request):
     return HttpResponse("data received. visit <a href='../config.php'>config.php</a> to see your party.")
 
 def config(request):
+    """
+    This function will create a page that displays the currently available parties and their stats.
+    """
     return render_to_response("mordor/config.html", {'parties':Party.objects.all(), "membs":map(lambda a: a.character_set.all()[0].name[0], Party.objects.all())},context_instance=RequestContext(request))

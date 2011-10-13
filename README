@@ -2,8 +2,25 @@ CS2340 Project 2011 - Sons of a Bit
 
 MORDOR TRAIL
 
-One does not simply walk into Mordor. Not without a wagon, at least.
 
-So... yeah. 
+INSTALLATION
 
-yes.
+1. clone the repository (you can also download a copy of the source from the top right
+   of the page)
+   
+2. create the folders C:\2340 and C:\2340\morodr. These folders will host the database 
+   and template HTML files.
+   
+3. Make sure that python 2.7 and Django 1.3 are both installed (preferably add them
+   to your system path). 
+   
+4. copy the contens of the "res" folder (should be html files) to your C:\2340\mordor 
+   folder
+   
+5. navigate in console to the folder where "manage.py" is found and execute (no quotes):
+    a. "python manage.py syncdb"
+    b. "python manage.py runserver"
+    
+6. navigate in a browser to http://localhost:8000/
+
+7. Don't die of dyssentery.

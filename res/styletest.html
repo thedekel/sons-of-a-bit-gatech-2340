@@ -1,7 +1,6 @@
-<html>
-<head><link rel="stylesheet" type="text/css" href="styles.css" /></head>
-<body>
-<div id="main">
+{% extends "mordor/template.html" %}
+{% block style %}static/styles.css{% endblock %}
+{% block main %} 
 	<div id="title" class="subdiv">
 		<h1> Start a game </h1>
 	</div>
@@ -42,7 +41,5 @@
 					<div align="right"><input type="submit" value="Submit" /></div>
 				</div>			
 		</form>	
-	</div>
-</div>	
-</body>
-</html>
+	</div>	
+{% endblock %}
