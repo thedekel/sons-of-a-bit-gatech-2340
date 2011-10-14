@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{% block title %}Mordor Trail{% endblock %}</title>
+<link rel="Stylesheet" href="{% block style %}templatestyle.css{% endblock %}" />
+</head>
+
+<body>
+<div id='global'>
+	<div id='header'>
+		{% block header %}
+		<h1>Mordor Trail</h1>
+		{% endblock %}
+	</div>
+	<div id='content'>
+		<div id='navbar'>
+		{% block navbar %}
+			<p>Navbar</p>
+		{% endblock %}
+		</div>
+		<div id='main'>
+		{% block main %}
+			<p>main content</p>
+		{% endblock %}
+		</div>
+	</div>
+</div>
+</body>
+
+</html>
