@@ -2,7 +2,7 @@
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse
-from mordor.models import Party, Character, Shop, Item, BaseItem, Wagon
+from mordor.models import Party, Character, Store, Item, BaseItem, Wagon
 
 def start(request):
     """
