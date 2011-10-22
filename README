@@ -8,7 +8,7 @@ INSTALLATION
 1. clone the repository (you can also download a copy of the source from the top right
    of the page)
    
-2. create the folders C:\2340 and C:\2340\morodr. These folders will host the database 
+2. create the folders C:\2340 and C:\2340\mordor. These folders will host the database 
    and template HTML files.
    
 3. Make sure that python 2.7 and Django 1.3 are both installed (preferably add them
@@ -23,4 +23,4 @@ INSTALLATION
     
 6. navigate in a browser to http://localhost:8000/
 
-7. Don't die of dyssentery.
+7. Don't die of dysentery.
