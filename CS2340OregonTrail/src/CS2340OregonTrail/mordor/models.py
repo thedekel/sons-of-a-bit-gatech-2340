@@ -52,14 +52,18 @@ class Store(models.Model):
         if not hasItem(item):
             item.store = self
         else:
-            pass
-        return None
+            for thing in self.item_set.all():
+                if thing.base.name == item.base.name:
+                    thing.amount += item.amount
+                    return None
         
     #Checks whether the store has an item
     #returns a boolean
     def hasItem(self, item): # takes in an Item
-        #TODO
-        return None
+        for thing in self.item_set.all():
+            if thing.base.name == item.base.name:
+                return True
+        return False
     
 #item
 class BaseItem(models.Model):
