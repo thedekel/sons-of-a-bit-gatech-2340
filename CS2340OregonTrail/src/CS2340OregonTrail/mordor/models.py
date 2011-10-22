@@ -37,7 +37,7 @@ class Store(models.Model):
     isVendor = models.BooleanField()
     price_mult = models.FloatField()
     def __unicode__(self):
-        return u'<Store:'+self.name +u'; cap:' +unicode(str(self.capacity))+ u' >'
+        return u'<Store:'+self.name +u'; capacity:' +unicode(str(self.capacity))+ u' >'
     
 #item
 class BaseItem(models.Model):
@@ -48,7 +48,7 @@ class BaseItem(models.Model):
     desc = models.CharField(max_length=500)
     weight = models.IntegerField()
     def __unicode__(self):
-        return  u'<BaseItem:'+self.name + u'; cost:' + unicode(self.baseCost) + u'; wt:' + unicode(self.weight)+u' >'
+        return  u'<BaseItem:'+self.name + u'; cost:' + unicode(self.baseCost) + u'; weightt:' + unicode(self.weight)+u' >'
     
 class Item(models.Model):
     base = models.ForeignKey(BaseItem)
@@ -63,7 +63,7 @@ class Wagon(models.Model):
     inventory = models.ForeignKey(Store)
     weight = models.FloatField()
     def __unicode__(self):
-        return u'<Wagon; Party:' + self.party + u'; inven:' + unicode(self.inventory) + u'; totalWeight:' + unicode(self.weight)+u' >'
+        return u'<Wagon; Party:' + self.party + u'; inventory:' + unicode(self.inventory) + u'; totalWeight:' + unicode(self.weight)+u' >'
 
 #Location
 class Location(models.Model):
