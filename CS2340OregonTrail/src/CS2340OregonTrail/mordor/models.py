@@ -8,11 +8,14 @@ class Party(models.Model):
     money = models.IntegerField()
     pace = models.FloatField() 
     rations = models.FloatField()
+    
     def __unicode__(self):
         return u'<Party:'+self.name+ u'; money:' + unicode(str(self.money))+u' >'
+    
 #Profession    
 class Profession(models.Model):
     name = models.CharField(max_length=25)
+    
     def __unicode__(self):
         return u'<Professoin:'+self.name+u' >'
     
@@ -25,6 +28,7 @@ class Character(models.Model):
     health = models.IntegerField()
     isLeader = models.BooleanField()
     party = models.ForeignKey(Party)
+    
     def __unicode__(self):
         return u'<Name: '+ self.name+u'; profession:'+unicode(self.profession)+u'; party:'+unicode(self.party) + u' >'
 
@@ -36,8 +40,17 @@ class Store(models.Model):
     capacity = models.IntegerField()
     isVendor = models.BooleanField()
     price_mult = models.FloatField()
+    
     def __unicode__(self):
-        return u'<Store:'+self.name +u'; cap:' +unicode(str(self.capacity))+ u' >'
+        return u'<Store:'+self.name +u'; capacity:' +unicode(str(self.capacity))+ u' >'
+    
+    def addItem(self, item, num):
+        #TODO
+        return None
+        
+    def hasItem(self, item):
+        #TODO
+        return None
     
 #item
 class BaseItem(models.Model):
@@ -47,29 +60,50 @@ class BaseItem(models.Model):
     baseCost = models.IntegerField()
     desc = models.CharField(max_length=500)
     weight = models.IntegerField()
+    
     def __unicode__(self):
-        return  u'<BaseItem:'+self.name + u'; cost:' + unicode(self.baseCost) + u'; wt:' + unicode(self.weight)+u' >'
+        return  u'<BaseItem:'+self.name + u'; cost:' + unicode(self.baseCost) + u'; weightt:' + unicode(self.weight)+u' >'
     
 class Item(models.Model):
     base = models.ForeignKey(BaseItem)
     store = models.ForeignKey(Store)
     amount = models.IntegerField()
+    
     def __unicode__(self):
         return u'<Item; Base:' + self.base + u'; inStore:' + unicode(self.store) + u'; amount:' + unicode(self.amount)+u' >'
+    
+    def calcultatePrice(self):
+        #TODO
+        return None
     
 #wagon
 class Wagon(models.Model):
     party = models.ForeignKey(Party)
     inventory = models.ForeignKey(Store)
     weight = models.FloatField()
+    
     def __unicode__(self):
-        return u'<Wagon; Party:' + self.party + u'; inven:' + unicode(self.inventory) + u'; totalWeight:' + unicode(self.weight)+u' >'
+        return u'<Wagon; Party:' + self.party + u'; inventory:' + unicode(self.inventory) + u'; totalWeight:' + unicode(self.weight)+u' >'
+    
+    def checkWagCap(self, item):
+        #TODO
+        return None
+    
+    def buyItem(self, item, num):
+        if self.checkWagCap(item):
+            self.inventory.
+        
+        
+        #TODO
+        return None
+    
 
 #Location
 class Location(models.Model):
     type_id = models.IntegerField()
     name = models.CharField(max_length=25)
     desc = models.CharField(max_length=500)
+    
     def __unicode__(self):
         return u'<Location: '+self.name+u' >'
     
@@ -78,5 +112,6 @@ class Event(models.Model):
     type_id = models.IntegerField()
     name = models.CharField(max_length=25)
     location = models.ForeignKey(Location)
+    
     def __unicode__(self):
         return u'<Event' + self.name + u' >'
