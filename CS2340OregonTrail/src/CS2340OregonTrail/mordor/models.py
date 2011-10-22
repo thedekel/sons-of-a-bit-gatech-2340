@@ -17,7 +17,7 @@ class Profession(models.Model):
     name = models.CharField(max_length=25)
     
     def __unicode__(self):
-        return u'<Professoin:'+self.name+u' >'
+        return u'<Profession:'+self.name+u' >'
     
     
 #Character
@@ -62,7 +62,7 @@ class BaseItem(models.Model):
     weight = models.IntegerField()
     
     def __unicode__(self):
-        return  u'<BaseItem:'+self.name + u'; cost:' + unicode(self.baseCost) + u'; weightt:' + unicode(self.weight)+u' >'
+        return  u'<BaseItem:'+self.name + u'; cost:' + unicode(self.baseCost) + u'; weight:' + unicode(self.weight)+u' >'
     
 class Item(models.Model):
     base = models.ForeignKey(BaseItem)
