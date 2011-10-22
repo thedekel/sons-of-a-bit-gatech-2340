@@ -81,17 +81,21 @@ class Wagon(models.Model):
     party = models.ForeignKey(Party)
     inventory = models.ForeignKey(Store)
     weight = models.FloatField()
+    capacity = 1500 # CHANGE THIS LATER or not
     
     def __unicode__(self):
         return u'<Wagon; Party:' + self.party + u'; inventory:' + unicode(self.inventory) + u'; totalWeight:' + unicode(self.weight)+u' >'
     
-    def checkWagCap(self, item):
-        #TODO
-        return None
+    def checkWagCap(self, item): #item must be an Item 
+        if capacity < item.base.weight * item.amount + self.weight:
+            return False
+        else:
+            return True
     
-    def buyItem(self, item, num):
-        if self.checkWagCap(item):
-            self.inventory.
+    def buyItem(self, item): #item must be an Item
+        if self.checkWagCap(item) and self.party.money - item.calculatePrice() >= 0:
+            self.party.money -= item.calculatePrice()
+            self.inventory.addItem(item,num)
         
         
         #TODO
