@@ -36,17 +36,20 @@ class Character(models.Model):
 class Store(models.Model):
     store_id = models.IntegerField()
     name = models.CharField(max_length=25)
-    isVendor = models.BooleanField()
+    isVendor = models.BooleanField(default=True)
     price_mult = models.FloatField()
     
     def __unicode__(self):
         return u'<Store:'+self.name +u'; capacity:' +unicode(str(self.capacity))+ u' >'
     
     def addItem(self, item):
-        
+        if !hasItem(item):
+            item.store = self
+        else:
+            pass
         return None
         
-    def hasItem(self, item):
+    def hasItem(self, item): # takes in an Item
         #TODO
         return None
     
@@ -77,7 +80,8 @@ class Item(models.Model):
 class Wagon(models.Model):
     party = models.ForeignKey(Party)
     inventory = models.ForeignKey(Store)
-    weight = models.FloatField()
+    inventory.isVendor = False
+    weight = models.FloatField(default = 0)
     capacity = 1500 # CHANGE THIS LATER or not
     
     def __unicode__(self):
@@ -90,13 +94,20 @@ class Wagon(models.Model):
             return True
     
     def buyItem(self, item): #item must be an Item
-        if self.checkWagCap(item) and self.party.money - item.calculatePrice() >= 0:
-            self.party.money -= item.calculatePrice()
-            self.inventory.addItem(item)
+        msg = "Your transaction was successful."
+        if self.checkWagCap(item):
+            if self.party.money - item.calculatePrice() >= 0:
+                self.party.money -= item.calculatePrice()
+                self.inventory.addItem(item)
+            else:
+                msg = "You do not have enough money for this purchase."
         else:
-        
-        #TODO
-        return None
+            msg = "Your wagon cannot carry this much weight"
+            if self.party.money - item.calculatePrice() >= 0:
+                msg += "and you do not have enough money for this purchase."
+            else:
+                msg += "."
+        return msg
     
 
 #Location
