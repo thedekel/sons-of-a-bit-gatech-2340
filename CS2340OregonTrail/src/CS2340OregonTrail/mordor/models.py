@@ -170,7 +170,7 @@ Location
 class Location(models.Model):
     type_id = models.IntegerField()
     name = models.CharField(max_length=25)
-    desc = models.CharField(max_length=500)
+    description = models.CharField(max_length=500)
     
     """
     String representation of a Location
