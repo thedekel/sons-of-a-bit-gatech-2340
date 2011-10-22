@@ -17,7 +17,7 @@ class Profession(models.Model):
     name = models.CharField(max_length=25)
     
     def __unicode__(self):
-        return u'<Professoin:'+self.name+u' >'
+        return u'<Profession:'+self.name+u' >'
     
     
 #Character
@@ -36,16 +36,14 @@ class Character(models.Model):
 class Store(models.Model):
     store_id = models.IntegerField()
     name = models.CharField(max_length=25)
-    max_capacity = models.IntegerField()
-    capacity = models.IntegerField()
     isVendor = models.BooleanField()
     price_mult = models.FloatField()
     
     def __unicode__(self):
         return u'<Store:'+self.name +u'; capacity:' +unicode(str(self.capacity))+ u' >'
     
-    def addItem(self, item, num):
-        #TODO
+    def addItem(self, item):
+        
         return None
         
     def hasItem(self, item):
@@ -62,7 +60,7 @@ class BaseItem(models.Model):
     weight = models.IntegerField()
     
     def __unicode__(self):
-        return  u'<BaseItem:'+self.name + u'; cost:' + unicode(self.baseCost) + u'; weightt:' + unicode(self.weight)+u' >'
+        return  u'<BaseItem:'+self.name + u'; cost:' + unicode(self.baseCost) + u'; weight:' + unicode(self.weight)+u' >'
     
 class Item(models.Model):
     base = models.ForeignKey(BaseItem)
@@ -72,9 +70,8 @@ class Item(models.Model):
     def __unicode__(self):
         return u'<Item; Base:' + self.base + u'; inStore:' + unicode(self.store) + u'; amount:' + unicode(self.amount)+u' >'
     
-    def calcultatePrice(self):
-        #TODO
-        return None
+    def calculatePrice(self): # NOT per item
+        return store.price_mult * base.baseCost * amount 
     
 #wagon
 class Wagon(models.Model):
@@ -95,8 +92,8 @@ class Wagon(models.Model):
     def buyItem(self, item): #item must be an Item
         if self.checkWagCap(item) and self.party.money - item.calculatePrice() >= 0:
             self.party.money -= item.calculatePrice()
-            self.inventory.addItem(item,num)
-        
+            self.inventory.addItem(item)
+        else:
         
         #TODO
         return None
