@@ -108,15 +108,18 @@ class Wagon(models.Model):
         else:
             return True
     
-    #Buys an items
-    #Has checks for money and capacity
-    #returns a string based on the success of the transaction
+    
     def buyItem(self, item): #item must be an Item
+        """
+        Buys an items
+        Has checks for money and capacity
+        returns a string based on the success of the transaction
+        """
         msg = "Your transaction was successful."
         if self.checkWagCap(item):
             if self.party.money - item.calculatePrice() >= 0:
                 self.party.money -= item.calculatePrice()
-                self.weight -= item.base.weight
+                self.weight += item.base.weight * item.amount
                 self.inventory.addItem(item)
             else:
                 msg = "You do not have enough money for this purchase."
