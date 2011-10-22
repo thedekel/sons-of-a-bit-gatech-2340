@@ -50,6 +50,7 @@ class Store(models.Model):
         
     def hasItem(self, item):
         #TODO
+        return None
     
 #item
 class BaseItem(models.Model):
@@ -83,6 +84,18 @@ class Wagon(models.Model):
     
     def __unicode__(self):
         return u'<Wagon; Party:' + self.party + u'; inventory:' + unicode(self.inventory) + u'; totalWeight:' + unicode(self.weight)+u' >'
+    
+    def checkWagCap(self, item):
+        #TODO
+        return None
+    
+    def buyItem(self, item, num):
+        if self.checkWagCap(item):
+            self.inventory.
+        
+        
+        #TODO
+        return None
     
 
 #Location
