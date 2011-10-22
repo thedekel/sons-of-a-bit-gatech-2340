@@ -34,6 +34,6 @@ def submit(request):
 def config(request):
     return render_to_response("mordor/config.html", {'parties':Party.objects.all(), "membs":map(lambda a: a.character_set.all()[0].name[0], Party.objects.all())},context_instance=RequestContext(request))
 
-def store(request):
+#def store(request):
     #store = Store(store_id=request.POST["id"], name=request.POST["s_name"], )
-    return render_to_response("mordor/store.html", {"Store": })
+#    return render_to_response("mordor/store.html", {"Store": })

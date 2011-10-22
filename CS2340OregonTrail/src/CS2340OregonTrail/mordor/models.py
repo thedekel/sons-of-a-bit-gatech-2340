@@ -49,7 +49,7 @@ class Store(models.Model):
     #Adds an item 
     #Returns none if item not found in store
     def addItem(self, item):
-        if !hasItem(item):
+        if not hasItem(item):
             item.store = self
         else:
             pass
