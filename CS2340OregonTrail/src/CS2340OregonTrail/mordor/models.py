@@ -116,6 +116,7 @@ class Wagon(models.Model):
         if self.checkWagCap(item):
             if self.party.money - item.calculatePrice() >= 0:
                 self.party.money -= item.calculatePrice()
+                self.weight -= item.base.weight
                 self.inventory.addItem(item)
             else:
                 msg = "You do not have enough money for this purchase."
