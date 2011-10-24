@@ -74,7 +74,9 @@ class Store(models.Model):
             for thing in self.item_set.all():
                 if thing.base.name == item.base.name:
                     thing.amount += item.amount
-                    return None
+    
+    def removeItem(self,itemName,num):
+        
         
     """
     Checks whether the store has an item
@@ -177,7 +179,12 @@ Location
 class Location(models.Model):
     type_id = models.IntegerField()
     name = models.CharField(max_length=25)
+<<<<<<< HEAD
     description = models.CharField(max_length=500)
+=======
+    desc = models.CharField(max_length=500)
+    map = models.ForeignKey(Map)
+>>>>>>> 00d5df3ea334206ed683c5593d53d3e8797ebc9d
     
     """
     String representation of a Location
@@ -198,3 +205,6 @@ class Event(models.Model):
     """
     def __unicode__(self):
         return u'<Event' + self.name + u' >'
+
+class Map(models.Model):
+ 
