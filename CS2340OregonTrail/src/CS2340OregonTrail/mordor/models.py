@@ -7,10 +7,15 @@ Party
 class Party(models.Model):
     name = models.CharField(max_length=25)
     money = models.IntegerField()
-    pace = models.FloatField() 
-    rations = models.FloatField()
+    pace = models.IntegerField() 
+    rations = models.IntegerField()
     
-    #String representation of a Party
+    def consumeFood(self):
+        self.rations -= 1
+    
+    """
+    String representation of a Party
+    """
     def __unicode__(self):
         return u'<Party:'+self.name+ u'; money:' + unicode(str(self.money))+u' >'
 """
@@ -19,7 +24,9 @@ Profession
 class Profession(models.Model):
     name = models.CharField(max_length=25)
     
-    #String representation of a Profession
+    """
+    String representation of a Profession
+    """
     def __unicode__(self):
         return u'<Profession:'+self.name+u' >'
     
