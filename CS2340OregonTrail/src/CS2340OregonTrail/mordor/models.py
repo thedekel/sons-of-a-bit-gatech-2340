@@ -116,8 +116,6 @@ Base Item
 """
 class BaseItem(models.Model):
     name = models.CharField(max_length=25)
-    #store = models.ForeignKey(Store)
-    #amount = models.IntegerField()
     baseCost = models.IntegerField()
     desc = models.CharField(max_length=500)
     weight = models.IntegerField()
