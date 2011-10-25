@@ -10,8 +10,16 @@ class Party(models.Model):
     pace = models.IntegerField() 
     rations = models.IntegerField()
     
-    def consumeFood(self):
-        self.rations -= 1
+    def consumeFood(self, rationNum):
+        """
+        Attempts to consume a user determined amount of food.
+        Returns True upon a successful consumption and False upon a failure.
+        """
+        if self.rations >= rationNum:
+            self.rations -= rationNum
+            return True
+        else:
+            return False
     
     """
     String representation of a Party
@@ -75,17 +83,32 @@ class Store(models.Model):
                 if thing.base.name == item.base.name:
                     thing.amount += item.amount
     
-    def removeItem(self,itemName,num):
-        
+    def removeItem(self, itemName, num):
+        """
+        This will remove a set number of items from a store.
+        In the case of more things being removed then present, it will return False.
+        True will return on a successful removal.
+        """
+        for thing in self.item_set.all():
+            if thing.base.name == itemName:
+                if thing.amount >= item.amount:
+                    thing.amount -= item.amount
+                    return True
+                else:
+                    return False
+        return False
         
     """
-    Checks whether the store has an item
+    Checks whether the store has a certain AMOUNT of an item
     returns a boolean
     """
     def hasItem(self, item): # takes in an Item
         for thing in self.item_set.all():
             if thing.base.name == item.base.name:
-                return True
+                if thing.amount >= item.amount:
+                    return True
+                else:
+                    return False
         return False
     
 """
@@ -179,12 +202,8 @@ Location
 class Location(models.Model):
     type_id = models.IntegerField()
     name = models.CharField(max_length=25)
-<<<<<<< HEAD
-    description = models.CharField(max_length=500)
-=======
     desc = models.CharField(max_length=500)
-    map = models.ForeignKey(Map)
->>>>>>> 00d5df3ea334206ed683c5593d53d3e8797ebc9d
+    #halt = models.BooleanField(default=False) used only for moveLocation.  Will probably be implemented in a different manner -AT
     
     """
     String representation of a Location
@@ -192,6 +211,24 @@ class Location(models.Model):
     def __unicode__(self):
         return u'<Location: '+self.name+u' >'
     
+     #==========================================================================
+     # def moveLocation(map, currentLocation, numSpaces): #array of Locations, int, int
+     #   """
+     #   Moves along the map array to "change" location.
+     #   Any locations that would force a halt will be checked for here (representing with a boolean field in Location, will change later to something else).
+     #   Most of these parameters probably won't be needed
+     #   -Anthony Taormina
+     #   """
+     #   numSpaces *= 2 # (each index is .5 km)
+     #   for x in range(1, numSpaces+1):
+     #       place = map[currentLocation + x] # a Location
+     #       if place.halt:
+     #           # Do stuff? We stop things here
+     #       else:
+     #           # ???
+     #==========================================================================
+    
+     
 """
 Event
 """
@@ -206,5 +243,4 @@ class Event(models.Model):
     def __unicode__(self):
         return u'<Event' + self.name + u' >'
 
-class Map(models.Model):
  
