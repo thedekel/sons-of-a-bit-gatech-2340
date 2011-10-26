@@ -1,10 +1,10 @@
 from django.db import models
 
 # Create your models here.
-"""
-Party
-"""
 class Party(models.Model):
+    """
+    Party
+    """
     name = models.CharField(max_length=25)
     money = models.IntegerField()
     pace = models.IntegerField() 
@@ -12,8 +12,9 @@ class Party(models.Model):
     
     def consumeFood(self, rationNum):
         """
+        @param param: 
         Attempts to consume a user determined amount of food.
-        Returns True upon a successful consumption and False upon a failure.
+        @return: boolean: True upon a successful consumption and False upon a failure.
         """
         if self.rations >= rationNum:
             self.rations -= rationNum
@@ -21,28 +22,31 @@ class Party(models.Model):
         else:
             return False
     
-    """
-    String representation of a Party
-    """
     def __unicode__(self):
+        """
+        @return: String: String representation of a Party
+        """
         return u'<Party:'+self.name+ u'; money:' + unicode(str(self.money))+u' >'
-"""
-Profession    
-"""
+    
+    
 class Profession(models.Model):
+    """
+    Profession    
+    """
     name = models.CharField(max_length=25)
     
-    """
-    String representation of a Profession
-    """
     def __unicode__(self):
+        """
+        @return: String: String representation of a Profession
+        """
         return u'<Profession:'+self.name+u' >'
     
     
-"""
-Character
-"""
+
 class Character(models.Model):
+    """
+    Character
+    """
     name = models.CharField(max_length=25)
     profession = models.CharField(max_length=25) #models.ForeignKey(Profession)
     status = models.IntegerField()
@@ -50,32 +54,34 @@ class Character(models.Model):
     isLeader = models.BooleanField()
     party = models.ForeignKey(Party)
     
-    """
-    String representation of a Character
-    """
+
     def __unicode__(self):
+        """
+        @return: String: String representation of a Character
+        """
         return u'<Name: '+ self.name+u'; profession:'+unicode(self.profession)+u'; party:'+unicode(self.party) + u' >'
 
-"""
-Store
-"""
 class Store(models.Model):
+    """
+    Store
+    """
     store_id = models.IntegerField()
     name = models.CharField(max_length=25)
     isVendor = models.BooleanField(default=True)
     price_mult = models.FloatField()
     
-    """
-    String representation of a Store
-    """
     def __unicode__(self):
+        """
+        @return: String: String representation of a Store
+        """
         return u'<Store:'+self.name +u'; capacity:' +unicode(str(self.capacity))+ u' >'
     
-    """
-    Adds an item 
-    Returns none if item not found in store
-    """
+
     def addItem(self, item):
+        """
+        @param item: the item to add 
+        Adds the item given in as a parameter
+        """
         if not hasItem(item):
             item.store = self
         else:
@@ -85,9 +91,11 @@ class Store(models.Model):
     
     def removeItem(self, itemName, num):
         """
-        This will remove a set number of items from a store.
-        In the case of more things being removed then present, it will return False.
-        True will return on a successful removal.
+        @param itemName: the name of the item to remove
+        @param num: the AMOUNT to be removed 
+        Removes a set number of items from a store.
+        @return: boolean: In the case of more things being removed than exist, it will return False.
+        Returns True on a successful removal.
         """
         for thing in self.item_set.all():
             if thing.base.name == itemName:
@@ -98,11 +106,13 @@ class Store(models.Model):
                     return False
         return False
         
-    """
-    Checks whether the store has a certain AMOUNT of an item
-    returns a boolean
-    """
-    def hasItem(self, item): # takes in an Item
+
+    def hasItem(self, item):
+        """
+        @param item: the item to check existence for
+        Checks whether the store has a certain AMOUNT of an item
+        @return: boolean: True if item exists in the Store false otherwise.
+        """
         for thing in self.item_set.all():
             if thing.base.name == item.base.name:
                 if thing.amount >= item.amount:
@@ -111,19 +121,20 @@ class Store(models.Model):
                     return False
         return False
     
-"""
-Base Item
-"""
+
 class BaseItem(models.Model):
+    """
+    Base Item
+    """
     name = models.CharField(max_length=25)
     baseCost = models.IntegerField()
     desc = models.CharField(max_length=500)
     weight = models.IntegerField()
     
-    """
-    String representation of a BaseItem
-    """
     def __unicode__(self):
+        """
+        @return: String: String representation of a BaseItem
+        """
         return  u'<BaseItem:'+self.name + u'; cost:' + unicode(self.baseCost) + u'; weight:' + unicode(self.weight)+u' >'
     
 class Item(models.Model):
@@ -131,40 +142,42 @@ class Item(models.Model):
     store = models.ForeignKey(Store)
     amount = models.IntegerField()
     
-    """
-    String representation of a Item
-    """
     def __unicode__(self):
+        """
+        @return: String: String representation of a Item
+        """
         return u'<Item; Base:' + self.base + u'; inStore:' + unicode(self.store) + u'; amount:' + unicode(self.amount)+u' >'
     
-    """
-    Calculates the price of a given item based of it's base item price and store multiplier
-    returns a float
-    """
+
     def calculatePrice(self): # NOT per item
+        """
+        Calculates the price of a given item based of it's base item price and store multiplier
+        @return: float: the price of the individual item multiplied by the store multiplier and amount
+        """
         return store.price_mult * base.baseCost * amount 
     
-"""
-Wagon
-"""
 class Wagon(models.Model):
+    """
+    Wagon
+    """
     party = models.ForeignKey(Party)
     inventory = models.ForeignKey(Store)
     inventory.isVendor = False
     weight = models.FloatField(default = 0)
     capacity = 1500 # CHANGE THIS LATER or not
     
-    """
-    String representation of a Wagon
-    """
     def __unicode__(self):
+        """
+        @return: String: String representation of a Wagon
+        """
         return u'<Wagon; Party:' + self.party + u'; inventory:' + unicode(self.inventory) + u'; totalWeight:' + unicode(self.weight)+u' >'
     
-    """
-    Checks to see if the added item exceeds the wagons capacity
-    returns a boolean
-    """
     def checkWagCap(self, item): #item must be an Item 
+        """
+        @param item: the item to be added to the wagon 
+        Checks to see if the added item exceeds the wagons capacity
+        @return: boolean: True if adding the item does not exceed wagon capacity; false otherwise.
+        """
         if capacity < item.base.weight * item.amount + self.weight:
             return False
         else:
@@ -173,9 +186,10 @@ class Wagon(models.Model):
     
     def buyItem(self, item): #item must be an Item
         """
+        @param item: the item to buy 
         Buys an items
-        Has checks for money and capacity
-        returns a string based on the success of the transaction
+        Checks for sufficient money and capacity
+        @return: String: string based on the success of the transaction
         """
         msg = "Your transaction was successful."
         if self.checkWagCap(item):
@@ -194,19 +208,19 @@ class Wagon(models.Model):
         return msg
     
 
-"""
-Location
-"""
 class Location(models.Model):
+    """
+    Location
+    """
     type_id = models.IntegerField()
     name = models.CharField(max_length=25)
     desc = models.CharField(max_length=500)
     #halt = models.BooleanField(default=False) used only for moveLocation.  Will probably be implemented in a different manner -AT
     
-    """
-    String representation of a Location
-    """
     def __unicode__(self):
+        """
+        @return: String: String representation of a Location
+        """
         return u'<Location: '+self.name+u' >'
     
      #==========================================================================
@@ -226,19 +240,18 @@ class Location(models.Model):
      #           # ???
      #==========================================================================
     
-     
-"""
-Event
-"""
 class Event(models.Model):
+    """
+    Event
+    """
     type_id = models.IntegerField()
     name = models.CharField(max_length=25)
     location = models.ForeignKey(Location)
     
-    """
-    String representation of a Event
-    """
     def __unicode__(self):
+        """
+        @return: String: String representation of a Event
+        """
         return u'<Event' + self.name + u' >'
 
  
