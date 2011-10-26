@@ -1,5 +1,7 @@
 from django.db import models
-
+"""
+@author: Alex Williams, Anthony Taormina, Daniel Whatley, Stephen Roca, Yuval Dekel
+"""
 # Create your models here.
 class Party(models.Model):
     """

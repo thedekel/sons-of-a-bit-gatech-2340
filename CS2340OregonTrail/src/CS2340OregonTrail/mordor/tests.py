@@ -7,6 +7,9 @@ Replace this with more appropriate tests for your application.
 
 from django.test import TestCase
 
+"""
+@author: Alex Williams, Anthony Taormina, Daniel Whatley, Stephen Roca, Yuval Dekel
+"""
 
 class SimpleTest(TestCase):
     def test_basic_addition(self):
