@@ -214,9 +214,9 @@ class Location(models.Model):
     """
     Location
     """
-    type_id = models.IntegerField()
-    name = models.CharField(max_length=25)
-    desc = models.CharField(max_length=500)
+    #type_id = models.IntegerField()
+    name = models.CharField(max_length=25, default = "")
+    description = models.CharField(max_length=500, default = "")
     #halt = models.BooleanField(default=False) used only for moveLocation.  Will probably be implemented in a different manner -AT
     
     def __unicode__(self):
