@@ -67,10 +67,10 @@ class Store(models.Model):
     """
     Store
     """
-    store_id = models.IntegerField()
-    name = models.CharField(max_length=25)
+    #store_id = models.IntegerField()
+    name = models.CharField(max_length=25, default = "")
     isVendor = models.BooleanField(default=True)
-    price_mult = models.FloatField()
+    price_mult = models.FloatField(default = 1)
     
     def __unicode__(self):
         """
@@ -123,32 +123,19 @@ class Store(models.Model):
                     return False
         return False
     
-
-class BaseItem(models.Model):
-    """
-    Base Item
-    """
-    name = models.CharField(max_length=25)
-    baseCost = models.IntegerField()
-    desc = models.CharField(max_length=500)
-    weight = models.IntegerField()
-    
-    def __unicode__(self):
-        """
-        @return: String: String representation of a BaseItem
-        """
-        return  u'<BaseItem:'+self.name + u'; cost:' + unicode(self.baseCost) + u'; weight:' + unicode(self.weight)+u' >'
     
 class Item(models.Model):
-    base = models.ForeignKey(BaseItem)
+    name = models.CharField(max_length=25, default = "")
+    baseCost = models.IntegerField(default = 10)
     store = models.ForeignKey(Store)
-    amount = models.IntegerField()
+    amount = models.IntegerField(default = 1)
+    weight = models.IntegerField(default = 10)
     
     def __unicode__(self):
         """
         @return: String: String representation of a Item
         """
-        return u'<Item; Base:' + self.base + u'; inStore:' + unicode(self.store) + u'; amount:' + unicode(self.amount)+u' >'
+        return u'<Item; Base:' + self.name + u'; inStore:' + unicode(self.store) + u'; amount:' + unicode(self.amount)+u' >'
     
 
     def calculatePrice(self): # NOT per item
@@ -156,7 +143,7 @@ class Item(models.Model):
         Calculates the price of a given item based of it's base item price and store multiplier
         @return: float: the price of the individual item multiplied by the store multiplier and amount
         """
-        return store.price_mult * base.baseCost * amount 
+        return store.price_mult * baseCost * amount 
     
 class Wagon(models.Model):
     """

@@ -11,3 +11,7 @@ def populateLocations():
     location[25] = Location(name = "Mines of Moria")
     location[49] = Location(name = "Mordor")
     
+def initialStore():
+    store = Store(name = "Initial store")
+    store.addItem(Item(name = "Food", amount = 10))
+    store.addItem(Item(name = "Wagon Wheel", amount = 10))
