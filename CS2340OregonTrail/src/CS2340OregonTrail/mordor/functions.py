@@ -9,4 +9,5 @@ def populateLocations():
         locations[x] = Location()
     location[0] = Location(name = "The Shire", description = "")
     location[25] = Location(name = "Mines of Moria")
-    locaiton[50] = Location(name = "Mordor")
+    location[49] = Location(name = "Mordor")
+    
