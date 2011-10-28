@@ -14,18 +14,20 @@
 <div id="form">
 	<div id='title' class='subdiv'>
 		<h3>{{ shopname }}</h3>
+		<h4> Available Money: {{ party.money }} </h4>
 	</div>
 	<div id="shop" class = "subdiv">
 		<div id="items">
 {% for i in items %}
 			<div class="item">
-				<form action="shop.php" method="POST">
+				<form action="shop.php?p={{ partyid }}" method="POST">
 					<p style="display:inline">{{ i.name }} : </p>
 					<p style="display:inline">{{ i.description }}</p><br />
 					<label>Price: {{ i.calculatePrice }}</label><br />
 					<label>Weight: {{ i.weight }}</label><br />
 					<label>Qty: <input type='number' name ='qty' /></label>
 					<input type='hidden' value='{{ i.name }}' name='item' />
+					<input type='hidden' value='{{ partyid }}' name='party' />
 					<input type='submit' />
 				</form>
 			</div>

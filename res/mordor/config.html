@@ -1,10 +1,7 @@
 <h1> view Parties and Info </h1>
 
-{% for part in parties %}
-<hr />
-<form action="/start/submit.php" method="post">
 
-	{% csrf_token %}
+<form action="/start/submit.php?p={{ partyid }}" method="post">
 	<hr />
 	<h3> Party base stats</h3>
 	<input type='hidden' name="pp" value="{{ part.name }}" />
@@ -42,4 +39,3 @@
 </form>
 <hr />
 
-{% endfor %}

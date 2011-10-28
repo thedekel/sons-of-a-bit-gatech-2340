@@ -1,6 +1,5 @@
 from models import *
 
-map = populateLocations()
 
 #wagon = Wagon(partyz)
 #wagon.save()
@@ -10,18 +9,6 @@ map = populateLocations()
 #    newItem.save()
 #    wagon.inventory.addItem(newItem) # puts item holder in inventory at 0 amount
 
-def populateLocations():
-    """
-    This generates the map, which is represented as a list of Locations
-    @return: A list of Locations
-    """
-    locations=[]
-    for x in range(50):
-        locations[x] = Location()
-    location[25] = Location(name = "Mines of Moria")
-    location[49] = Location(name = "Mordor")
-    return locations
-    
 def storeMaker(storeName, maxAmounts, bannedItems):
     """
     The initializer for the initial store in the game.
@@ -67,3 +54,18 @@ def getFood(wagon):
     for thing in wagon.inventory.item_set.all():
             if thing.name == "food":
                 return thing.amount
+
+
+def populateLocations():
+    """
+    This generates the map, which is represented as a list of Locations
+    @return: A list of Locations
+    """
+    locations=[]
+    for x in range(50):
+        locations.append(Location())
+    locations[25] = Location(name = "Mines of Moria")
+    locations[49] = Location(name = "Mordor")
+    return locations
+ 
+map = populateLocations()
