@@ -144,7 +144,7 @@ class Item(models.Model):
         Calculates the price of a given item based of it's base item price and store multiplier
         @return: float: the price of the individual item multiplied by the store multiplier
         """
-        return store.price_mult * baseCost
+        return self.store.price_mult * self.baseCost
     
 class Wagon(models.Model):
     """
@@ -167,7 +167,7 @@ class Wagon(models.Model):
         Checks to see if the added item exceeds the wagons capacity
         @return: boolean: True if adding the item does not exceed wagon capacity; false otherwise.
         """
-        if capacity < item.base.weight * item.amount + self.weight:
+        if self.capacity < item.base.weight * item.amount + self.weight:
             return False
         else:
             return True
