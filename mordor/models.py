@@ -180,9 +180,9 @@ class Wagon(models.Model):
         msg = "Your transaction was successful."
         for x in itemDict:
             if x[0] == itemName:
-                item =  Item(name=article[0], description=article[1], baseCost= article[2], store=dummyStore, amount = amountofStuff, weight = article[3])
+                item =  Item(name=x[0], description=x[1], baseCost= x[2], store=dummyStore, amount = amountofStuff, weight = x[3])
         if self.checkWagCap(item):
-            if self.party.money - item.calculatePrice() * item.amount >= 0:
+            if self.party.money - (item.calculatePrice() * item.amount) >= 0:
                 item.amount = amount
                 self.party.money -= item.calculatePrice() * item.amount
                 self.weight += item.base.weight * item.amount
