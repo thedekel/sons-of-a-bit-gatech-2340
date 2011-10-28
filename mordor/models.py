@@ -185,6 +185,7 @@ class Wagon(models.Model):
             if self.party.money - (item.calculatePrice() * item.amount) >= 0:
                 item.amount = amount
                 self.party.money -= item.calculatePrice() * item.amount
+                self.party.save()
                 self.weight += item.base.weight * item.amount
                 self.inventory.addItem(item)
             else:

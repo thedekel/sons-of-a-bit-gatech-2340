@@ -6,18 +6,18 @@
 {% endblock %}
 {% block navbar %}
 <ul>
-	<li><a href="start.php">home</a></li>
-	<li><a href="config.php">config</a></li>
+	<li><a href="start.php?p={{ partyid }}">home</a></li>
+	<li><a href="config.php?p={{ partyid }}">config</a></li>
 </ul>
 {% endblock %}
 {% block main %}
 <img src="static/b.png" alt="haha" style='width:500px;height:500px;float:left' />
 <p>
 Distance Travelled: {{ dt }} <br />
-<a href='wagon.php?play=1' >play a Turn</a><br />
+<a href='wagon.php?p={{ partyid }}&play=1' >play a Turn</a><br />
 Food per Day: {{ fpd }}<br />
 Distance per day: {{ dpd }}<br />
 Food Remaining: {{ fr }}
-
+{% csrf_token %}
 </p>
 {% endblock %}
