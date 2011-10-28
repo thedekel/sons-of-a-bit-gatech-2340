@@ -117,10 +117,7 @@ class Store(models.Model):
         """
         for thing in self.item_set.all():
             if thing.base.name == item.base.name:
-                if thing.amount >= item.amount:
-                    return True
-                else:
-                    return False
+                return True
         return False
     
     
