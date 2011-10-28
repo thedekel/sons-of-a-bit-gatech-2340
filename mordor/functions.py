@@ -28,7 +28,7 @@ def storeMaker(storeName, maxAmounts, bannedItems):
     return astore;
         
 
-def moveLocation(currentLocation, currentPace): #array of int, int
+def moveLocation(currentLocation, currentPace, party): #array of int, int
     """
     Moves along the map array to "change" location.
     Any locations that would force a halt will be checked for here (representing with a boolean field in Location, will change later to something else).

@@ -155,7 +155,7 @@ class Wagon(models.Model):
         """
         @return: String: String representation of a Wagon
         """
-        return u'<Wagon; Party:' + self.party + u'; inventory:' + unicode(self.inventory) + u'; totalWeight:' + unicode(self.weight)+u' >'
+        return u'<Wagon; Party:' + u'; inventory:' + unicode(self.inventory) + u'; totalWeight:' + unicode(self.weight)+u' >'
     
     def checkWagCap(self, item): #item must be an Item 
         """
@@ -163,7 +163,7 @@ class Wagon(models.Model):
         Checks to see if the added item exceeds the wagons capacity
         @return: boolean: True if adding the item does not exceed wagon capacity; false otherwise.
         """
-        if self.capacity < item.base.weight * item.amount + self.weight:
+        if self.capacity < item.weight * item.amount + self.weight:
             return False
         else:
             return True
@@ -178,25 +178,34 @@ class Wagon(models.Model):
         @return: String: string based on the success of the transaction
         """
         msg = "Your transaction was successful."
+        print itemName, amountOfStuff
         for x in itemDict:
             if x[0] == itemName:
+                print "oeuoeauo" ,x
                 item =  Item(name=x[0], description=x[1], baseCost= x[2], store=dummyStore, amount = amountOfStuff, weight = x[3])
-        if self.checkWagCap(item):
-            if self.party.money - (item.calculatePrice() * item.amount) >= 0:
-                item.amount = amount
+                print "2", x
+                item.save()
                 self.party.money -= item.calculatePrice() * item.amount
+
+        if self.checkWagCap(item):
+            if (self.party.money - (item.calculatePrice() * item.amount)) >= 0:
+                print "almost there"
                 self.party.save()
+                print "im' here"
                 self.weight += item.base.weight * item.amount
                 self.inventory.addItem(item)
             else:
+                print 'HERE!!!!!!!!'
                 msg = "You do not have enough money for this purchase."
         else:
+            print "AM I HERE?"
             msg = "Your wagon cannot carry this much weight"
             if self.party.money - item.calculatePrice() >= 0:
                 msg += "and you do not have enough money for this purchase."
             else:
                 msg += "."
-        return msg
+		print self.party.money
+        print msg
     
 
 class Location(models.Model):
@@ -211,7 +220,7 @@ class Location(models.Model):
         """
         @return: String: String representation of a Location
         """
-        return u'<Location: '+self.name+u' >'
+        return u'<Location: u>'
     
 
     

@@ -3,8 +3,12 @@ from django.views.decorators.csrf import csrf_exempt
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse
-from mordor.models import Party, Character
+from mordor.models import Party, Character, itemDict
 from mordor.functions import * 
+
+
+itemDict = [("Food", "This is edible stuff.", 1, 1),("Wagon Wheel", "don't eat it. use it for wagon!", 100, 10) ]
+
 
 """
 @author: Alex Williams, Anthony Taormina, Daniel Whatley, Stephen Roca, Yuval Dekel
@@ -20,12 +24,16 @@ def wag(request):
 @csrf_exempt
 def shop(request):
 	try:
-		Party.objects.get(id=request.POST['p']).wagon_set[0].buyItem((requst.POST["item"], request.POST['qty']))
+		#Party.objects.get(id=request.GET['p']).wagon_set.all()[0].buyItem(request.POST["item"], int(request.POST['qty']))
+		request.GET['p']
 	except:
 		pass
+	for x in itemDict:
+		if x[0] == request.POST['item']:
+			Party.objects.get(id=request.GET['p']).money -= x[2]*int(request.POST['qty'])
+	print "postyes"
 	ss = storeMaker("initial Store", 1000, [])
 	items = ss.item_set.all()
-	print items
 	return render_to_response("mordor/shoptest.html", {'partyid':request.GET['p'],"shopname":"The first Shop", "items":items, "party":Party.objects.get(id=request.GET['p'])})
 
 @csrf_exempt
@@ -42,7 +50,13 @@ def submit(request):
     #create a new party
     partyz = Party(name=request.POST["p_name"], money=5000*mmult[prof], pace = float(request.POST['pace']),rations = float(request.POST['ration']))
     partyz.save()
-    w = Wagon(party=partyz)
+    inv = Store(name="inventory", isVendor=False, price_mult=1)
+    inv.save()
+    w = Wagon(party=partyz, inventory=inv, weight=0)
+    w.save()
+
+
+    print w
     #create player
     pp = Character(name=request.POST['player'], profession=request.POST['prof'], status = 1, health = 1, isLeader = True, party = partyz)
     pp.save()
@@ -55,5 +69,14 @@ def submit(request):
 
 @csrf_exempt
 def config(request):
+	try:
+		pa = float(request.POST['pace'])
+		p = Party.objects.get(id = request.GET['p'])
+		moveLocation(p.location, pa, p)
+		p.consumeFood(p.wagon)
+		f = getFood(p.wagon)
+		return render_to_response("mordor/conf.html", {'partyid':request.GET['p'],'party':Party.objects.get(id=request.GET['p']),"foo":f, "loc":p.location})
+	except:
+		pass
 	return render_to_response("mordor/conf.html", {'partyid':request.GET['p'],'parties':Party.objects.get(id=request.GET['p']), "membs":[Party.objects.get(id=request.GET['p']).character_set.all()]})
 
