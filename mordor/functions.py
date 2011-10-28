@@ -1,6 +1,10 @@
 from django.db import models
 
 def main():
+    itemDict = {
+                "food": Item(name = "Food", amount = 10),
+                "wheel":Item(name = "Wagon Wheel", amount = 10)
+                }
     return
 
 def populateLocations():

@@ -123,6 +123,7 @@ class Store(models.Model):
     
 class Item(models.Model):
     name = models.CharField(max_length=25, default = "")
+    description = models.CharField(max_length=500, default = "")
     baseCost = models.IntegerField(default = 10)
     store = models.ForeignKey(Store)
     amount = models.IntegerField(default = 1)
@@ -135,12 +136,12 @@ class Item(models.Model):
         return u'<Item; Base:' + self.name + u'; inStore:' + unicode(self.store) + u'; amount:' + unicode(self.amount)+u' >'
     
 
-    def calculatePrice(self): # NOT per item
+    def calculatePrice(self): # per item
         """
         Calculates the price of a given item based of it's base item price and store multiplier
-        @return: float: the price of the individual item multiplied by the store multiplier and amount
+        @return: float: the price of the individual item multiplied by the store multiplier
         """
-        return store.price_mult * baseCost * amount 
+        return store.price_mult * baseCost
     
 class Wagon(models.Model):
     """
@@ -170,17 +171,19 @@ class Wagon(models.Model):
             return True
     
     
-    def buyItem(self, item): #item must be an Item
+    def buyItem(self, name, description, amount, cost, weight):
         """
         @param item: the item to buy 
+        @param amount: amount the user wants
         Buys an items
         Checks for sufficient money and capacity
         @return: String: string based on the success of the transaction
         """
         msg = "Your transaction was successful."
         if self.checkWagCap(item):
-            if self.party.money - item.calculatePrice() >= 0:
-                self.party.money -= item.calculatePrice()
+            if self.party.money - (item.calculatePrice() * amount) >= 0:
+                item.amount = amount
+                self.party.money -= item.calculatePrice() * item.amount
                 self.weight += item.base.weight * item.amount
                 self.inventory.addItem(item)
             else:
