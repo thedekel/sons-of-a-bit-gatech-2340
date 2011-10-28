@@ -151,7 +151,6 @@ class Wagon(models.Model):
     """
     party = models.ForeignKey(Party)
     inventory = models.ForeignKey(Store, default=Store(name="Wagon", isVendor=False))
-    inventory.isVendor = False
     weight = models.FloatField(default = 0)
     capacity = 1500 # CHANGE THIS LATER or not
     
@@ -216,22 +215,7 @@ class Location(models.Model):
         """
         return u'<Location: '+self.name+u' >'
     
-     #==========================================================================
-     # def moveLocation(map, currentLocation, numSpaces): #array of Locations, int, int
-     #   """
-     #   Moves along the map array to "change" location.
-     #   Any locations that would force a halt will be checked for here (representing with a boolean field in Location, will change later to something else).
-     #   Most of these parameters probably won't be needed
-     #   -Anthony Taormina
-     #   """
-     #   numSpaces *= 2 # (each index is .5 km)
-     #   for x in range(1, numSpaces+1):
-     #       place = map[currentLocation + x] # a Location
-     #       if place.halt:
-     #           # Do stuff? We stop things here
-     #       else:
-     #           # ???
-     #==========================================================================
+
     
 class Event(models.Model):
     """
@@ -246,5 +230,6 @@ class Event(models.Model):
         @return: String: String representation of a Event
         """
         return u'<Event' + self.name + u' >'
+    
 
  
