@@ -1,6 +1,6 @@
 from models import *
 
-
+map = populateLocations()
 
 #wagon = Wagon(partyz)
 #wagon.save()
@@ -41,19 +41,21 @@ def storeMaker(storeName, maxAmounts, bannedItems):
     return astore;
         
 
-def moveLocation(map, currentLocation, numSpaces): #array of Locations, int, int
+def moveLocation(currentLocation, currentPace): #array of int, int
     """
     Moves along the map array to "change" location.
     Any locations that would force a halt will be checked for here (representing with a boolean field in Location, will change later to something else).
     Most of these parameters probably won't be needed
     -Anthony Taormina
     """
-    numSpaces *= 2 # (each index is .5 km)
+    party.pace = currentPace
+    numSpaces = 2 * currentPace # (each index is .5 km)
     for x in range(1, numSpaces+1):
         place = map[currentLocation + x] # a Location
         if place.halt:
             break
     place.do()
+    return currentLocation
     
     
     
