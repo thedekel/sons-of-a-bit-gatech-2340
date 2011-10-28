@@ -2,11 +2,7 @@ from django.db import models
 """
 @author: Alex Williams, Anthony Taormina, Daniel Whatley, Stephen Roca, Yuval Dekel
 """
-itemDict = [ # this is where you add items to the game (name, des, basecost, weight)
-            ("Food", "This is edible stuff.", 1, 1),
-            ("Wagon Wheel", "don't eat it. use it for wagon!", 100, 10)
-            ]
-dummyStore = Store()
+
 # Create your models here.
 class Party(models.Model):
     """
@@ -18,17 +14,12 @@ class Party(models.Model):
     rations = models.IntegerField()
     location = models.IntegerField(default=0)
     
-    def consumeFood(self, rationNum):
+    def consumeFood(self, wag):
         """
-        @param param: 
         Attempts to consume a user determined amount of food.
         @return: boolean: True upon a successful consumption and False upon a failure.
         """
-        if self.rations >= rationNum:
-            self.rations -= rationNum
-            return True
-        else:
-            return False
+        return wag.inventory.removeItem("food",self.rations)
     
     def __unicode__(self):
         """
@@ -245,5 +236,8 @@ class StoreEvent(Event):
         
         return
     
-
- 
+itemDict = [ # this is where you add items to the game (name, des, basecost, weight)
+            ("Food", "This is edible stuff.", 1, 1),
+            ("Wagon Wheel", "don't eat it. use it for wagon!", 100, 10)
+            ]
+dummyStore = Store()
