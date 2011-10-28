@@ -101,13 +101,14 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'CS2340OregonTrail.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-	"/home/thedekel/School/2340/templates/"
+	'/home/thedekel/School/2340/sons-of-a-bit-gatech-2340/res',
+
 )
 
 INSTALLED_APPS = (

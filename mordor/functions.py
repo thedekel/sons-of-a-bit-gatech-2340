@@ -1,15 +1,14 @@
-import models
+from models import *
 
 
-def main():
-    wagon = Wagon(party=theparty) # make this work?
-    itemDict = { # this is where you add items to the game
-                "food": Item(name = "Food", amount = 10),
-                "wheel":Item(name = "Wagon Wheel", amount = 10)
-                }
-    for article in itemDict:
-        wagon.inventory.addItem(article) # puts item holder in inventory at 0 amount
-    return
+
+#wagon = Wagon(party=) # make this work?
+itemDict = { # this is where you add items to the game
+            "food": Item(name = "Food", amount = 10),
+            "wheel":Item(name = "Wagon Wheel", amount = 10)
+            }
+#for article in itemDict:
+ #   wagon.inventory.addItem(article) # puts item holder in inventory at 0 amount
 
 def populateLocations():
     """
@@ -32,10 +31,12 @@ def storeMaker(storeName, maxAmounts, bannedItems):
     @param bannedItems: What items is this store missing?  list
     """
     store = Store(name = storeName)
+    store.save()
     for article in itemDict:
         if article not in bannedItems:
-            article.amount = maxAmounts
-            store.addItem(article)
+            itemDict[article].amount = maxAmounts
+            store.addItem(itemDict[article])
+	return store;
         
 
 def moveLocation(map, currentLocation, numSpaces): #array of Locations, int, int

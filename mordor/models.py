@@ -68,7 +68,6 @@ class Store(models.Model):
     """
     Store
     """
-    #store_id = models.IntegerField()
     name = models.CharField(max_length=25, default = "")
     isVendor = models.BooleanField(default=True)
     price_mult = models.FloatField(default = 1)
@@ -85,7 +84,8 @@ class Store(models.Model):
         @param item: the item to add 
         Adds the item given in as a parameter
         """
-        if not hasItem(item):
+        if not self.hasItem(item):
+            item.save()
             item.store = self
         else:
             for thing in self.item_set.all():
