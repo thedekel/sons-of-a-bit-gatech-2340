@@ -11,6 +11,7 @@ class Party(models.Model):
     money = models.IntegerField()
     pace = models.IntegerField() 
     rations = models.IntegerField()
+    location = models.IntegerField(default=0)
     
     def consumeFood(self, rationNum):
         """

@@ -1,4 +1,5 @@
-from django.db import models
+import models
+
 
 def main():
     wagon = Wagon(party) # make this work?
@@ -49,3 +50,7 @@ def moveLocation(map, currentLocation, numSpaces): #array of Locations, int, int
         place = map[currentLocation + x] # a Location
         if place.halt:
             break
+    place.do()
+    
+    
+    
