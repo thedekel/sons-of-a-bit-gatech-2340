@@ -144,7 +144,7 @@ class Item(models.Model):
         Calculates the price of a given item based of it's base item price and store multiplier
         @return: float: the price of the individual item multiplied by the store multiplier
         """
-        return store.price_mult * baseCost * amount
+        return store.price_mult * baseCost
     
 class Wagon(models.Model):
     """
