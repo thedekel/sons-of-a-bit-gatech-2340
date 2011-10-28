@@ -2,7 +2,7 @@ import models
 
 
 def main():
-    wagon = Wagon(party) # make this work?
+    wagon = Wagon(party=theparty) # make this work?
     itemDict = { # this is where you add items to the game
                 "food": Item(name = "Food", amount = 10),
                 "wheel":Item(name = "Wagon Wheel", amount = 10)
