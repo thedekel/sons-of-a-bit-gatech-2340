@@ -89,7 +89,7 @@ class Store(models.Model):
             item.store = self
         else:
             for thing in self.item_set.all():
-                if thing.base.name == item.base.name:
+                if thing.name == item.name:
                     thing.amount += item.amount
     
     def removeItem(self, itemName, num):
@@ -173,7 +173,7 @@ class Wagon(models.Model):
             return True
     
     
-    def buyItem(self, name, amount):
+    def buyItem(self, item, amount):
         """
         @param item: the item to buy 
         @param amount: amount the user wants
@@ -182,12 +182,11 @@ class Wagon(models.Model):
         @return: String: string based on the success of the transaction
         """
         msg = "Your transaction was successful."
-        item = itemDict[name]
         item.amount = amount
         if self.checkWagCap(item):
-            if self.party.money - item.calculatePrice() >= 0:
+            if self.party.money - item.calculatePrice() * item.amount >= 0:
                 item.amount = amount
-                self.party.money -= item.calculatePrice()
+                self.party.money -= item.calculatePrice() * item.amount
                 self.weight += item.base.weight * item.amount
                 self.inventory.addItem(item)
             else:
