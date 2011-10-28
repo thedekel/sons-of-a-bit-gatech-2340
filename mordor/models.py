@@ -205,7 +205,6 @@ class Location(models.Model):
     """
     Location
     """
-    #type_id = models.IntegerField()
     name = models.CharField(max_length=25, default = "")
     description = models.CharField(max_length=500, default = "")
     #halt = models.BooleanField(default=False) used only for moveLocation.  Will probably be implemented in a different manner -AT
@@ -222,7 +221,6 @@ class Event(models.Model):
     """
     Event
     """
-    type_id = models.IntegerField()
     name = models.CharField(max_length=25)
     location = models.ForeignKey(Location)
     
@@ -231,6 +229,15 @@ class Event(models.Model):
         @return: String: String representation of a Event
         """
         return u'<Event' + self.name + u' >'
+    
+    def do(self):
+        return
+    
+class StoreEvent(Event):
+    name = "Store"
+    def do(self):
+        
+        return
     
 
  
