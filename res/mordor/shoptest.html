@@ -1,0 +1,31 @@
+{% extends "template.html" %}
+{% block title %}Shop Interface{% endblock %}
+{% block style %}static/styles.css{% endblock %}
+{% block header %}
+<h1>Shop: {{ shopname }}</h1>
+{% endblock %}
+{% block navbar %}
+<ul>
+	<li><a href="start.php">home</a></li>
+	<li><a href="config.php">config</a></li>
+</ul>
+{% endblock %}
+{% block main %}
+<div id="form">
+	<div id='title' class='subdiv'>
+		<h3>{{ shopname }}</h3>
+	</div>
+	<div id="shop" class = "subdiv">
+		<div id="items">
+{% for i in items %}
+			<div class="item">
+				<form action="shop.php" method="POST">
+					<p>{{ i.name }}</p>
+				</form>
+			</div>
+{% endif %}
+		</div>
+	</div>
+</div>
+
+{% endblock %}
