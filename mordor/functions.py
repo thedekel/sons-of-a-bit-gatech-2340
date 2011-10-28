@@ -2,13 +2,16 @@ from models import *
 
 
 
-#wagon = Wagon(party=) # make this work?
-itemDict = { # this is where you add items to the game
-            "food": Item(name = "Food", amount = 10),
-            "wheel":Item(name = "Wagon Wheel", amount = 10)
-            }
-#for article in itemDict:
- #   wagon.inventory.addItem(article) # puts item holder in inventory at 0 amount
+wagon = Wagon(partyz)
+wagon.save()
+itemDict = [ # this is where you add items to the game (name, des, basecost, weight)
+            ("Food", "", 1, 1),
+            ("Wagon Wheel", "", 100, 10)
+            ]
+for article in itemDict:
+    newItem  = Item(article[0], article[1], article[2], store, maxAmounts, article[3])
+    newItem.save()
+    wagon.inventory.addItem(newItem) # puts item holder in inventory at 0 amount
 
 def populateLocations():
     """
@@ -18,7 +21,6 @@ def populateLocations():
     locations=[]
     for x in range(50):
         locations[x] = Location()
-    location[0] = Location(name = "The Shire", description = "")
     location[25] = Location(name = "Mines of Moria")
     location[49] = Location(name = "Mordor")
     return locations
@@ -34,8 +36,9 @@ def storeMaker(storeName, maxAmounts, bannedItems):
     store.save()
     for article in itemDict:
         if article not in bannedItems:
-            itemDict[article].amount = maxAmounts
-            store.addItem(itemDict[article])
+            newItem  = Item(article[0], article[1], article[2], store, maxAmounts, article[3])
+            newItem.save()
+            store.addItem(newItem)
 	return store;
         
 
