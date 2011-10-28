@@ -100,7 +100,7 @@ class Store(models.Model):
         Returns True on a successful removal.
         """
         for thing in self.item_set.all():
-            if thing.base.name == itemName:
+            if thing.name == itemName:
                 if thing.amount >= item.amount:
                     thing.amount -= item.amount
                     return True
@@ -116,9 +116,11 @@ class Store(models.Model):
         @return: boolean: True if item exists in the Store false otherwise.
         """
         for thing in self.item_set.all():
-            if thing.base.name == item.base.name:
-                return True
-        return False
+            if thing.name == item.name:
+                if thing.amount > 0:
+                    return True
+                else:
+                    return False
     
     
 class Item(models.Model):
@@ -148,7 +150,7 @@ class Wagon(models.Model):
     Wagon
     """
     party = models.ForeignKey(Party)
-    inventory = models.ForeignKey(Store)
+    inventory = models.ForeignKey(Store, default=Store(name="Wagon", isVendor=False))
     inventory.isVendor = False
     weight = models.FloatField(default = 0)
     capacity = 1500 # CHANGE THIS LATER or not
