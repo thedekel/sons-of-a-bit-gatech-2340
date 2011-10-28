@@ -2,6 +2,11 @@ from django.db import models
 """
 @author: Alex Williams, Anthony Taormina, Daniel Whatley, Stephen Roca, Yuval Dekel
 """
+itemDict = [ # this is where you add items to the game (name, des, basecost, weight)
+            ("Food", "This is edible stuff.", 1, 1),
+            ("Wagon Wheel", "don't eat it. use it for wagon!", 100, 10)
+            ]
+dummyStore = Store()
 # Create your models here.
 class Party(models.Model):
     """
@@ -173,7 +178,7 @@ class Wagon(models.Model):
             return True
     
     
-    def buyItem(self, item, amount):
+    def buyItem(self, itemName, amountOfStuff):
         """
         @param item: the item to buy 
         @param amount: amount the user wants
@@ -182,7 +187,9 @@ class Wagon(models.Model):
         @return: String: string based on the success of the transaction
         """
         msg = "Your transaction was successful."
-        item.amount = amount
+        for x in itemDict:
+            if x[0] == itemName:
+                item =  Item(name=article[0], description=article[1], baseCost= article[2], store=dummyStore, amount = amountofStuff, weight = article[3])
         if self.checkWagCap(item):
             if self.party.money - item.calculatePrice() * item.amount >= 0:
                 item.amount = amount

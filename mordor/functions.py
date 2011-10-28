@@ -4,10 +4,7 @@ from models import *
 
 #wagon = Wagon(partyz)
 #wagon.save()
-itemDict = [ # this is where you add items to the game (name, des, basecost, weight)
-            ("Food", "This is edible stuff.", 1, 1),
-            ("Wagon Wheel", "don't eat it. use it for wagon!", 100, 10)
-            ]
+
 #for article in itemDict:
 #    newItem  = Item(article[0], article[1], article[2], store, maxAmounts, article[3])
 #    newItem.save()
