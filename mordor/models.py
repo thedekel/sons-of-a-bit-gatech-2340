@@ -126,7 +126,7 @@ class Item(models.Model):
     description = models.CharField(max_length=500, default = "")
     baseCost = models.IntegerField(default = 10)
     store = models.ForeignKey(Store)
-    amount = models.IntegerField(default = 1)
+    amount = models.IntegerField(default = 0)
     weight = models.IntegerField(default = 10)
     
     def __unicode__(self):
@@ -141,7 +141,7 @@ class Item(models.Model):
         Calculates the price of a given item based of it's base item price and store multiplier
         @return: float: the price of the individual item multiplied by the store multiplier
         """
-        return store.price_mult * baseCost
+        return store.price_mult * baseCost * amount
     
 class Wagon(models.Model):
     """
@@ -171,7 +171,7 @@ class Wagon(models.Model):
             return True
     
     
-    def buyItem(self, name, description, amount, cost, weight):
+    def buyItem(self, name, amount):
         """
         @param item: the item to buy 
         @param amount: amount the user wants
@@ -180,10 +180,12 @@ class Wagon(models.Model):
         @return: String: string based on the success of the transaction
         """
         msg = "Your transaction was successful."
+        item = itemDict[name]
+        item.amount = amount
         if self.checkWagCap(item):
-            if self.party.money - (item.calculatePrice() * amount) >= 0:
+            if self.party.money - item.calculatePrice() >= 0:
                 item.amount = amount
-                self.party.money -= item.calculatePrice() * item.amount
+                self.party.money -= item.calculatePrice()
                 self.weight += item.base.weight * item.amount
                 self.inventory.addItem(item)
             else:
