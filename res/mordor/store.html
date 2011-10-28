@@ -1,0 +1,23 @@
+{% extends "template.html" %}
+{% block title %}Store{% endblock %}
+{% block style %}templatestyle.css{% endblock %}
+{% block header %}
+<h1>Store</h1>
+{% endblock %}
+{% block navbar %}
+<ul>
+	<li><a href="start.php">home</a></li>
+	<li><a href="config.php">config</a></li>
+</ul>
+{% endblock %}
+{% block main %}
+<img src="\/stat\/b.png" alt="haha" style='width:500px;height:500px;float:left' />
+<p>
+disttravelled<br />
+<a href='wagon.php?play=1' >play</a><br />
+{{ fpd }}<br />
+{{ dpd }}<br />
+foodremaining
+
+</p>
+{% endblock %}
