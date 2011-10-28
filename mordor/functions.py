@@ -58,4 +58,12 @@ def moveLocation(currentLocation, currentPace): #array of int, int
     return currentLocation
     
     
-    
+def getFood(wagon):
+    """
+    @param wagon: takes in a wagon to access the player's inventory
+    This is used to find out how much food we have at any given point.
+    @return: the amount of rations the player currently has left 
+    """
+    for thing in wagon.inventory.item_set.all():
+            if thing.name == "food":
+                return thing.amount
