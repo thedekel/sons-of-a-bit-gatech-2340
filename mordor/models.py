@@ -76,7 +76,7 @@ class Store(models.Model):
         """
         @return: String: String representation of a Store
         """
-        return u'<Store:'+self.name +u'; capacity:' +unicode(str(self.capacity))+ u' >'
+        return u'<Store:'+self.name +u' >'
     
 
     def addItem(self, item):

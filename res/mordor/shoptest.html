@@ -20,8 +20,8 @@
 {% for i in items %}
 			<div class="item">
 				<form action="shop.php" method="POST">
-					<p style="display:inline">{{ i.name }}</p>
-					<p style="display:inline">{{ i.desc }}</p><br />
+					<p style="display:inline">{{ i.name }} : </p>
+					<p style="display:inline">{{ i.description }}</p><br />
 					<label>Price: {{ i.calculatePrice }}</label><br />
 					<label>Weight: {{ i.weight }}</label><br />
 					<label>Qty: <input type='number' name ='qty' /></label>

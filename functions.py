@@ -2,16 +2,13 @@ from models import *
 
 
 
-#wagon = Wagon(partyz)
-#wagon.save()
-itemDict = [ # this is where you add items to the game (name, des, basecost, weight)
-            ("Food", "This is edible stuff.", 1, 1),
-            ("Wagon Wheel", "don't eat it. use it for wagon!", 100, 10)
-            ]
+#wagon = Wagon(party=) # make this work?
+itemDict = { # this is where you add items to the game
+            "food": Item(name = "Food", amount = 10),
+            "wheel":Item(name = "Wagon Wheel", amount = 10)
+            }
 #for article in itemDict:
-#    newItem  = Item(article[0], article[1], article[2], store, maxAmounts, article[3])
-#    newItem.save()
-#    wagon.inventory.addItem(newItem) # puts item holder in inventory at 0 amount
+ #   wagon.inventory.addItem(article) # puts item holder in inventory at 0 amount
 
 def populateLocations():
     """
@@ -21,6 +18,7 @@ def populateLocations():
     locations=[]
     for x in range(50):
         locations[x] = Location()
+    location[0] = Location(name = "The Shire", description = "")
     location[25] = Location(name = "Mines of Moria")
     location[49] = Location(name = "Mordor")
     return locations
@@ -32,16 +30,14 @@ def storeMaker(storeName, maxAmounts, bannedItems):
     @param maxAmounts: How much of each item does this store carry? int
     @param bannedItems: What items is this store missing?  list
     """
-    astore = Store(name = storeName)
-    astore.save()
-    for i in range(len(itemDict)):
-       # if article not in bannedItems:
-        article = itemDict[i]
-        Item(name=article[0], description=article[1], baseCost= article[2], store=astore, amount = maxAmounts, weight = article[3]).save()
-        print article
-        print itemDict
-#            astore.addItem(newItem)
-    return astore;
+    store = Store(name = storeName)
+    store.save()
+    for article in itemDict:
+        if article not in bannedItems:
+            itemDict[article].amount = maxAmounts
+            store.addItem(itemDict[article])
+            store.save()
+	return store;
         
 
 def moveLocation(map, currentLocation, numSpaces): #array of Locations, int, int
