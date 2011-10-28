@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     url(r'^config\.php', 'mordor.views.config'),
     url(r'^start/submit\.php', 'mordor.views.submit'),
 	url(r'^wagon.php', 'mordor.views.wag'),
+	url(r'^shop.php', 'mordor.views.shop'),
     # url(r'^$', 'CS2340OregonTrail.views.home', name='home'),
     # url(r'^CS2340OregonTrail/', include('CS2340OregonTrail.foo.urls')),
 

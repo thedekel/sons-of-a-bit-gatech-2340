@@ -1,8 +1,9 @@
-# Create your views here.
+# Crjeate your views here.
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse
 from mordor.models import Party, Character
+from mordor.functions import * 
 
 """
 @author: Alex Williams, Anthony Taormina, Daniel Whatley, Stephen Roca, Yuval Dekel
@@ -15,6 +16,11 @@ def start(request):
 def wag(request):
 	return render_to_response("mordor/wag.html", {"dt":87, "fpd":5, "dpd":4, "fr":98})#,context_instance=RequestContext(request))
     
+def shop(request):
+	ss = storeMaker("initial Store", 1000, [])
+	items = ss.item_set.all()
+	return render_to_response("mordor/shoptest.html", {"shopname":"The first Shop", "items":items})#,context_instance=RequestContext(request))
+
 def submit(request):
     try:
         if (request.POST['pp']):

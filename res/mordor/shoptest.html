@@ -1,4 +1,4 @@
-{% extends "template.html" %}
+{% extends "mordor/template.html" %}
 {% block title %}Shop Interface{% endblock %}
 {% block style %}static/styles.css{% endblock %}
 {% block header %}
@@ -20,10 +20,16 @@
 {% for i in items %}
 			<div class="item">
 				<form action="shop.php" method="POST">
-					<p>{{ i.name }}</p>
+					<p style="display:inline">{{ i.name }}</p>
+					<p style="display:inline">{{ i.desc }}</p><br />
+					<label>Price: {{ i.calculatePrice }}</label><br />
+					<label>Weight: {{ i.weight }}</label><br />
+					<label>Qty: <input type='number' name ='qty' /></label>
+					<input type='hidden' value='{{ i.name }}' name='item' />
+					<input type='submit' />
 				</form>
 			</div>
-{% endif %}
+{% endfor %}
 		</div>
 	</div>
 </div>

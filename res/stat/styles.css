@@ -33,25 +33,21 @@ input, select {
 	-webkit-border-radius: 0.5em;
 }
 
-option {
-	-webkit-appearance: none;
-	background: #555;
-}
-
 #form {
 	position: relative;
 	width: 100%;
 	height: 100%;
 }
+
+#title {
+	position: absolute;
+	height: 10%;
+	width: 98%;
+	top: 5%;
+}
 /* END GLOBAL STYLES */
 
 /* START SCREEN */
-#create_party {
-	position: absolute;
-	height: 20%;
-	width: 98%;
-}
-
 #player {
 	position: absolute;
 	width: 47%;
@@ -74,3 +70,24 @@ option {
 	top: 60%;
 }
 /* END START SCREEN */
+
+/* SHOP SCREEN */
+#shop {
+	width: 98%;
+	height: 75%;
+	position: absolute;
+	top: 20%;
+}
+
+#items {
+	height: 85%;
+	overflow-y: hidden;
+	position: absolute;
+}
+
+#submit {
+	top: 90%;
+	position: absolute;
+	left: 90%;
+}
+
