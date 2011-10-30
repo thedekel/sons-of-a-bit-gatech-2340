@@ -1,0 +1,39 @@
+{% extends "mordor/template.html" %}
+{% block title %}Wagon and Tasks{% endblock %}
+{% block style %}static/styles.css{% endblock %}
+{% block header %}
+<h1>Wagon and Tasks</h1>
+{% endblock %}
+{% block navbar %}
+<ul>
+	<li><a href="shop.php?p={{ partyid }}">shop</a></li>
+	<li><a href="config.php?p={{ partyid }}">config</a></li>
+</ul>
+{% endblock %}
+{% block main %}
+<form action="/config.php?p={{ partyid }}" method="post">
+	<hr />
+	<h3> Party base stats</h3>
+	<input type='hidden' name="pp" value="{{ part.name }}" />
+	<label> Party Name: {{ part.name }} :<input type="text" name="p_name" /></label>
+	<p> Party Money: {{ part.money }} </p>
+	<hr />	
+	<label> Initial Pace: {{ part.pace }} <select name="pace">
+			<option value=".5">2.5 km per day</option>
+			<option value="1">5 km per day</option>
+			<option value="1.5">7.5 km per day</option>
+		</select>		
+	</label>
+	<label> Initial Rations: {{ part.rations }} <select name="ration">
+			<option value=".5">5 oz per day</option>
+			<option value="1">10 oz per day</option>
+			<option value="1.5">15 oz per day</option>
+		</select>
+	</label>
+	<hr />
+	<label> Current Food: {{ foo }} </label><br /> 
+	<label> Corrunt Location: {{ loc }} </label><br />
+	<input type="submit" value="play turn" />
+</form>
+</p>
+{% endblock %}
