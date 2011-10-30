@@ -81,7 +81,7 @@ class Store(models.Model):
         Adds the item given in as a parameter
         """
         if not self.hasItem(item):
-            item.save()
+            item.save(
             item.store = self
         else:
             for thing in self.item_set.all():
@@ -109,7 +109,7 @@ class Store(models.Model):
     def hasItem(self, item):
         """
         @param item: the item to check existence for
-        Checks whether the store has a certain AMOUNT of an item
+        Checks whether the store has a certain AMOUNT of an ite
         @return: boolean: True if item exists in the Store false otherwise.
         """
         for thing in self.item_set.all():
@@ -178,33 +178,33 @@ class Wagon(models.Model):
         @return: String: string based on the success of the transaction
         """
         msg = "Your transaction was successful."
-        print itemName, amountOfStuff
+        print itemName, amountOfStuf
         for x in itemDict:
             if x[0] == itemName:
-                print "oeuoeauo" ,x
+                print "oeuoeauo" ,
                 item =  Item(name=x[0], description=x[1], baseCost= x[2], store=dummyStore, amount = amountOfStuff, weight = x[3])
-                print "2", x
-                item.save()
+                print "2", 
+                item.save(
                 self.party.money -= item.calculatePrice() * item.amount
 
         if self.checkWagCap(item):
             if (self.party.money - (item.calculatePrice() * item.amount)) >= 0:
-                print "almost there"
-                self.party.save()
-                print "im' here"
+                print "almost there
+                self.party.save(
+                print "im' here
                 self.weight += item.base.weight * item.amount
                 self.inventory.addItem(item)
             else:
-                print 'HERE!!!!!!!!'
+                print 'HERE!!!!!!!!
                 msg = "You do not have enough money for this purchase."
         else:
-            print "AM I HERE?"
+            print "AM I HERE?
             msg = "Your wagon cannot carry this much weight"
             if self.party.money - item.calculatePrice() >= 0:
                 msg += "and you do not have enough money for this purchase."
             else:
                 msg += "."
-		print self.party.money
+		print self.party.mone
         print msg
     
 
@@ -214,7 +214,7 @@ class Location(models.Model):
     """
     name = models.CharField(max_length=25, default = "")
     description = models.CharField(max_length=500, default = "")
-    #halt = models.BooleanField(default=False) used only for moveLocation.  Will probably be implemented in a different manner -AT
+    #halt = models.BooleanField(default=False) used only for moveLocation.  Will probably be implemented in a different manner -A
     
     def __unicode__(self):
         """

@@ -24,3 +24,20 @@ INSTALLATION
 6. navigate in a browser to http://localhost:8000/
 
 7. Don't die of dysentery.
+
+
+NEW!!!
+EXTRA FILES
+
+I added an "extra" folder in our repository root. This folder will contain sample
+CSS and HTML files so that a working server is not required in order to build css.
+
+
+NEW!!!
+UPDATED FOLDER STRUCTURE
+there's no need for the stupid directory hierachy that eclipse decided on. Now,
+everything is in the root folder.
+
+NEW!!!
+NOT WORKING FOR WINDOWS!
+we will fix this eventually. more pressing issues are present at the moment.
