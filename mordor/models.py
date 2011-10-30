@@ -81,7 +81,7 @@ class Store(models.Model):
         Adds the item given in as a parameter
         """
         if not self.hasItem(item):
-            item.save(
+            item.save()
             item.store = self
         else:
             for thing in self.item_set.all():
@@ -184,21 +184,21 @@ class Wagon(models.Model):
                 print "oeuoeauo" ,
                 item =  Item(name=x[0], description=x[1], baseCost= x[2], store=dummyStore, amount = amountOfStuff, weight = x[3])
                 print "2", 
-                item.save(
+                item.save()
                 self.party.money -= item.calculatePrice() * item.amount
 
         if self.checkWagCap(item):
             if (self.party.money - (item.calculatePrice() * item.amount)) >= 0:
-                print "almost there
-                self.party.save(
-                print "im' here
+                print "almost there"
+                self.party.save()
+                print "im' here"
                 self.weight += item.base.weight * item.amount
                 self.inventory.addItem(item)
             else:
-                print 'HERE!!!!!!!!
+                print 'HERE!!!!!!!!'
                 msg = "You do not have enough money for this purchase."
         else:
-            print "AM I HERE?
+            print "AM I HERE?"
             msg = "Your wagon cannot carry this much weight"
             if self.party.money - item.calculatePrice() >= 0:
                 msg += "and you do not have enough money for this purchase."

@@ -44,17 +44,19 @@ def storeLoader(storeid):
     return astore;
         
 
-def moveLocation(currentLocation, currentPace, party): #array of int, int
+def moveLocation(partyid, newPace=None): #array of int, int
     """
     Moves along the map array to "change" location.
-    Any locations that would force a halt will be checked for here (representing with a boolean field in Location, will change later to something else).
+    Any locations that would force a halt will be checked for here (representing with a boolean field in Location, will change later to something else)
     Most of these parameters probably won't be needed
     -Anthony Taormina
     """
-    party.pace = currentPace
-    numSpaces = 2 * currentPace # (each index is .5 km)
+	
+	party = Party.objects.get(id=partyid)
+    party.pace = (party.pace if newPace==None else newpace)
+    numSpaces = 2 * party.pace # (each index is .5 km)
     for x in range(1, numSpaces+1):
-        place = map[currentLocation + x] # a Location
+        place = locmap[currentLocation + x] # a Location
         if place.halt:
             break
     place.do()
@@ -84,4 +86,4 @@ def populateLocations():
     locations[49] = Location(name = "Mordor")
     return locations
  
-map = populateLocations()
+locmap = populateLocations()
