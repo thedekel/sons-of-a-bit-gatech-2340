@@ -23,18 +23,13 @@ def wag(request):
 
 @csrf_exempt
 def shop(request):
-	try:
-		#Party.objects.get(id=request.GET['p']).wagon_set.all()[0].buyItem(request.POST["item"], int(request.POST['qty']))
-		request.GET['p']
-	except:
-		pass
-	for x in itemList:
-		if x[0] == request.POST['item']:
-			Party.objects.get(id=request.GET['p']).money -= x[2]*int(request.POST['qty'])
-	print "postyes"
-	ss = storeMaker("initial Store", 1000, [])
-	items = ss.item_set.all()
-	return render_to_response("mordor/shoptest.html", {'partyid':request.GET['p'],"shopname":"The first Shop", "items":items, "party":Party.objects.get(id=request.GET['p'])})
+    party = Party.objects.get(id=request.GET['p'])
+    try:
+        astore = Store.objects.get(location=party.location)
+    except:
+        astore = Store.objects.get(location=0)
+    items = astore.items.all()
+    return render_to_response("mordor/shoptest.html", {'partyid':request.GET['p'],"shopname":astore.name ,"items":items, "party":party})
 
 @csrf_exempt
 def submit(request):
