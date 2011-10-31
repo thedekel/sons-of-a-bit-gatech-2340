@@ -264,16 +264,20 @@ class Event(models.Model):
         return
     
 class RiverCrossingEvent(Event):
+    """
+    River Crossing Event
+    """
     #TODO
     name = "River"
     waterdepth = models.IntegerField(default = 2)
+    ferryfee = models.IntegerField(default = 250)
     
     def takeFerry(self, party): #Party
         """
         Takes the Ferry. Takes a designated amount of money away from the player
         to use the ferry
         """
-        party.money -= 25
+        party.money -= self.ferryfee
         return
     
     def ford(self):
