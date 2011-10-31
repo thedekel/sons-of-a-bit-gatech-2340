@@ -4,7 +4,7 @@ from models import *
 #wagon = Wagon(partyz)
 #wagon.save()
 
-#for article in itemDict:
+#for article in itemList:
 #    newItem  = Item(article[0], article[1], article[2], store, maxAmounts, article[3])
 #    newItem.save()
 #    wagon.inventory.addItem(newItem) # puts item holder in inventory at 0 amount
@@ -26,7 +26,7 @@ from models import *
 #    astore = Store(name = aname)
 #    astore.save()
 #    for i in items:
-#       a = itemDict[i[0]]
+#       a = itemList[i[0]]
 #       ii = Item(name = a[0], description=a[1], baseCost = a[2], store = astore, amount = i[1], weight = a[3])
 #       ii.save()
 #    astore.save()

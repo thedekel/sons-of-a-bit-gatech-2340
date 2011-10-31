@@ -3,11 +3,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse
-from mordor.models import Party, Character, itemDict
+from mordor.models import Party, Character, itemList
 from mordor.functions import * 
 
 
-itemDict = [("Food", "This is edible stuff.", 1, 1),("Wagon Wheel", "don't eat it. use it for wagon!", 100, 10) ]
+itemList = [("Food", "This is edible stuff.", 1, 1),("Wagon Wheel", "don't eat it. use it for wagon!", 100, 10) ]
 
 
 """
@@ -28,7 +28,7 @@ def shop(request):
 		request.GET['p']
 	except:
 		pass
-	for x in itemDict:
+	for x in itemList:
 		if x[0] == request.POST['item']:
 			Party.objects.get(id=request.GET['p']).money -= x[2]*int(request.POST['qty'])
 	print "postyes"
