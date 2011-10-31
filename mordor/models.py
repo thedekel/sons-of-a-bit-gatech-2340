@@ -66,10 +66,10 @@ class Character(models.Model):
         """
         Checks to see whether a player is dead or not
         @return: boolean: True if player is dead. False otherwise.
-        """"
-        if self.health == 0
+        """
+        if self.health == 0:
             return True
-        else
+        else:
             return False
    
 class Item(models.Model):
@@ -283,9 +283,8 @@ class RiverCrossingEvent(Event):
         """
         chance = random.randint(0,100)
         percentChance = 5 * self.waterdepth
-        if (chance > (100 - percentChance))
+        if (chance > (100 - percentChance)):
             msg = "DUDE FLIP THE WAGON!"
-        else
         return
     
     def caulk(self):
@@ -294,9 +293,8 @@ class RiverCrossingEvent(Event):
         @return: String: The success or failure of caulking the river
         """
         chance = random.randint(0,100)
-        if (chance > 70)
+        if (chance > 70):
             msg = "DUDE FLIP THE WAGON"
-        else
         return
     #DEFINE DO!
     
