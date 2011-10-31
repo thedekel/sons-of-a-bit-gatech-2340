@@ -268,21 +268,15 @@ class RiverCrossingEvent(Event):
         chance = random.randint(0,100)
         percentChance = 5 * self.waterdepth
         if (chance > (100 - percentChance))
-            "DUDE FLIP THE WAGON!"
+            msg = "DUDE FLIP THE WAGON!"
+        else
         return
     
     def caulk(self):
         chance = random.randint(0,100)
         if (chance > 70)
-            "DUDE FLIP THE WAGON"
-        return
-    
-    def do(self):
-        from random import *
-        chance = random.randint(0,100)
-        if (chance > 90)
-            
-        
+            msg = "DUDE FLIP THE WAGON"
+        else
         return
     #DEFINE DO!
     
