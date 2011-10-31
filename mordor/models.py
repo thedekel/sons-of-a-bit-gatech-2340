@@ -254,6 +254,13 @@ class Event(models.Model):
     def do(self):
         return
     
+class RiverCrossingEvent(Event):
+    #TODO
+    name = "River"
+    def do(self):
+        return
+    #DEFINE DO!
+    
 class StoreEvent(Event):
     name = "Store"
     def do(self):
