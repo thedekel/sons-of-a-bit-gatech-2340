@@ -81,8 +81,8 @@ class Store(models.Model):
         Adds the item given in as a parameter
         """
         if not self.hasItem(item):
-            item.save()
             item.store = self
+            item.save()
         else:
             for thing in self.item_set.all():
                 if thing.name == item.name:
