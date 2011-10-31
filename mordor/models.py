@@ -87,6 +87,7 @@ class Store(models.Model):
             for thing in self.item_set.all():
                 if thing.name == item.name:
                     thing.amount += item.amount
+                    thing.save()
     
     def removeItem(self, itemName, num):
         """
@@ -100,6 +101,7 @@ class Store(models.Model):
             if thing.name == itemName:
                 if thing.amount >= item.amount:
                     thing.amount -= item.amount
+                    thing.save()
                     return True
                 else:
                     return False
