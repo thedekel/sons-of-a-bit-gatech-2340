@@ -147,6 +147,9 @@ class Iteminstance(models.Model):
     inventory = models.ForeignKey(Store)
     
     def __unicode__(self):
+        """
+        @return: String: String representation of a Iteminstance
+        """
         return u'<Iteminstance; Base:' + unicode(self.item) + ' >'
     
     def calculatePrice(self): # per item
