@@ -66,6 +66,7 @@ class Character(models.Model):
         """
         Checks to see whether a player is dead or not
         @return: boolean: True if player is dead. False otherwise.
+        """"
         if self.health == 0
             return True
         else
@@ -268,10 +269,18 @@ class RiverCrossingEvent(Event):
     waterdepth = models.IntegerField(default = 2)
     
     def takeFerry(self, party): #Party
+        """
+        Takes the Ferry. Takes a designated amount of money away from the player
+        to use the ferry
+        """
         party.money -= 25
         return
     
     def ford(self):
+        """
+        Attempts to ford the river. Fails if water depth is greater than 3 feet.
+        @return: String: The success or failure of fording the river
+        """
         chance = random.randint(0,100)
         percentChance = 5 * self.waterdepth
         if (chance > (100 - percentChance))
@@ -280,6 +289,10 @@ class RiverCrossingEvent(Event):
         return
     
     def caulk(self):
+        """
+        Attempts to float over the river on the wagon. Greater chance of wagon flip.
+        @return: String: The success or failure of caulking the river
+        """
         chance = random.randint(0,100)
         if (chance > 70)
             msg = "DUDE FLIP THE WAGON"
