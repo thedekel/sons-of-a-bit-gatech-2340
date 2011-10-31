@@ -1,4 +1,5 @@
 from django.db import models
+from random import *
 
 """
 @author: Alex Williams, Anthony Taormina, Daniel Whatley, Stephen Roca, Yuval Dekel
@@ -228,7 +229,7 @@ class Location(models.Model):
     """
     name = models.CharField(max_length=25, default = "")
     description = models.CharField(max_length=500, default = "")
-    #halt = models.BooleanField(default=False) used only for moveLocation.  Will probably be implemented in a different manner -A
+    halt = models.BooleanField(default=False) # used only for moveLocation.  Will probably be implemented in a different manner -A
     
     def __unicode__(self):
         """
@@ -257,7 +258,24 @@ class Event(models.Model):
 class RiverCrossingEvent(Event):
     #TODO
     name = "River"
+    waterdepth = models.IntegerField(default = 2)
+    
+    def takeFerry(self, party): #Party
+        party.money -= 25
+        return
+    
+    def ford(self):
+        return
+    
+    def caulk(self):
+        return
+    
     def do(self):
+        from random import *
+        chance = random.randint(0,100)
+        if (chance > 90)
+            
+        
         return
     #DEFINE DO!
     
@@ -266,7 +284,7 @@ class StoreEvent(Event):
     def do(self):
         return
     
-itemList = [ # this is where you add items to the game (name, des, basecost, weight)
+itemList = [ # this is where you add items to the game (name, description, basecost, weight)
             ("Food", "This is edible stuff.", 1, 1),
             ("Wagon Wheel", "don't eat it. use it for wagon!", 100, 10)
             ]
