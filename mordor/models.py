@@ -102,7 +102,7 @@ class Store(models.Model):
             item.inventory = self
             item.save()
         else:
-            for thing in self.items_set.all(): #make dekel check this syntax
+            for thing in self.items_set.all():
                 if thing.base.name == item.base.name:
                     thing.amount += item.amount
                     thing.save()
@@ -116,7 +116,7 @@ class Store(models.Model):
         @return: boolean: In the case of more things being removed than exist, it will return False.
         Returns True on a successful removal.
         """
-        for thing in self.items_set.all(): # dekel check this too
+        for thing in self.items_set.all():
             if thing.base.name == itemName:
                 if thing.amount >= item.amount:
                     thing.amount -= item.amount
@@ -134,7 +134,7 @@ class Store(models.Model):
         Checks whether the store has a certain AMOUNT of an ite
         @return: boolean: True if item exists in the Store false otherwise.
         """
-        for thing in self.items_set.all(): # CHECK IT DEKEL
+        for thing in self.items_set.all():
             if thing.base.name == item.base.name:
                 if thing.amount > 0:
                     return True
