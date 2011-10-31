@@ -267,7 +267,7 @@ class RiverCrossingEvent(Event):
     def ford(self):
         chance = random.randint(0,100)
         percentChance = 5 * self.waterdepth
-		if (chance > (100 - percentChance)):
+        if (chance > (100 - percentChance)):
             msg = "DUDE FLIP THE WAGON!"
         return
     
