@@ -52,7 +52,7 @@ def moveLocation(partyid, newPace=None): #array of int, int
     -Anthony Taormina
     """
 	
-	party = Party.objects.get(id=partyid)
+    party = Party.objects.get(id=partyid)
     party.pace = (party.pace if newPace==None else newpace)
     numSpaces = 2 * party.pace # (each index is .5 km)
     for x in range(1, numSpaces+1):
