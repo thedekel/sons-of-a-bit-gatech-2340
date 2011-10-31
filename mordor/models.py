@@ -206,7 +206,7 @@ class Wagon(models.Model):
         base = Item.objects.get(name=itemName)
         if self.checkWagCap(base, amountOfStuff):
             if (self.party.money - (mult * base.baseCost * amountOfStuff)) >= 0:
-                self.party.money -= mult * self.base.baseCost * amountOfStuff
+                self.party.money -= mult * base.baseCost * amountOfStuff
                 self.party.save()
                 self.weight += base.weight * amountOfStuff
                 self.inventory.addItem(itemName, amountOfStuff)
