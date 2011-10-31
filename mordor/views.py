@@ -29,7 +29,8 @@ def shop(request):
     items = astore.items.all()
     try:
         w=party.wagon_set.all()[0]
-        w.buyItem(request.POST['item'], request.POST['qty'], astore.price_mult)
+        print "wagon found!", request.POST['item'], request.POST['qty'], astore.price_mult
+        w.buyItem(request.POST['item'],int( request.POST['qty']), astore.price_mult)
         print "receiving post for: " + request.POST['qty'], request.POST['item']
     except:
         print "couldn't find wagon or item"
