@@ -78,20 +78,22 @@ class Store(models.Model):
         return u'<Store:'+self.name +u' >'
     
 
-    def addItem(self, item):
+    def addItem(self, item): #iteminstance
         """
-        @param item: the item to add 
+        @param item: the iteminstance to add 
         Adds the item given in as a parameter
         """
         if not self.hasItem(item):
+            item.inventory = self
             item.save()
-            item.store = self
         else:
-            for thing in self.item_set.all():
-                if thing.name == item.name:
+            for thing in self.items_set.all(): #make dekel check this syntax
+                if thing.base.name == item.base.name:
                     thing.amount += item.amount
+                    thing.save()
+        self.save()
     
-    def removeItem(self, itemName, num):
+    def removeItem(self, itemName, num): # string, int
         """
         @param itemName: the name of the item to remove
         @param num: the AMOUNT to be removed 
@@ -99,24 +101,26 @@ class Store(models.Model):
         @return: boolean: In the case of more things being removed than exist, it will return False.
         Returns True on a successful removal.
         """
-        for thing in self.item_set.all():
-            if thing.name == itemName:
+        for thing in self.items_set.all(): # dekel check this too
+            if thing.base.name == itemName:
                 if thing.amount >= item.amount:
                     thing.amount -= item.amount
-                    return True
+                    thing.save()
+                    ret = True
                 else:
-                    return False
-        return False
+                    ret = False
+        self.save()
+        return ret
         
 
-    def hasItem(self, item):
+    def hasItem(self, item):    #iteminstance
         """
         @param item: the item to check existence for
         Checks whether the store has a certain AMOUNT of an ite
         @return: boolean: True if item exists in the Store false otherwise.
         """
-        for thing in self.item_set.all():
-            if thing.name == item.name:
+        for thing in self.items_set.all(): # CHECK IT DEKEL
+            if thing.base.name == item.base.name:
                 if thing.amount > 0:
                     return True
                 else:
@@ -129,6 +133,13 @@ class Iteminstance(models.Model):
     
     def __unicode__(self):
         return u'<Iteminstance; Base:' + unicode(self.item) + ' >'
+    
+     def calculatePrice(self): # per item
+        """
+        Calculates the price of a given item based of it's base item price and store multiplier
+        @return: float: the price of the individual item multiplied by the store multiplier
+        """
+        return self.store.price_mult * self.base.baseCost
 
    
 class Item(models.Model):
@@ -141,15 +152,10 @@ class Item(models.Model):
         """
         @return: String: String representation of a Item
         """
-        return u'<Item; Base:' + self.name + u'; inStore:' + unicode(self.store) + u'; amount:' + unicode(self.amount)+u' >'
+        return u'<Item; Base:' + self.name + u'; cost:' + unicode(self.baseCost)+u' >'
     
 
-    def calculatePrice(self): # per item
-        """
-        Calculates the price of a given item based of it's base item price and store multiplier
-        @return: float: the price of the individual item multiplied by the store multiplier
-        """
-        return self.store.price_mult * self.baseCost
+   
     
 class Wagon(models.Model):
     """
@@ -166,19 +172,19 @@ class Wagon(models.Model):
         """
         return u'<Wagon; Party:' + u'; inventory:' + unicode(self.inventory) + u'; totalWeight:' + unicode(self.weight)+u' >'
     
-    def checkWagCap(self, item): #item must be an Item 
+    def checkWagCap(self, item): # iteminstance
         """
         @param item: the item to be added to the wagon 
         Checks to see if the added item exceeds the wagons capacity
         @return: boolean: True if adding the item does not exceed wagon capacity; false otherwise.
         """
-        if self.capacity < item.weight * item.amount + self.weight:
+        if self.capacity < item.base.weight * item.amount + self.weight:
             return False
         else:
             return True
     
     
-    def buyItem(self, itemName, amountOfStuff):
+    def buyItem(self, itemName, amountOfStuff): # string, int
         """
         @param item: the item to buy 
         @param amount: amount the user wants
@@ -187,34 +193,27 @@ class Wagon(models.Model):
         @return: String: string based on the success of the transaction
         """
         msg = "Your transaction was successful."
-        print itemName, amountOfStuf
-        for x in itemDict:
-            if x[0] == itemName:
-                print "oeuoeauo" ,
-                item =  Item(name=x[0], description=x[1], baseCost= x[2], store=dummyStore, amount = amountOfStuff, weight = x[3])
-                print "2", 
-                item.save()
-                self.party.money -= item.calculatePrice() * item.amount
-
+        # creating an iteminstance here
+#        for x in itemList:
+#            if x[0] == itemName:
+#                item =  Item(name=x[0], description=x[1], baseCost= x[2], store=dummyStore, amount = amountOfStuff, weight = x[3])
+#                item.save()
         if self.checkWagCap(item):
             if (self.party.money - (item.calculatePrice() * item.amount)) >= 0:
-                print "almost there"
+                self.party.money -= item.calculatePrice() * item.amount
                 self.party.save()
-                print "im' here"
                 self.weight += item.base.weight * item.amount
                 self.inventory.addItem(item)
+                self.save()
             else:
-                print 'HERE!!!!!!!!'
                 msg = "You do not have enough money for this purchase."
         else:
-            print "AM I HERE?"
             msg = "Your wagon cannot carry this much weight"
             if self.party.money - item.calculatePrice() >= 0:
                 msg += "and you do not have enough money for this purchase."
             else:
                 msg += "."
-		print self.party.money
-        print msg
+        return msg
     
 
 class Location(models.Model):
@@ -252,10 +251,9 @@ class Event(models.Model):
 class StoreEvent(Event):
     name = "Store"
     def do(self):
-        
         return
     
-itemDict = [ # this is where you add items to the game (name, des, basecost, weight)
+itemList = [ # this is where you add items to the game (name, des, basecost, weight)
             ("Food", "This is edible stuff.", 1, 1),
             ("Wagon Wheel", "don't eat it. use it for wagon!", 100, 10)
             ]
