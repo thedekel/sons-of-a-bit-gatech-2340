@@ -62,7 +62,14 @@ class Character(models.Model):
         """
         return u'<Name: '+ self.name+u'; profession:'+unicode(self.profession)+u'; party:'+unicode(self.party) + u' >'
 
-
+    def checkIfDead(self):
+        """
+        Checks to see whether a player is dead or not
+        @return: boolean: True if player is dead. False otherwise.
+        if self.health == 0
+            return True
+        else
+            return False
    
 class Item(models.Model):
     name = models.CharField(max_length=25, default = "")
