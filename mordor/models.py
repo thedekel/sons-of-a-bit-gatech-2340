@@ -111,7 +111,7 @@ class Store(models.Model):
             item = Iteminstance(Item.objects.get(name=itemName), amountOfStuff, self)
             item.save()
         else:
-            for thing in self.items_set.all():
+            for thing in self.item_set.all():
                 if thing.base.name == itemName:
                     thing.amount += amountOfStuff
                     thing.save()
@@ -125,7 +125,7 @@ class Store(models.Model):
         @return: boolean: In the case of more things being removed than exist, it will return False.
         Returns True on a successful removal.
         """
-        for thing in self.items_set.all():
+        for thing in self.item_set.all():
             if thing.base.name == itemName:
                 if thing.amount >= item.amount:
                     thing.amount -= item.amount
@@ -143,7 +143,7 @@ class Store(models.Model):
         Checks whether the store has a certain AMOUNT of an ite
         @return: boolean: True if item exists in the Store false otherwise.
         """
-        for thing in self.items_set.all():
+        for thing in self.item_set.all():
             if thing.base.name == itemName:
                 if thing.amount > 0:
                     return True
