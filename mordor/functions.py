@@ -17,7 +17,7 @@ def storeMaker(aname, items, amounts):
     @param: amounts, either an int or a list of ints. specifies amount for all items
             or for specific items that match the index of items
     """
-    if type(amonuts)==type(1):
+    if type(amounts)==type(1):
         items = map(lambda q: [q,amounts], items)
     elif (reduce(lambda a,b: type(a) if type(a)==type(b)==type(1) else type(1.11), amounts)==type(1) and len(items)==len(amounts)):
         map(lambda a,b: [a,b], items,amonuts)
