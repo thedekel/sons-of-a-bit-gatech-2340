@@ -310,5 +310,6 @@ class StoreEvent(Event):
 itemList = [ # this is where you add items to the game (name, description, basecost, weight)
             ("Food", "This is edible stuff.", 1, 1),
             ("Wagon Wheel", "don't eat it. use it for wagon!", 100, 10)
+            ("Oxen", "Use these to move your wagon!", 400, 0)
             ]
 dummyStore = Store()
