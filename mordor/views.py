@@ -3,11 +3,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse
-from mordor.models import Party, Character, itemList
+from mordor.models import Party, Character
 from mordor.functions import * 
 
-
-itemList = [("Food", "This is edible stuff.", 1, 1),("Wagon Wheel", "don't eat it. use it for wagon!", 100, 10) ]
 
 
 """

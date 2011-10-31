@@ -4,33 +4,7 @@ from models import *
 #wagon = Wagon(partyz)
 #wagon.save()
 
-#for article in itemList:
-#    newItem  = Item(article[0], article[1], article[2], store, maxAmounts, article[3])
-#    newItem.save()
-#    wagon.inventory.addItem(newItem) # puts item holder in inventory at 0 amount
-#
-#def storeMaker(aname, items, amounts): # string, list of strings, int
-#    """
-#    Creates a store that will match the items and amount specified.
-#    @param: name, a string representation of the store, aka a name.
-#    @param: items, a list of item-names that will be included in the store.
-#    @param: amounts, either an int or a list of ints. specifies amount for all items
-#            or for specific items that match the index of items
-#    """
-#    if type(amounts)==type(1):
-#        items = map(lambda q: [q,amounts], items)
-#    elif (reduce(lambda a,b: type(a) if type(a)==type(b)==type(1) else type(1.11), amounts)==type(1) and len(items)==len(amounts)):
-#        map(lambda a,b: [a,b], items,amonuts)
-#    else:
-#        return u'1'
-#    astore = Store(name = aname)
-#    astore.save()
-#    for i in items:
-#       a = itemList[i[0]]
-#       ii = Item(name = a[0], description=a[1], baseCost = a[2], store = astore, amount = i[1], weight = a[3])
-#       ii.save()
-#    astore.save()
-#    return astore.id
+
 
             
 

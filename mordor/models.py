@@ -102,18 +102,18 @@ class Store(models.Model):
         return u'<Store:'+self.name +u' >'
     
 
-    def addItem(self, item): #iteminstance
+    def addItem(self, itemName, num): # string, int
         """
         @param item: the iteminstance to add 
         Adds the item given in as a parameter
         """
-        if not self.hasItem(item):
-            item.inventory = self
+        if not self.hasItem(itemName):
+            item = Iteminstance(Item.objects.get(name=itemName), amountOfStuff, self)
             item.save()
         else:
             for thing in self.items_set.all():
-                if thing.base.name == item.base.name:
-                    thing.amount += item.amount
+                if thing.base.name == itemName:
+                    thing.amount += amountOfStuff
                     thing.save()
         self.save()
     
@@ -137,14 +137,14 @@ class Store(models.Model):
         return ret
         
 
-    def hasItem(self, item):    #iteminstance
+    def hasItem(self, itemName):    #string
         """
         @param item: the item to check existence for
         Checks whether the store has a certain AMOUNT of an ite
         @return: boolean: True if item exists in the Store false otherwise.
         """
         for thing in self.items_set.all():
-            if thing.base.name == item.base.name:
+            if thing.base.name == itemName:
                 if thing.amount > 0:
                     return True
                 else:
@@ -161,12 +161,6 @@ class Iteminstance(models.Model):
         """
         return u'<Iteminstance; Base:' + unicode(self.item) + ' >'
     
-    def calculatePrice(self): # per item
-        """
-        Calculates the price of a given item based of it's base item price and store multiplier
-        @return: float: the price of the individual item multiplied by the store multiplier
-        """
-        return self.store.price_mult * self.base.baseCost
 
 
 
@@ -187,19 +181,19 @@ class Wagon(models.Model):
         """
         return u'<Wagon; Party:' + u'; inventory:' + unicode(self.inventory) + u'; totalWeight:' + unicode(self.weight)+u' >'
     
-    def checkWagCap(self, item): # iteminstance
+    def checkWagCap(self, base, amountOfStuff): # item, int
         """
         @param item: the item to be added to the wagon 
         Checks to see if the added item exceeds the wagons capacity
         @return: boolean: True if adding the item does not exceed wagon capacity; false otherwise.
         """
-        if self.capacity < item.base.weight * item.amount + self.weight:
+        if self.capacity < base.weight * amountOfStuff + self.weight:
             return False
         else:
             return True
     
     
-    def buyItem(self, itemName, amountOfStuff): # string, int
+    def buyItem(self, itemName, amountOfStuff, mult): # string, int, float
         """
         @param item: the item to buy 
         @param amount: amount the user wants
@@ -208,17 +202,14 @@ class Wagon(models.Model):
         @return: String: string based on the success of the transaction
         """
         msg = "Your transaction was successful."
-        # creating an iteminstance here
-#        for x in itemList:
-#            if x[0] == itemName:
-#                item =  Item(name=x[0], description=x[1], baseCost= x[2], store=dummyStore, amount = amountOfStuff, weight = x[3])
-#                item.save()
-        if self.checkWagCap(item):
-            if (self.party.money - (item.calculatePrice() * item.amount)) >= 0:
-                self.party.money -= item.calculatePrice() * item.amount
+        # creating an item here
+        base = Item.objects.get(name=itemName)
+        if self.checkWagCap(base, amountOfStuff):
+            if (self.party.money - (mult * base.baseCost * amountOfStuff)) >= 0:
+                self.party.money -= mult * self.base.baseCost * amountOfStuff
                 self.party.save()
-                self.weight += item.base.weight * item.amount
-                self.inventory.addItem(item)
+                self.weight += base.weight * amountOfStuff
+                self.inventory.addItem(itemName, amountOfStuff)
                 self.save()
             else:
                 msg = "You do not have enough money for this purchase."
@@ -307,12 +298,6 @@ class StoreEvent(Event):
     def do(self):
         return
     
-itemList = [ # this is where you add items to the game (name, description, basecost, weight)
-            ("Food", "This is edible stuff.", 1, 1),
-            ("Wagon Wheel", "don't eat it. use it for wagon!", 100, 10),
-            ("Oxen", "Use these to move your wagon!", 400, 0)
-            ]
-dummyStore = Store()
 
 class EndGame(Event):
     end = models.BooleanField(default = False)
