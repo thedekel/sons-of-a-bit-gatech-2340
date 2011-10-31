@@ -65,8 +65,10 @@ class Store(models.Model):
     Store
     """
     name = models.CharField(max_length=25, default = "")
+    items = models.ManyToManyField(Item)
     isVendor = models.BooleanField(default=True)
     price_mult = models.FloatField(default = 1)
+    location = models.IntegerField(default = -1)
     
     def __unicode__(self):
         """
@@ -119,13 +121,19 @@ class Store(models.Model):
                 else:
                     return False
     
+class Iteminstance(models.Model):
+    base = models.ForeignKey(Item)
+    amount = models.IntegerField(default = 1)
+    inventory = models.ForeignKey(Store)
     
+    def __unicode__(self):
+        return u'<Iteminstance; Base:' + unicode(self.item) + ' >'
+
+   
 class Item(models.Model):
     name = models.CharField(max_length=25, default = "")
     description = models.CharField(max_length=500, default = "")
     baseCost = models.IntegerField(default = 10)
-    store = models.ForeignKey(Store)
-    amount = models.IntegerField(default = 0)
     weight = models.IntegerField(default = 10)
     
     def __unicode__(self):
@@ -204,7 +212,7 @@ class Wagon(models.Model):
                 msg += "and you do not have enough money for this purchase."
             else:
                 msg += "."
-		print self.party.mone
+		print self.party.money
         print msg
     
 
