@@ -61,6 +61,21 @@ class Character(models.Model):
         """
         return u'<Name: '+ self.name+u'; profession:'+unicode(self.profession)+u'; party:'+unicode(self.party) + u' >'
 
+
+   
+class Item(models.Model):
+    name = models.CharField(max_length=25, default = "")
+    description = models.CharField(max_length=500, default = "")
+    baseCost = models.IntegerField(default = 10)
+    weight = models.IntegerField(default = 10)
+    
+    def __unicode__(self):
+        """
+        @return: String: String representation of a Item
+        """
+        return u'<Item; Base:' + self.name + u'; cost:' + unicode(self.baseCost)+u' >'
+    
+
 class Store(models.Model):
     """
     Store
@@ -134,26 +149,14 @@ class Iteminstance(models.Model):
     def __unicode__(self):
         return u'<Iteminstance; Base:' + unicode(self.item) + ' >'
     
-     def calculatePrice(self): # per item
+    def calculatePrice(self): # per item
         """
         Calculates the price of a given item based of it's base item price and store multiplier
         @return: float: the price of the individual item multiplied by the store multiplier
         """
         return self.store.price_mult * self.base.baseCost
 
-   
-class Item(models.Model):
-    name = models.CharField(max_length=25, default = "")
-    description = models.CharField(max_length=500, default = "")
-    baseCost = models.IntegerField(default = 10)
-    weight = models.IntegerField(default = 10)
-    
-    def __unicode__(self):
-        """
-        @return: String: String representation of a Item
-        """
-        return u'<Item; Base:' + self.name + u'; cost:' + unicode(self.baseCost)+u' >'
-    
+
 
    
     
