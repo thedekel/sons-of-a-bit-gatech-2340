@@ -67,6 +67,7 @@ class Store(models.Model):
     name = models.CharField(max_length=25, default = "")
     isVendor = models.BooleanField(default=True)
     price_mult = models.FloatField(default = 1)
+    location = models.IntegerField(default = -1)
     
     def __unicode__(self):
         """
@@ -180,33 +181,26 @@ class Wagon(models.Model):
         @return: String: string based on the success of the transaction
         """
         msg = "Your transaction was successful."
-        print itemName, amountOfStuf
         for x in itemDict:
             if x[0] == itemName:
-                print "oeuoeauo" ,
-                item =  Item(name=x[0], description=x[1], baseCost= x[2], store=dummyStore, amount = amountOfStuff, weight = x[3])
-                print "2", 
+                item = Item(name=x[0], description=x[1], baseCost= x[2], store=dummyStore, amount = amountOfStuff, weight = x[3])
                 item.save()
-                self.party.money -= item.calculatePrice() * item.amount
 
         if self.checkWagCap(item):
             if (self.party.money - (item.calculatePrice() * item.amount)) >= 0:
-                print "almost there"
+                self.party.money -= item.calculatePrice() * item.amount
                 self.party.save()
-                print "im' here"
                 self.weight += item.base.weight * item.amount
                 self.inventory.addItem(item)
+                self.save()
             else:
-                print 'HERE!!!!!!!!'
                 msg = "You do not have enough money for this purchase."
         else:
-            print "AM I HERE?"
             msg = "Your wagon cannot carry this much weight"
             if self.party.money - item.calculatePrice() >= 0:
                 msg += "and you do not have enough money for this purchase."
             else:
                 msg += "."
-		print self.party.mone
         print msg
     
 
