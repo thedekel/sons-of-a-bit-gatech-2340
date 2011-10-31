@@ -313,3 +313,10 @@ itemList = [ # this is where you add items to the game (name, description, basec
             ("Oxen", "Use these to move your wagon!", 400, 0)
             ]
 dummyStore = Store()
+
+class EndGame(Event):
+    end = models.BooleanField(default = False)
+    
+    def cleanup(self):
+        #TODO End game stuff. Messages etc.
+        return
