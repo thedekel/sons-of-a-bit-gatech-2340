@@ -27,6 +27,11 @@ def shop(request):
     except:
         astore = Store.objects.get(location=0)
     items = astore.items.all()
+    try:
+        w=party.wagon_set.all()[0]
+        w.buyItem(request.POST['item'], request.POST['qty'], astore.price_mult)
+    except:
+        pass
     return render_to_response("mordor/shoptest.html", {'partyid':request.GET['p'],"shopname":astore.name ,"items":items, "party":party})
 
 @csrf_exempt
