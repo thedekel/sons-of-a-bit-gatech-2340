@@ -8,50 +8,53 @@
 
 <body>
 <div id='global'>
-	<div id='header'>
-		
+	<div id='header' align="center">	
 <h1>Wagon and Tasks</h1>
-
 	</div>
+    
 	<div id='content'>
-		<div id='navbar'>
-		
-<ul>
-	<li><a href="shop.php?p=18">shop</a></li>
-	<li><a href="config.php?p=18">config</a></li>
-</ul>
-
+		<div id='navbar' align="center">
+			<ul>
+				<li><a href="shop.php?p=18">shop</a></li>
+				<li><a href="config.php?p=18">config</a></li>
+			</ul>
 		</div>
+        <br />
 		<div id='main'>
+        <div id='form'>
 		
 <form action="/config.php?p=18" method="post">
-	<hr />
-	<h3> Party base stats</h3>
-	<input type='hidden' name="pp" value="" />
-	<label> Party Name:  :<input type="text" name="p_name" /></label>
-	<p> Party Money:  </p>
-	<hr />	
-	<label> Initial Pace:  <select name="pace">
+	<div id="picture" class="subdiv">
+	
+	</div>
+    <div id="pace_rations" class="subdiv">
+    <br />	
+	<label> Pace:  <select name="pace">
 			<option value=".5">2.5 km per day</option>
 			<option value="1">5 km per day</option>
 			<option value="1.5">7.5 km per day</option>
 		</select>		
 	</label>
-	<label> Initial Rations:  <select name="ration">
+	<label> Rations:  <select name="ration">
 			<option value=".5">5 oz per day</option>
 			<option value="1">10 oz per day</option>
 			<option value="1.5">15 oz per day</option>
 		</select>
 	</label>
-	<hr />
+	</div>
+    <div id="current" class="subdiv">
+    <br />
 	<label> Current Food:  </label><br /> 
-	<label> Corrunt Location:  </label><br />
-	<input type="submit" value="play turn" />
+	<label> Current Location:  </label><br />
+    <label> Party Money: </label>
+	<div align="right"><input type="submit" value="play turn" /></div>
+    </div>
 </form>
 </p>
 
 		</div>
 	</div>
+    </div>
 </div>
 </body>
 
