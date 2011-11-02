@@ -15,6 +15,17 @@ class Party(models.Model):
     pace = models.FloatField() 
     rations = models.FloatField()
     location = models.IntegerField(default=0)
+    
+    def numAlive(self):
+        """
+        This function checks to see how many of the group members are still alive
+        @return: The number of alive group members
+        """
+        num = 0
+        for person in self.character_set.all():
+            if not person.checkIfDead():
+                num += 1
+        return num
 
     def consumeFood(self):
         """
@@ -22,7 +33,7 @@ class Party(models.Model):
         @return: boolean: True upon a successful consumption and False upon a failure.
         """
         wag = self.wagon_set.all()[0]
-        return wag.inventory.removeItem("Food",self.rations*4)
+        return wag.inventory.removeItem("Food",self.rations*numAlive)
                 
     
     def __unicode__(self):
@@ -51,8 +62,8 @@ class Character(models.Model):
     Character
     """
     name = models.CharField(max_length=25)
-    profession = models.CharField(max_length=25) #models.ForeignKey(Profession)
-    status = models.IntegerField()
+    profession = models.CharField(max_length=25)
+    status = models.IntegerField() # what the hell is this for???
     health = models.IntegerField()
     isLeader = models.BooleanField()
     party = models.ForeignKey(Party)
@@ -155,7 +166,7 @@ class Wagon(models.Model):
     party = models.ForeignKey(Party)
     inventory = models.ForeignKey(Store, default=Store(name="Wagon", isVendor=False))
     weight = models.FloatField(default = 0)
-    capacity = 1500 # CHANGE THIS LATER or not
+    capacity = 1500
     
     def __unicode__(self):
         """
@@ -184,7 +195,9 @@ class Location(models.Model):
     name = models.CharField(max_length=25, default = "")
     description = models.CharField(max_length=500, default = "")
     halt = models.BooleanField(default=False) # used only for moveLocation.  Will probably be implemented in a different manner -A
-    
+    x = models.IntegerField()
+    y = models.IntegerField()
+    index = models.IntegerField()
     def __unicode__(self):
         """
         @return: String: String representation of a Location
@@ -213,18 +226,16 @@ class RiverCrossingEvent(Event):
     """
     River Crossing Event
     """
-    #TODO
     name = "River"
     waterdepth = models.IntegerField(default = 2)
     ferryfee = models.IntegerField(default = 250)
     
-    def takeFerry(self, party): #Party
+    def takeFerry(self, partyid): #string
         """
         Takes the Ferry. Takes a designated amount of money away from the player
         to use the ferry
         """
         party.money -= self.ferryfee
-        return
     
     def ford(self):
         """
@@ -235,7 +246,6 @@ class RiverCrossingEvent(Event):
         percentChance = 5 * self.waterdepth
         if (chance > (100 - percentChance)):
             msg = "DUDE FLIP THE WAGON!"
-        return
     
     def caulk(self):
         """
@@ -245,8 +255,9 @@ class RiverCrossingEvent(Event):
         chance = random.randint(0,100)
         if (chance > 70):
             msg = "DUDE FLIP THE WAGON"
+    
+    def do(self):
         return
-    #DEFINE DO!
     
 class StoreEvent(Event):
     name = "Store"
@@ -255,8 +266,5 @@ class StoreEvent(Event):
     
 
 class EndGame(Event):
-    end = models.BooleanField(default = False)
-    
-    def cleanup(self):
-        #TODO End game stuff. Messages etc.
+    def do(self):
         return

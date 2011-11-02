@@ -1,5 +1,5 @@
 from models import *
-
+from coords import *
 
 #wagon = Wagon(partyz)Wo
 #wagon.save()
@@ -17,6 +17,9 @@ from models import *
 #    astore = Store.objects.get(id=storeid)
 #    return astore;
 def takeATurn(partyid):
+    """
+    This takes a turn.  Shocking, no?
+    """
     party = Party.objects.get(id = partyid)
     party.consumeFood()
     moveLocation(partyid)
@@ -65,71 +68,41 @@ def moveLocation(partyid): #int
     Most of these parameters probably won't be needed
     -Anthony Taormina
     """
- 
-
     party = Party.objects.get(id=partyid)
-    party.location+=int(party.pace/.5)
-    party.save()
-    """
-    numSpaces = party.pace/6.25 # (each index is 6.25 miles)
-    place = locmap[party.location] # a Location
-    for x in range(1, int(numSpaces+1)):
+    for x in range(int(party.pace/.5)):
         party.location += 1
-        place = locmap[party.location] # a Location
-        if place.halt:
+        loc = Location.objects.get(index=party.location)
+        if loc.halt:
             break
     party.save()
-    place.do() 
-    """
-    return
+    loc.event_set.all()[0].do()
     
-    
-def getFood(partyid):
-    """
-    @param wagon: takes in a wagon to access the player's inventory
-    This is used to find out how much Food we have at any given point.
-    @return: the amount of rations the player currently has left 
-    """
-    party = Party.objects.get(id=partyid)
-    wagon = party.wagon_set.all()[0]
-    for thing in wagon.inventory.items.all():
-        if thing.name == "Food":
-            return thing.amount
-    return 0
 
-
-#def populateLocations():
-#    """
-#    This generates the map, which is represented as a list of Locations
-#    @return: A list of Locations
-#    """
-#    locations=[]
-#    events = []
-#    for x in range(131):
-#        loc = Location()
-#        locations.append(loc)
-#        events.append(Event(location = loc))
-#    locations[0] = Location(name = "Hobbiton",halt=True)
-#    events[0] = StoreEvent()
-#    events[6] = RiverCrossingEvent()
-#    locations[16] = Location(name = "Bree",halt=True)
-#    events[16] = StoreEvent()
-#    locations[38] = Location(name = "Thrabad",halt=True)
-#    events[38] = StoreEvent()
-#    events[39] = RiverCrossingEvent()
-#    locations[74] = Location(name = "Gap of Rohan",halt=True)
-#    events[74] = StoreEvent()
-#    events[75] = RiverCrossingEvent()
-#    locations[89] = Location(name = "Edoras",halt=True)
-#    events[89] = StoreEvent()
-#    locations[106] = Location(name = "Minas Tirith",halt=True)
-#    events[106] = StoreEvent()
-#    events[125] = RiverCrossingEvent()
-#    locations[131] = Location(name = "Mordor",halt=True)
-#    events[131] = EndGame()
-#    
-#    for x in locations:
-#        x.save()
-#    for y in events:
-#        y.save()    
+def populateLocations():
+    """
+    This generates the map, which sits in the database, referenced by an index element
+    Used once for instantiation
+    @return: A list of Locations
+    """
+    locations=[]
+    events = []
+    for num in range(131):
+        loc = Location()
+        coord = get_player_coords(x)
+        loc.x = coord[0]
+        loc.y = coord[1]
+        loc.index = num
+        locations.append(loc)
+        events.append(Event(location = loc))
+    for z in [6, 39, 75, 125]:
+        locations[z] = Location(halt=True)
+        events[z] = RiverCrossingEvent()
+    for a in [[0,"Hobbiton"],[16,"Bree"],[38,"Thrabad"],[74,"Gap of Rohan"],[89,"Edoras"],[106,"Minas Tirith"]]
+        locations[a[0]] = Location(name = a[1],halt=True)
+        events[a[0]] = StoreEvent(location = locations[a[0]])    
+    locations[130] = Location(name = "Mordor",halt=True)
+    events[130] = EndGame()
+    for b in range(131):
+        locations[b].save()
+        events[b].save()    
         
