@@ -16,7 +16,9 @@ from models import *
 #    """
 #    astore = Store.objects.get(id=storeid)
 #    return astore;
-        
+def takeATurn(partyid):
+    party = Party.object.get(id = partyid)
+    
 
 def moveLocation(partyid): #int
     """
