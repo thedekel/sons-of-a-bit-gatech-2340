@@ -7,14 +7,14 @@
 {% block navbar %}
 <ul>
 	<li><a href="start.php">home</a></li>
-	<li><a href="config.php">config</a></li>
+    <li><a href="config.php?p={{ partyid }}">config</a></li>
 </ul>
 {% endblock %}
 {% block main %}
 <div id="form">
 	<div id='title' class='subdiv'>
 		<h3>{{ shopname }}</h3>
-		<h4> Available Money: {{ party.money }} </h4>
+        <h4> Available Money: {{ party.money }}; Current Weight: {{ weight }} </h4>
 	</div>
 	<div id="shop" class = "subdiv">
 		<div id="items">
