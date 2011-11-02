@@ -12,13 +12,28 @@
 {% endblock %}
 {% block main %}
 <div class="subdiv">
-    <div style="width:800px;height:600px;background-image:url('static/m.jpg');background-position:{{ xtop }}px {{ ytop }}px;">
+    <div style="width:800px;height:600px;background-image:url('static/m.jpg');background-position:{{ xtop }}px {{ ytop }}pxj">
         <img src="static/c.png" id='qcart' style="position:absolute;left:{{ x }}px;top:{{ y }}px;" />
     </div>
 <p>
 Distance Travelled: {{ dt }} miles<br />
+Distance per day: {{ dpd }} miles per day<br />	
+    <label> Change Travel Rate: <select name="pace">
+            <option value="{{ rate2 }}">No Change</option>
+			<option value=".5">6.25 miles per day</option>
+			<option value="1">12.5 miles per day</option>
+			<option value="1.5">18.75 miles per day</option>
+		</select>		
+    </label><br />
 Food per Day: {{ fpd }} units per person<br />
-Distance per day: {{ dpd }} miles per day<br />
+    <label> Change Rations: <select name="ration">
+            <option value="{{ fpd  }}">No Change</option>
+			<option value=".5">0.5 units per person</option>
+			<option value="1">1 units per person</option>
+			<option value="1.5">1.5 units per person</option>
+		</select>
+    </label><br />
+
 Food Remaining: {{ fr }} rations<br />
 <a href='wagon.php?p={{ partyid }}&play=1' ><input type="button" value="Play a Turn"></a><br />
 </p>

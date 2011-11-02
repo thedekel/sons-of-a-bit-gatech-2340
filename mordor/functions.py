@@ -97,7 +97,7 @@ def populateLocations():
     for z in [6, 39, 75, 125]:
         locations[z] = Location(halt=True)
         events[z] = RiverCrossingEvent()
-    for a in [[0,"Hobbiton"],[16,"Bree"],[38,"Thrabad"],[74,"Gap of Rohan"],[89,"Edoras"],[106,"Minas Tirith"]]
+    for a in [[0,"Hobbiton"],[16,"Bree"],[38,"Thrabad"],[74,"Gap of Rohan"],[89,"Edoras"],[106,"Minas Tirith"]]:
         locations[a[0]] = Location(name = a[1],halt=True)
         events[a[0]] = StoreEvent(location = locations[a[0]])    
     locations[130] = Location(name = "Mordor",halt=True)

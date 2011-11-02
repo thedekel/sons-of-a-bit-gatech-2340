@@ -42,7 +42,7 @@ def wag(request):
     xx = 400 if 400<xx<1200 else (xx if xx<=400 else xx-800)
     yy = 300 if 300<yy<900 else (yy if yy<=300 else xx-900)
 
-    return render_to_response("mordor/wag.html", {"partyid":request.GET['p'],"dt":party.location*6.25, "fpd":party.rations, "dpd":party.pace*12.5, "fr":qq,"x":xx-24, "y":yy-20, "ytop":-ytop, "xtop":-xtop})
+    return render_to_response("mordor/wag.html", {"partyid":request.GET['p'],"dt":party.location*6.25, "fpd":party.rations, "dpd":party.pace*12.5, 'rate2':party.pace, "fr":qq,"x":xx-24, "y":yy-20, "ytop":-ytop, "xtop":-xtop})
 
 @csrf_exempt
 def shop(request):
