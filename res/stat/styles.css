@@ -33,21 +33,25 @@ input, select {
 	-webkit-border-radius: 0.5em;
 }
 
+option {
+	-webkit-appearance: none;
+	background: #555;
+}
+
 #form {
 	position: relative;
 	width: 100%;
 	height: 100%;
 }
-
-#title {
-	position: absolute;
-	height: 10%;
-	width: 98%;
-	top: 5%;
-}
 /* END GLOBAL STYLES */
 
 /* START SCREEN */
+#create_party {
+	position: absolute;
+	height: 20%;
+	width: 98%;
+}
+
 #player {
 	position: absolute;
 	width: 47%;
@@ -71,23 +75,45 @@ input, select {
 }
 /* END START SCREEN */
 
-/* SHOP SCREEN */
-#shop {
+/* GAME SCREEN */
+
+#header {
+	font-family: Copperplate, Copperplate Gothic Light;
+}
+
+#navbar {
+	font-family: Copperplate, Copperplate Gothic Light;
+}
+
+ul {
+	list-style-type:none;
+	margin:0;
+	padding:0;
+}
+
+li {
+	display: inline;
+}
+
+#picture {
+	position: absolute;
+	height: 53%;
 	width: 98%;
-	height: 75%;
-	position: absolute;
-	top: 20%;
+	bottom: 45%;
 }
 
-#items {
-	height: 85%;
-	overflow-y: hidden;
+#pace_rations {
 	position: absolute;
+	height: 10%;
+	width: 98%;
+	bottom: 31%;
 }
 
-#submit {
-	top: 90%;
+#current {
+	width: 98%;
+	height: 20%;
 	position: absolute;
-	left: 90%;
+	bottom: 7%;
 }
 
+/* END GAME SCREEN */
