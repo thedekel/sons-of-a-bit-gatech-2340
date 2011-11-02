@@ -18,6 +18,8 @@ from models import *
 #    return astore;
 def takeATurn(partyid):
     party = Party.object.get(id = partyid)
+    party.consumeFood()
+    moveLocation(partyid)
     
 
 def moveLocation(partyid): #int
