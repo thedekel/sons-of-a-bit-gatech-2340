@@ -223,7 +223,7 @@ class Event(models.Model):
     """
     Event
     """
-    name = models.CharField(max_length=25)
+    name = models.CharField(max_length=25, default = "")
     location = models.ForeignKey(Location)
     
     def __unicode__(self):
@@ -242,14 +242,14 @@ class RiverCrossingEvent(Event):
     #TODO
     name = "River"
     waterdepth = models.IntegerField(default = 2)
-    ferryfee = models.IntegerField(default = 250)
+    bridgefee = models.IntegerField(default = 250)
     
-    def takeFerry(self, party): #Party
+    def takeBridge(self, party): #Party
         """
         Takes the Ferry. Takes a designated amount of money away from the player
         to use the ferry
         """
-        party.money -= self.ferryfee
+        party.money -= self.bridgefee
         return
     
     def ford(self):
@@ -274,6 +274,9 @@ class RiverCrossingEvent(Event):
         return
     #DEFINE DO!
     
+    def do(self):
+        return
+    
 class StoreEvent(Event):
     name = "Store"
     def do(self):
@@ -281,8 +284,7 @@ class StoreEvent(Event):
     
 
 class EndGame(Event):
-    end = models.BooleanField(default = False)
-    
-    def cleanup(self):
+    name = "Game Over"
+    def do(self):
         #TODO End game stuff. Messages etc.
         return

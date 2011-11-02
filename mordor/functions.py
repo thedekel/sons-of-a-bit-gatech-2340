@@ -69,37 +69,51 @@ def moveLocation(partyid): #int
         if place.halt:
             break
     party.save()
-    if place:
-        place.do() 
+    place.do() 
     
     
-def getFood(wagonid):
+def getFood(partyid):
     """
     @param wagon: takes in a wagon to access the player's inventory
     This is used to find out how much food we have at any given point.
     @return: the amount of rations the player currently has left 
     """
-    wagon = Wagon.objects.get(id=wagonid)
+    party = Party.objects.get(id=partyid)
+    wagon = party.wagon_set.all()[0]
     for thing in wagon.inventory.items.all():
-        if thing.name == "food":
+        if thing.name == "Food":
             return thing.amount
+    return 0
 
 
-def populateLocations():
-    """
-    This generates the map, which is represented as a list of Locations
-    @return: A list of Locations
-    """
-    locations=[]
-    for x in range(178):
-        locations.append(Location())
-    locations[0] = Location(name = "Hobbiton")
-    locations[16] = Location(name = "Bree")
-    locations[48] = Location(name = "Thrabad")
-    locations[100] = Location(name = "Gap of Rohan")
-    locations[120] = Location(name = "Edoras")
-    locations[160] = Location(name = "Minas Tirith")
-    locations[177] = Location(name = "Mordor")
-    return locations
- 
-locmap = populateLocations()
+#def populateLocations():
+#    """
+#    This generates the map, which is represented as a list of Locations
+#    @return: A list of Locations
+#    """
+#    locations=[]
+#    events = []
+#    for x in range(131):
+#        loc = Location()
+#        locations.append(loc)
+#        events.append(Event(location = loc))
+#    locations[0] = Location(name = "Hobbiton",halt=True)
+#    events[0] = StoreEvent()
+#    locations[16] = Location(name = "Bree",halt=True)
+#    events[16] = StoreEvent()
+#    locations[48] = Location(name = "Thrabad",halt=True)
+#    events[48] = StoreEvent()
+#    locations[100] = Location(name = "Gap of Rohan",halt=True)
+#    events[100] = StoreEvent()
+#    locations[120] = Location(name = "Edoras",halt=True)
+#    events[120] = StoreEvent()
+#    locations[160] = Location(name = "Minas Tirith",halt=True)
+#    events[160] = StoreEvent()
+#    locations[177] = Location(name = "Mordor",halt=True)
+#    events[177] = EndGame()
+#    
+#    for x in locations:
+#        x.save()
+#    for y in events:
+#        y.save()    
+        
