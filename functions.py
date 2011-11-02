@@ -45,7 +45,6 @@ def moveLocation(map, currentLocation, numSpaces): #array of Locations, int, int
     Moves along the map array to "change" location.
     Any locations that would force a halt will be checked for here (representing with a boolean field in Location, will change later to something else).
     Most of these parameters probably won't be needed
-    -Anthony Taormina
     """
     numSpaces *= 2 # (each index is .5 km)
     for x in range(1, numSpaces+1):

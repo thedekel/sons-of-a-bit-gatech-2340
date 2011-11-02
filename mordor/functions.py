@@ -16,7 +16,11 @@ from models import *
 #    """
 #    astore = Store.objects.get(id=storeid)
 #    return astore;
-        
+def takeATurn(partyid):
+    party = Party.object.get(id = partyid)
+    party.consumeFood()
+    moveLocation(partyid)
+    
 
 def moveLocation(partyid): #int
     """

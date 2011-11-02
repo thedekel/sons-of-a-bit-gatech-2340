@@ -306,7 +306,17 @@ class StoreEvent(Event):
     def do(self):
         return
     
+class Main(models.Model)
+    wagon = models.ForeignKey(Wagon)
 
+    def takeATurn(self):
+        self.party.consumeFood(wagon)
+        
+        #move a location
+        
+        
+
+        
 class EndGame(Event):
     end = models.BooleanField(default = False)
     
