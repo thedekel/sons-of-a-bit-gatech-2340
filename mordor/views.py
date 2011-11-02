@@ -15,7 +15,12 @@ from mordor.coords import *
 @csrf_exempt
 def start(request):
     return render_to_response("mordor/styletest.html", {})
-    
+
+@csrf_exempt
+def init(request):
+    populateLocations()
+    return HttpResponse("Initialized!!!")
+
 @csrf_exempt
 def wag(request):
     play = False
@@ -42,13 +47,19 @@ def wag(request):
     except:
         print "No"
         qq=0
+    try:
+        Store.objects.get(location=party.location)
+        ts = True
+    except:
+        ts = False
+
     xx,yy = get_player_coords(party.location)
     xtop = (0 if xx<400 else (800 if xx>1200 else xx-400))
     ytop = (0 if yy<300 else (600 if yy>900 else yy-300))
     xx = 400 if 400<xx<1200 else (xx if xx<=400 else xx-800)
     yy = 300 if 300<yy<900 else (yy if yy<=300 else xx-900)
 
-    return render_to_response("mordor/wag.html", {"partyid":request.GET['p'],"dt":party.location*6.25, "fpd":party.rations, "dpd":party.pace*12.5, 'rate2':party.pace, "fr":qq,"x":xx-24, "y":yy-20, "ytop":-ytop, "xtop":-xtop})
+    return render_to_response("mordor/wag.html", {"partyid":request.GET['p'],"dt":party.location*6.25, "fpd":party.rations, "dpd":party.pace*12.5, 'rate2':party.pace, "fr":qq,"x":xx-24, "y":yy-20, "ytop":-ytop, "xtop":-xtop, 'testShop':ts})
 
 @csrf_exempt
 def shop(request):
@@ -96,7 +107,7 @@ def submit(request):
         if request.POST[q]:
             m= Character(name=request.POST[q], profession = "", status = 1, health = 1, isLeader = False, party = partyz)
             m.save()
-    return HttpResponse("data received. visit <a href='../config.php?p="+str(partyz.id)+"'>config.php</a> to see your party.")
+    return HttpResponse("<p style='text-align:center;'>data received. visit <a href='../wagon.php?p="+str(partyz.id)+"'>the status page</a> to see your party.</p>")
 
 @csrf_exempt
 def config(request):
