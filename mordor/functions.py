@@ -93,7 +93,7 @@ def populateLocations():
         locations.append(Location())
     locations[0] = Location(name = "Hobbiton")
     locations[16] = Location(name = "Bree")
-    locations[48] = Location(name = "Thrabad)
+    locations[48] = Location(name = "Thrabad")
     locations[100] = Location(name = "Gap of Rohan")
     location[120] = Location(name = "Edoras")
     location[160] = Location(name = "Minas Tirith")
