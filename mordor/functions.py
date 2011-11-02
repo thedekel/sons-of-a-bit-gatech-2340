@@ -18,7 +18,7 @@ from models import *
 #    return astore;
         
 
-def moveLocation(partyid, newPace): #int, int
+def moveLocation(partyid): #int
     """
     Moves along the map array to "change" location.
     Any locations that would force a halt will be checked for here (representing with a boolean field in Location, will change later to something else)
@@ -27,7 +27,6 @@ def moveLocation(partyid, newPace): #int, int
     """
 	
     party = Party.objects.get(id=partyid)
-    party.pace = newPace
     numSpaces = 2 * party.pace # (each index is .5 km)
     for x in range(1, numSpaces+1):
         party.location += 1
