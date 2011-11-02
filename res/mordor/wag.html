@@ -13,10 +13,27 @@
 </ul>
 {% endblock %}
 {% block main %}
+<script>
+    if ({{ alert }}){
+        alert("{{ msg }}");
+    }
+</script>
 <div class="subdiv">
-    <div style="width:800px;height:600px;background-image:url('static/m.jpg');background-position:{{ xtop }}px {{ ytop }}pxj">
+    <div style="width:800px;height:600px;background-image:url('static/m.jpg');background-position:{{ xtop }}px {{ ytop }}px;">
         <img src="static/c.png" id='qcart' style="position:absolute;left:{{ x }}px;top:{{ y }}px;" />
     </div>
+{% if river %}
+<p> How do you deal with the river?</p>
+<form action = 'wagon.php?p={{ partyid }}&play=1' method = "POST"> 
+<label> options: <select name="river">
+			<option value="pay">pay a toll of 250 to pass through</option>
+			<option value="caulk">Caulk through the river</option>
+			<option value="ford">Ford through the river</option>
+		</select>		
+    </label>
+    <input type='submit'>
+</form>
+{% else %}
 <p>
 Distance Travelled: {{ dt }} miles<br />
 Distance per day: {{ dpd }} miles per day<br />	
@@ -39,5 +56,6 @@ Food per Day: {{ fpd }} units per person<br />
 Food Remaining: {{ fr }} rations<br />
 <a href='wagon.php?p={{ partyid }}&play=1' ><input type="button" value="Play a Turn"></a><br />
 </p>
+{% endif %}
 </div>
 {% endblock %}

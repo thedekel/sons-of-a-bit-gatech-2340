@@ -235,7 +235,10 @@ class RiverCrossingEvent(Event):
         Takes the Ferry. Takes a designated amount of money away from the player
         to use the ferry
         """
+        party = Party.objects.get(id=partyid)
         party.money -= self.ferryfee
+        party.save()
+        return "you paid money"
     
     def ford(self):
         """
@@ -246,6 +249,8 @@ class RiverCrossingEvent(Event):
         percentChance = 5 * self.waterdepth
         if (chance > (100 - percentChance)):
             msg = "DUDE FLIP THE WAGON!"
+            return msg
+        return 0
     
     def caulk(self):
         """
@@ -255,6 +260,8 @@ class RiverCrossingEvent(Event):
         chance = random.randint(0,100)
         if (chance > 70):
             msg = "DUDE FLIP THE WAGON"
+            return msg
+        return 0
     
     def do(self):
         return

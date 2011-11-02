@@ -23,6 +23,7 @@ def init(request):
 
 @csrf_exempt
 def wag(request):
+    alert, msg = 0, ""
     play = False
     try:
         request.GET['play']
@@ -31,6 +32,24 @@ def wag(request):
         pass
     party = Party.objects.get(id=request.GET['p'])
     w=party.wagon_set.all()[0]
+    try:
+        r = request.POST['river']
+        if str(r)=="pay":
+            alert = 1
+            msg = takeFerry(request.GET['p'])
+        elif str(r)=='caulk':
+            rc = caulk()
+            if rc!=0:
+                alert = 1
+                msg = rc
+        else:
+            rc = ford
+            if rc!=0:
+                alert = 1
+                msg = rc
+    except:
+        pass
+
     try:
         party.pace = float(request.POST['pace'])
         party.rations = float(request.POST['ration'])
@@ -52,21 +71,36 @@ def wag(request):
         ts = True
     except:
         ts = False
+    river = 0
+    try:
+        aa = Store.objects.get(location=party.location)
+        alert = 1
+        msg = "You have arrived at " + aa.name
+    except:
+        pass
+    try:
+        bb = Location.objects.get(index=party.location)
+        river = 1
+    except:
+        pass
+    if party.location>=130:
+        alert = 1
+        msg = "You are at the border of mordor... you take a single step forward and... ONE DOES NOT SIMPLY WALK INTO MORDOR!!!! you die of dyssentary"
 
-    xx = Location.objects.get(index = party.location).x
-    yy = Location.objects.get(index = party.location).y
+    xx, yy = get_player_coords(party.location)
     xtop = (0 if xx<400 else (800 if xx>1200 else xx-400))
     ytop = (0 if yy<300 else (600 if yy>900 else yy-300))
     xx = 400 if 400<xx<1200 else (xx if xx<=400 else xx-800)
     yy = 300 if 300<yy<900 else (yy if yy<=300 else xx-900)
 
-    return render_to_response("mordor/wag.html", {"partyid":request.GET['p'],"dt":party.location*6.25, "fpd":party.rations, "dpd":party.pace*12.5, 'rate2':party.pace, "fr":qq,"x":xx-24, "y":yy-20, "ytop":-ytop, "xtop":-xtop, 'testShop':ts})
+    return render_to_response("mordor/wag.html", {"partyid":request.GET['p'],"dt":party.location*6.25, "fpd":party.rations, "dpd":party.pace*12.5, 'rate2':party.pace, "fr":qq,"x":xx-24, "y":yy-20, "ytop":-ytop, "xtop":-xtop, 'testShop':ts, "alert":alert, 'msg':msg,"river":river})
 
 @csrf_exempt
 def shop(request):
     party = Party.objects.get(id=request.GET['p'])
+    print party.location
     try:
-        astore = Store.objects.get(location=party.location)
+        astore = Store.objects.get(location=int(party.location-1))
     except:
         astore = Store.objects.get(location=0)
     items = astore.items.all()
