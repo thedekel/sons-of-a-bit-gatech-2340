@@ -39,7 +39,13 @@ def buyItem(partyid, itemName, amountOfStuff, mult): # string, string, int, floa
             wag.party.money -= mult * base.baseCost * amountOfStuff
             wag.party.save()
             wag.weight += base.weight * amountOfStuff
-            wag.inventory.addItem(itemName, amountOfStuff)
+            if not wag.hasItem(itemName):
+                newItem = Iteminstance(Item.objects.get(name=itemName),num,self)
+                newItem.save()
+            else:
+                thing = wag.iteminstance_set.get(name = itemName)
+                thing.amount += num
+                thing.save()
             wag.save()
         else:
             msg = "You do not have enough money for this purchase."
@@ -53,36 +59,35 @@ def buyItem(partyid, itemName, amountOfStuff, mult): # string, string, int, floa
 
 
 def moveLocation(partyid): #int
-    return
-#    """
-#    Moves along the map array to "change" location.
-#    Any locations that would force a halt will be checked for here (representing with a boolean field in Location, will change later to something else)
-#    Most of these parameters probably won't be needed
-#    -Anthony Taormina
-#    """
-#	
-#    party = Party.objects.get(id=partyid)
-#    numSpaces = party.pace/6.25 # (each index is 6.25 miles)
-#    place = locmap[party.location] # a Location
-#    for x in range(1, int(numSpaces+1)):
-#        party.location += 1
-#        place = locmap[party.location] # a Location
-#        if place.halt:
-#            break
-#    party.save()
-#    place.do() 
+    """
+    Moves along the map array to "change" location.
+    Any locations that would force a halt will be checked for here (representing with a boolean field in Location, will change later to something else)
+    Most of these parameters probably won't be needed
+    -Anthony Taormina
+    """
+	
+    party = Party.objects.get(id=partyid)
+    numSpaces = party.pace/6.25 # (each index is 6.25 miles)
+    place = locmap[party.location] # a Location
+    for x in range(1, int(numSpaces+1)):
+        party.location += 1
+        place = locmap[party.location] # a Location
+        if place.halt:
+            break
+    party.save()
+    place.do() 
     
     
 def getFood(partyid):
     """
     @param wagon: takes in a wagon to access the player's inventory
-    This is used to find out how much food we have at any given point.
+    This is used to find out how much Food we have at any given point.
     @return: the amount of rations the player currently has left 
     """
     party = Party.objects.get(id=partyid)
     wagon = party.wagon_set.all()[0]
     for thing in wagon.inventory.items.all():
-        if thing.base.name == "Food":
+        if thing.name == "Food":
             return thing.amount
     return 0
 
