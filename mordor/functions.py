@@ -91,8 +91,13 @@ def populateLocations():
     locations=[]
     for x in range(178):
         locations.append(Location())
-    locations[25] = Location(name = "Mines of Moria")
-    locations[49] = Location(name = "Mordor")
+    locations[0] = Location(name = "Hobbiton")
+    locations[16] = Location(name = "Bree")
+    locations[48] = Location(name = "Thrabad)
+    locations[100] = Location(name = "Gap of Rohan")
+    location[120] = Location(name = "Edoras")
+    location[160] = Location(name = "Minas Tirith")
+    locations[177] = Location(name = "Mordor")
     return locations
  
 locmap = populateLocations()
