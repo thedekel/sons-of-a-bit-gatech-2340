@@ -74,3 +74,46 @@ option {
 	top: 60%;
 }
 /* END START SCREEN */
+
+/* GAME SCREEN */
+
+#header {
+	font-family: Copperplate, Copperplate Gothic Light;
+}
+
+#navbar {
+	font-family: Copperplate, Copperplate Gothic Light;
+}
+
+ul {
+	list-style-type:none;
+	margin:0;
+	padding:0;
+}
+
+li {
+	display: inline;
+}
+
+#picture {
+	position: absolute;
+	height: 53%;
+	width: 98%;
+	bottom: 45%;
+}
+
+#pace_rations {
+	position: absolute;
+	height: 10%;
+	width: 98%;
+	bottom: 31%;
+}
+
+#current {
+	width: 98%;
+	height: 20%;
+	position: absolute;
+	bottom: 7%;
+}
+
+/* END GAME SCREEN */
