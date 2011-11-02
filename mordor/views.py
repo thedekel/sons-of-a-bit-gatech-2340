@@ -17,7 +17,9 @@ def start(request):
     
 @csrf_exempt
 def wag(request):
-	return render_to_response("mordor/wag.html", {"partyid":request.GET['p'],"dt":87, "fpd":5, "dpd":4, "fr":98})
+    party = Party.objects.get(id=request.GET['p'])
+    w=party.wagon_set.all()[0]
+    return render_to_response("mordor/wag.html", {"partyid":request.GET['p'],"dt":party.location, "fpd":party.rations, "dpd":party.pace, "fr":party.remainingFood()})
 
 @csrf_exempt
 def shop(request):

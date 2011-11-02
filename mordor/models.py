@@ -27,7 +27,7 @@ class Party(models.Model):
         count = 0;
         for i in self.wagon_set.all()[0].inventory.iteminstance_set.all():
             if i.name == "Food":
-                count++;
+                count+=1
         return count
                 
     
