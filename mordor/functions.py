@@ -78,7 +78,7 @@ def getFood(wagonid):
     @return: the amount of rations the player currently has left 
     """
     wagon = Wagon.objects.get(id=wagonid)
-    for thing in wagon.inventory.items_set.all():
+    for thing in wagon.inventory.items.all():
         if thing.name == "food":
             return thing.amount
 
