@@ -184,7 +184,9 @@ class Location(models.Model):
     name = models.CharField(max_length=25, default = "")
     description = models.CharField(max_length=500, default = "")
     halt = models.BooleanField(default=False) # used only for moveLocation.  Will probably be implemented in a different manner -A
-    
+    x = models.IntegerField()
+    y = models.IntegerField()
+    index = models.IntegerField()
     def __unicode__(self):
         """
         @return: String: String representation of a Location
