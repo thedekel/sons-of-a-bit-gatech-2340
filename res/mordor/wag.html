@@ -11,12 +11,14 @@
 </ul>
 {% endblock %}
 {% block main %}
+<div class="subdiv">
 <img src="static/b.png" alt="haha" style='width:500px;height:500px;float:left' />
 <p>
-Distance Travelled: {{ dt }} <br />
-Food per Day: {{ fpd }}<br />
-Distance per day: {{ dpd }}<br />
-Food Remaining: {{ fr }}
+Distance Travelled: {{ dt }} miles<br />
+Food per Day: {{ fpd }} units per person<br />
+Distance per day: {{ dpd }} miles per day<br />
+Food Remaining: {{ fr }} rations<br />
 <a href='wagon.php?p={{ partyid }}&play=1' ><input type="button" value="Play a Turn"></a><br />
 </p>
+</div>
 {% endblock %}

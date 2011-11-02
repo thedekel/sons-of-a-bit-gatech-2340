@@ -1,7 +1,7 @@
 from models import *
 
 
-#wagon = Wagon(partyz)
+#wagon = Wagon(partyz)Wo
 #wagon.save()
 
 
@@ -21,7 +21,7 @@ def takeATurn(partyid):
     party.consumeFood()
     moveLocation(partyid)
     
-def buyItem(partyid, itemName, amountOfStuff, mult): # string, string, int, float
+def buyItem(partyid, itemName, num, mult): # string, string, int, float
     """
     @param item: the item to buy 
     @param amount: amount the user wants
@@ -31,19 +31,19 @@ def buyItem(partyid, itemName, amountOfStuff, mult): # string, string, int, floa
     """
     msg = "Your transaction was successful."
     # creating an item here
-    base = Item.objects.get(name=itemName)
+    abase = Item.objects.get(name=itemName)
     party = Party.objects.get(id = partyid)
     wag = party.wagon_set.all()[0]
-    if wag.checkWagCap(base, amountOfStuff):
-        if (wag.party.money - (mult * base.baseCost * amountOfStuff)) >= 0:
-            wag.party.money -= mult * base.baseCost * amountOfStuff
+    if wag.checkWagCap(abase, num):
+        if (wag.party.money - (mult * abase.baseCost * num)) >= 0:
+            wag.party.money -= mult * abase.baseCost * num
             wag.party.save()
-            wag.weight += base.weight * amountOfStuff
-            if not wag.hasItem(itemName):
-                newItem = Iteminstance(Item.objects.get(name=itemName),num,self)
+            wag.weight += abase.weight * num
+            if not wag.inventory.hasItem(itemName):
+                newItem = Iteminstance(Item.objects.get(name=itemName),num,wag.inventory)
                 newItem.save()
             else:
-                thing = wag.iteminstance_set.get(name = itemName)
+                thing = wag.inventory.iteminstance_set.get(base = abase)
                 thing.amount += num
                 thing.save()
             wag.save()
@@ -65,8 +65,12 @@ def moveLocation(partyid): #int
     Most of these parameters probably won't be needed
     -Anthony Taormina
     """
-	
+ 
+
     party = Party.objects.get(id=partyid)
+    party.location+=int(party.pace/.5)
+    party.save()
+    """
     numSpaces = party.pace/6.25 # (each index is 6.25 miles)
     place = locmap[party.location] # a Location
     for x in range(1, int(numSpaces+1)):
@@ -76,6 +80,8 @@ def moveLocation(partyid): #int
             break
     party.save()
     place.do() 
+    """
+    return
     
     
 def getFood(partyid):
