@@ -14,10 +14,9 @@
 <img src="static/b.png" alt="haha" style='width:500px;height:500px;float:left' />
 <p>
 Distance Travelled: {{ dt }} <br />
-<a href='wagon.php?p={{ partyid }}&play=1' >play a Turn</a><br />
 Food per Day: {{ fpd }}<br />
 Distance per day: {{ dpd }}<br />
 Food Remaining: {{ fr }}
-{% csrf_token %}
+<a href='wagon.php?p={{ partyid }}&play=1' ><input type="button" value="Play a Turn"></a><br />
 </p>
 {% endblock %}

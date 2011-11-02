@@ -17,8 +17,16 @@ def start(request):
     
 @csrf_exempt
 def wag(request):
+    play = False
+    try:
+        request.GET['play']
+        play = True
+    except:
+        pass
     party = Party.objects.get(id=request.GET['p'])
     w=party.wagon_set.all()[0]
+    if play:
+        takeATurn(party.id)
     return render_to_response("mordor/wag.html", {"partyid":request.GET['p'],"dt":party.location, "fpd":party.rations, "dpd":party.pace, "fr":party.remainingFood()})
 
 @csrf_exempt
