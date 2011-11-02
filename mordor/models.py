@@ -21,7 +21,7 @@ class Party(models.Model):
         Attempts to consume a user determined amount of food.
         @return: boolean: True upon a successful consumption and False upon a failure.
         """
-        return wag.inventory.removeItem("food",self.rations)
+        return self.wagon_set.all()[0].inventory.removeItem("food",self.rations)
 
     def remainingFood(self):
         count = 0;
