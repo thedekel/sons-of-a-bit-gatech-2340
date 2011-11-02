@@ -21,6 +21,36 @@ def takeATurn(partyid):
     party.consumeFood()
     moveLocation(partyid)
     
+def buyItem(partyid, itemName, amountOfStuff, mult): # string, int, float
+    """
+    @param item: the item to buy 
+    @param amount: amount the user wants
+    Buys an items
+    Checks for sufficient money and capacity
+    @return: String: string based on the success of the transaction
+    """
+    msg = "Your transaction was successful."
+    # creating an item here
+    base = Item.objects.get(name=itemName)
+    party = Party.object.get(id = partyid)
+    wag = party.wagon_set.all()[0]
+    if wag.checkWagCap(base, amountOfStuff):
+        if (wag.party.money - (mult * base.baseCost * amountOfStuff)) >= 0:
+            wag.party.money -= mult * base.baseCost * amountOfStuff
+            wag.party.save()
+            wag.weight += base.weight * amountOfStuff
+            wag.inventory.addItem(itemName, amountOfStuff)
+            wag.save()
+        else:
+            msg = "You do not have enough money for this purchase."
+    else:
+        msg = "Your wagon cannot carry this much weight"
+        if wag.party.money - item.calculatePrice() >= 0:
+            msg += "and you do not have enough money for this purchase."
+        else:
+            msg += "."
+    return msg
+
 
 def moveLocation(partyid): #int
     """
