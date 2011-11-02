@@ -53,23 +53,24 @@ def buyItem(partyid, itemName, amountOfStuff, mult): # string, string, int, floa
 
 
 def moveLocation(partyid): #int
-    """
-    Moves along the map array to "change" location.
-    Any locations that would force a halt will be checked for here (representing with a boolean field in Location, will change later to something else)
-    Most of these parameters probably won't be needed
-    -Anthony Taormina
-    """
-	
-    party = Party.objects.get(id=partyid)
-    numSpaces = party.pace/6.25 # (each index is 6.25 miles)
-    place = locmap[party.location] # a Location
-    for x in range(1, int(numSpaces+1)):
-        party.location += 1
-        place = locmap[party.location] # a Location
-        if place.halt:
-            break
-    party.save()
-    place.do() 
+    return
+#    """
+#    Moves along the map array to "change" location.
+#    Any locations that would force a halt will be checked for here (representing with a boolean field in Location, will change later to something else)
+#    Most of these parameters probably won't be needed
+#    -Anthony Taormina
+#    """
+#	
+#    party = Party.objects.get(id=partyid)
+#    numSpaces = party.pace/6.25 # (each index is 6.25 miles)
+#    place = locmap[party.location] # a Location
+#    for x in range(1, int(numSpaces+1)):
+#        party.location += 1
+#        place = locmap[party.location] # a Location
+#        if place.halt:
+#            break
+#    party.save()
+#    place.do() 
     
     
 def getFood(partyid):
@@ -81,7 +82,7 @@ def getFood(partyid):
     party = Party.objects.get(id=partyid)
     wagon = party.wagon_set.all()[0]
     for thing in wagon.inventory.items.all():
-        if thing.name == "Food":
+        if thing.base.name == "Food":
             return thing.amount
     return 0
 
