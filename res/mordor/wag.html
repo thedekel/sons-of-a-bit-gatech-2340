@@ -12,7 +12,9 @@
 {% endblock %}
 {% block main %}
 <div class="subdiv">
-<img src="static/b.png" alt="haha" style='width:500px;height:500px;float:left' />
+    <div style="width:800px;height:600px;background-image:url('static/m.jpg');background-position:{{ xtop }}px {{ ytop }}px;">
+        <img src="static/c.png" id='qcart' style="position:absolute;left:{{ x }}px;top:{{ y }}px;" />
+    </div>
 <p>
 Distance Travelled: {{ dt }} miles<br />
 Food per Day: {{ fpd }} units per person<br />

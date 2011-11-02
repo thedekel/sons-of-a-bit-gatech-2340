@@ -5,7 +5,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse
 from mordor.models import Party, Character
 from mordor.functions import * 
-from mordor.coords.py import *
+from mordor.coords import *
 
 
 
@@ -36,8 +36,13 @@ def wag(request):
     except:
         print "No"
         qq=0
-        
-    return render_to_response("mordor/wag.html", {"partyid":request.GET['p'],"dt":party.location*6.25, "fpd":party.rations, "dpd":party.pace*12.5, "fr":qq})
+    xx,yy = get_player_coords(party.location)
+    xtop = (0 if xx<400 else (800 if xx>1200 else xx-400))
+    ytop = (0 if yy<300 else (600 if yy>900 else yy-300))
+    xx = 400 if 400<xx<1200 else (xx if xx<=400 else xx-800)
+    yy = 300 if 300<yy<900 else (yy if yy<=300 else xx-900)
+
+    return render_to_response("mordor/wag.html", {"partyid":request.GET['p'],"dt":party.location*6.25, "fpd":party.rations, "dpd":party.pace*12.5, "fr":qq,"x":xx-24, "y":yy-20, "ytop":-ytop, "xtop":-xtop})
 
 @csrf_exempt
 def shop(request):
