@@ -5,6 +5,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse
 from mordor.models import Party, Character
 from mordor.functions import * 
+from mordor.coords.py import *
 
 
 
@@ -27,7 +28,16 @@ def wag(request):
     w=party.wagon_set.all()[0]
     if play:
         takeATurn(party.id)
-    return render_to_response("mordor/wag.html", {"partyid":request.GET['p'],"dt":party.location, "fpd":party.rations, "dpd":party.pace, "fr":party.remainingFood()})
+    qq=0
+    try:
+        i = Wagon.objects.get(party=Party.objects.get(id=party.id))
+        f = Item.objects.get(name="Food")
+        qq=Iteminstance.objects.get(inventory=i.inventory,base=f).amount
+    except:
+        print "No"
+        qq=0
+        
+    return render_to_response("mordor/wag.html", {"partyid":request.GET['p'],"dt":party.location*6.25, "fpd":party.rations, "dpd":party.pace*12.5, "fr":qq})
 
 @csrf_exempt
 def shop(request):
@@ -79,14 +89,7 @@ def submit(request):
 
 @csrf_exempt
 def config(request):
-    try:
-        pa = float(request.POST['pace'])
-        p = Party.objects.get(id = request.GET['p'])
-        moveLocation(p.location, pa, p)
-        p.consumeFood(p.wagon)
-        f = getFood(p.wagon)
-        return render_to_response("mordor/conf.html", {'partyid':request.GET['p'],'party':Party.objects.get(id=request.GET['p']),"foo":f, "loc":p.location})
-    except:
-        pass
-    return render_to_response("mordor/conf.html", {'testShop':True,'partyid':request.GET['p'],'parties':Party.objects.get(id=request.GET['p']), "membs":[Party.objects.get(id=request.GET['p']).character_set.all()]})
+    p = Party.objects.get(id=request.GET['p'])
+
+    return render_to_response("mordor/conf.html", {'testShop':True,'partyid':request.GET['p'],'part':p, "membs":p.character_set.all()})
 

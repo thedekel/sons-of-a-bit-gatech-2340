@@ -16,12 +16,13 @@ class Party(models.Model):
     rations = models.FloatField()
     location = models.IntegerField(default=0)
 
-    def consumeFood(self, wag):
+    def consumeFood(self):
         """
         Attempts to consume a user determined amount of Food.
         @return: boolean: True upon a successful consumption and False upon a failure.
         """
-        return wag.inventory.removeItem("Food",self.rations)
+        wag = self.wagon_set.all()[0]
+        return wag.inventory.removeItem("Food",self.rations*4)
                 
     
     def __unicode__(self):
@@ -112,8 +113,8 @@ class Store(models.Model):
         """
         ret = False
         for thing in self.iteminstance_set.all():
-            if thing.base.name == itemName and thing.amount >= item.amount:
-                thing.amount -= item.amount
+            if thing.base.name == itemName and thing.amount >= num:
+                thing.amount -= num
                 thing.save()
                 ret = True
         self.save()
