@@ -25,5 +25,5 @@ these instructions.
 To push your changes to the orginal repository you need to:
 
 1) Go to github.com
-2) Navigate to the orginal repository
+2) Navigate to the your repository
 3) Click on "Pull Request" in the top right
