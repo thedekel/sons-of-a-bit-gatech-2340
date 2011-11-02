@@ -17,7 +17,7 @@ from models import *
 #    astore = Store.objects.get(id=storeid)
 #    return astore;
 def takeATurn(partyid):
-    party = Party.object.get(id = partyid)
+    party = Party.objects.get(id = partyid)
     party.consumeFood()
     moveLocation(partyid)
     
@@ -32,7 +32,7 @@ def buyItem(partyid, itemName, amountOfStuff, mult): # string, string, int, floa
     msg = "Your transaction was successful."
     # creating an item here
     base = Item.objects.get(name=itemName)
-    party = Party.object.get(id = partyid)
+    party = Party.objects.get(id = partyid)
     wag = party.wagon_set.all()[0]
     if wag.checkWagCap(base, amountOfStuff):
         if (wag.party.money - (mult * base.baseCost * amountOfStuff)) >= 0:
@@ -57,10 +57,11 @@ def moveLocation(partyid): #int
     Moves along the map array to "change" location.
     Any locations that would force a halt will be checked for here (representing with a boolean field in Location, will change later to something else)
     Most of these parameters probably won't be needed
+    -Anthony Taormina
     """
 	
     party = Party.objects.get(id=partyid)
-    numSpaces = party.pace/6.25 # (each index is 6.25 miles)
+    numSpaces = 2 * party.pace # (each index is .5 km)
     for x in range(1, numSpaces+1):
         party.location += 1
         place = locmap[party.location] # a Location
@@ -88,10 +89,10 @@ def populateLocations():
     @return: A list of Locations
     """
     locations=[]
-    for x in range(178):
+    for x in range(50):
         locations.append(Location())
     locations[25] = Location(name = "Mines of Moria")
-    locations[177] = Location(name = "Mordor")
+    locations[49] = Location(name = "Mordor")
     return locations
  
 locmap = populateLocations()
