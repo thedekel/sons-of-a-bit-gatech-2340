@@ -119,7 +119,7 @@ class Store(models.Model):
             item = Iteminstance(Item.objects.get(name=itemName), amountOfStuff, self)
             item.save()
         else:
-            for thing in self.item_set.all():
+            for thing in self.iteminstance_set.all():
                 if thing.base.name == itemName:
                     thing.amount += amountOfStuff
                     thing.save()
