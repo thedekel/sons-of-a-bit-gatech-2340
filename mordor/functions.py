@@ -42,6 +42,7 @@ def buyItem(partyid, itemName, num, mult): # string, string, int, float
             wag.party.money -= mult * abase.baseCost * num
             wag.party.save()
             wag.weight += abase.weight * num
+            wag.save()
             if not wag.inventory.hasItem(itemName):
                 newItem = Iteminstance(Item.objects.get(name=itemName),num,wag.inventory)
                 newItem.save()
@@ -49,7 +50,6 @@ def buyItem(partyid, itemName, num, mult): # string, string, int, float
                 thing = wag.inventory.iteminstance_set.get(base = abase)
                 thing.amount += num
                 thing.save()
-            wag.save()
         else:
             msg = "You do not have enough money for this purchase."
     else:

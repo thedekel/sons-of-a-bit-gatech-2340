@@ -100,9 +100,12 @@ def shop(request):
     party = Party.objects.get(id=request.GET['p'])
     print party.location
     try:
-        astore = Store.objects.get(location=int(party.location-1))
+         astore= Store.objects.get(location=int(party.location-1-(int(party.pace/6.25)-qqq)))
+         party.location -=qqq
+         party.save()
+         break;
     except:
-        astore = Store.objects.get(location=0)
+         astore = Store.objects.get(location=0)
     items = astore.items.all()
     try:
         w=party.wagon_set.all()[0]
@@ -111,7 +114,7 @@ def shop(request):
         print "receiving post for: " + request.POST['qty'], request.POST['item']
     except:
         print "couldn't find wagon or item"
-    return render_to_response("mordor/shoptest.html", {'partyid':request.GET['p'],"shopname":astore.name ,"items":items, "party":party, 'weight':w.weight})
+    return render_to_response("mordor/shoptest.html", {'partyid':request.GET['p'],"shopname":astore.name ,"items":items, "party":party, 'weight':w.weight,"mult":astore.price_mult})
 
 @csrf_exempt
 def submit(request):

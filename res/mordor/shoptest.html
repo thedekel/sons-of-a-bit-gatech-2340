@@ -23,7 +23,7 @@
 				<form action="shop.php?p={{ partyid }}" method="POST">
 					<p style="display:inline">{{ i.name }} : </p>
 					<p style="display:inline">{{ i.description }}</p><br />
-					<label>Price: {{ i.calculatePrice }}</label><br />
+                    <label>Price: </label><label class="pricelabel">{{ i.baseCost }}</label><br />
 					<label>Weight: {{ i.weight }}</label><br />
 					<label>Qty: <input type='number' name ='qty' /></label>
 					<input type='hidden' value='{{ i.name }}' name='item' />
@@ -35,5 +35,11 @@
 		</div>
 	</div>
 </div>
+<script>
+    a=document.getElementsByClassName("pricelabel");
+    for (i in a){
+        a[i].innerHTML = parseInt(a[i].innerHTML)*{{ mult }};
+    }
+</script>
 
 {% endblock %}
