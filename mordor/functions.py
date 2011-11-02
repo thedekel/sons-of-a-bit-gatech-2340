@@ -21,7 +21,7 @@ def takeATurn(partyid):
     party.consumeFood()
     moveLocation(partyid)
     
-def buyItem(partyid, itemName, amountOfStuff, mult): # string, int, float
+def buyItem(partyid, itemName, amountOfStuff, mult): # string, string, int, float
     """
     @param item: the item to buy 
     @param amount: amount the user wants
