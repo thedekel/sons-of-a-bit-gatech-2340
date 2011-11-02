@@ -33,7 +33,7 @@ class Party(models.Model):
         @return: boolean: True upon a successful consumption and False upon a failure.
         """
         wag = self.wagon_set.all()[0]
-        return wag.inventory.removeItem("Food",self.rations*numAlive)
+        return wag.inventory.removeItem("Food",self.rations*self.numAlive())
                 
     
     def __unicode__(self):

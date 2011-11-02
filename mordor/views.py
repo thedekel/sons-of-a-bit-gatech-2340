@@ -26,6 +26,12 @@ def wag(request):
         pass
     party = Party.objects.get(id=request.GET['p'])
     w=party.wagon_set.all()[0]
+    try:
+        party.pace = float(request.POST['pace'])
+        party.rations = float(request.POST['ration'])
+        party.save()
+    except:
+        pass
     if play:
         takeATurn(party.id)
     qq=0

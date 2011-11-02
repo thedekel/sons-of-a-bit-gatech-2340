@@ -18,13 +18,13 @@
 <p>
 Distance Travelled: {{ dt }} miles<br />
 Distance per day: {{ dpd }} miles per day<br />	
-    <label> Change Travel Rate: <select name="pace">
+<form action='wagon.php?p={{ partyid }}' method='POST'> <label> Change Travel Rate: <select name="pace">
             <option value="{{ rate2 }}">No Change</option>
 			<option value=".5">6.25 miles per day</option>
 			<option value="1">12.5 miles per day</option>
 			<option value="1.5">18.75 miles per day</option>
 		</select>		
-    </label><br />
+</label><br />
 Food per Day: {{ fpd }} units per person<br />
     <label> Change Rations: <select name="ration">
             <option value="{{ fpd  }}">No Change</option>
@@ -32,7 +32,7 @@ Food per Day: {{ fpd }} units per person<br />
 			<option value="1">1 units per person</option>
 			<option value="1.5">1.5 units per person</option>
 		</select>
-    </label><br />
+</label><input type='submit' /></form><br />
 
 Food Remaining: {{ fr }} rations<br />
 <a href='wagon.php?p={{ partyid }}&play=1' ><input type="button" value="Play a Turn"></a><br />
