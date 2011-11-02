@@ -1,0 +1,29 @@
+How to Fork the repository
+
+1) Go to github.com
+2) Navigate to the project you want to fork
+3) Click Fork in the top right
+4) Open up git Bash
+5) Navigate to the place that you want to put the code
+6) run this command: git clone git@github.com:yourusername/projectname.git
+	(yourusername being your github name and the projectname
+	 being sons-of-a-bit-gatech-2340)
+
+Now you when you push and pull it will take it from the branch that you have
+just created. To still be able to pull from the original repository follow
+these instructions.
+
+1) type in git Bash: cd projectname
+	You need to be in the directory of the project
+2) type in git Bash: git remote add upstream git://github.com/originalrepouser
+	/projectname.git
+		(the original repo user being thedekel and the project
+		 name being the same as it was before)
+3) Now typing "git fetch upstream" into git Bash should pull from the original
+	repository and "git merge upstream/master" merges them with your files
+
+To push your changes to the orginal repository you need to:
+
+1) Go to github.com
+2) Navigate to the orginal repository
+3) Click on "Pull Request" in the top right
