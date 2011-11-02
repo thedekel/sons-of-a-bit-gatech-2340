@@ -6,8 +6,10 @@
 {% endblock %}
 {% block navbar %}
 <ul>
-	<li><a href="shop.php?p={{ partyid }}">shop</a></li>
-	<li><a href="config.php?p={{ partyid }}">config</a></li>
+{% if testShop %}
+    <li><a href="shop.php?p={{ partyid }}">shop</a></li>
+{% endif %}
+    <li><a href="wagon.php?p={{ partyid }}">status</a></li>
 </ul>
 {% endblock %}
 {% block main %}
