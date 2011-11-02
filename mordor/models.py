@@ -22,12 +22,12 @@ class Party(models.Model):
         @return: boolean: True upon a successful consumption and False upon a failure.
         """
         wag = self.wagon_set.all()[0]
-        return wag.inventory.removeItem("food",self.rations)
+        return wag.inventory.removeItem("Food",self.rations)
 
     def remainingFood(self):
         count = 0;
         for i in self.wagon_set.all()[0].inventory.iteminstance_set.all():
-            if i.name == "Food":
+            if i.base.name == "Food":
                 count+=1
         return count
                 
