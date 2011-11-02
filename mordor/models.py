@@ -22,6 +22,9 @@ class Party(models.Model):
         @return: boolean: True upon a successful consumption and False upon a failure.
         """
         return wag.inventory.removeItem("food",self.rations)
+
+    def remainingRations(self):
+        return self.rations
     
     def __unicode__(self):
         """
