@@ -53,7 +53,8 @@ def wag(request):
     except:
         ts = False
 
-    xx,yy = get_player_coords(party.location)
+    xx = Location.objects.get(index = party.location).x
+    yy = Location.objects.get(index = party.location).y
     xtop = (0 if xx<400 else (800 if xx>1200 else xx-400))
     ytop = (0 if yy<300 else (600 if yy>900 else yy-300))
     xx = 400 if 400<xx<1200 else (xx if xx<=400 else xx-800)

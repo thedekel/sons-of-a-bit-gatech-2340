@@ -87,20 +87,17 @@ def populateLocations():
     locations=[]
     events = []
     for num in range(131):
-        loc = Location()
         coord = get_player_coords(x)
-        loc.x = coord[0]
-        loc.y = coord[1]
-        loc.index = num
+        loc = Location(x=coord[0],y=coord[1],index=num)
         locations.append(loc)
         events.append(Event(location = loc))
     for z in [6, 39, 75, 125]:
-        locations[z] = Location(halt=True)
+        locations[z] = Location(halt=True, num=z, x=locations[z].x, y=locations[z].y)
         events[z] = RiverCrossingEvent()
     for a in [[0,"Hobbiton"],[16,"Bree"],[38,"Thrabad"],[74,"Gap of Rohan"],[89,"Edoras"],[106,"Minas Tirith"]]:
-        locations[a[0]] = Location(name = a[1],halt=True)
+        locations[a[0]] = Location(name=a[1],halt=True, num=a[0], x=locations[a[0]].x, y=locations[a[0]].y)
         events[a[0]] = StoreEvent(location = locations[a[0]])    
-    locations[130] = Location(name = "Mordor",halt=True)
+    locations[130] = Location(name = "Mordor",halt=True, num=130, x=locations[130].x, y=locations[130].y)
     events[130] = EndGame()
     for b in range(131):
         locations[b].save()
