@@ -71,14 +71,14 @@ def submit(request):
 
 @csrf_exempt
 def config(request):
-	try:
-		pa = float(request.POST['pace'])
-		p = Party.objects.get(id = request.GET['p'])
-		moveLocation(p.location, pa, p)
-		p.consumeFood(p.wagon)
-		f = getFood(p.wagon)
-		return render_to_response("mordor/conf.html", {'partyid':request.GET['p'],'party':Party.objects.get(id=request.GET['p']),"foo":f, "loc":p.location})
-	except:
-		pass
-	return render_to_response("mordor/conf.html", {'partyid':request.GET['p'],'parties':Party.objects.get(id=request.GET['p']), "membs":[Party.objects.get(id=request.GET['p']).character_set.all()]})
+    try:
+        pa = float(request.POST['pace'])
+        p = Party.objects.get(id = request.GET['p'])
+        moveLocation(p.location, pa, p)
+        p.consumeFood(p.wagon)
+        f = getFood(p.wagon)
+        return render_to_response("mordor/conf.html", {'partyid':request.GET['p'],'party':Party.objects.get(id=request.GET['p']),"foo":f, "loc":p.location})
+    except:
+        pass
+    return render_to_response("mordor/conf.html", {'testShop':True,'partyid':request.GET['p'],'parties':Party.objects.get(id=request.GET['p']), "membs":[Party.objects.get(id=request.GET['p']).character_set.all()]})
 
