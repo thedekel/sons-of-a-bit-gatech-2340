@@ -62,13 +62,15 @@ def moveLocation(partyid): #int
 	
     party = Party.objects.get(id=partyid)
     numSpaces = party.pace/6.25 # (each index is 6.25 miles)
-    for x in range(1, numSpaces+1):
+    place = locmap[party.location] # a Location
+    for x in range(1, int(numSpaces+1)):
         party.location += 1
         place = locmap[party.location] # a Location
         if place.halt:
             break
     party.save()
-    place.do()
+    if place:
+        place.do() 
     
     
 def getFood(wagonid):
@@ -95,8 +97,8 @@ def populateLocations():
     locations[16] = Location(name = "Bree")
     locations[48] = Location(name = "Thrabad")
     locations[100] = Location(name = "Gap of Rohan")
-    location[120] = Location(name = "Edoras")
-    location[160] = Location(name = "Minas Tirith")
+    locations[120] = Location(name = "Edoras")
+    locations[160] = Location(name = "Minas Tirith")
     locations[177] = Location(name = "Mordor")
     return locations
  

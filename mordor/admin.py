@@ -1,4 +1,4 @@
-from mordor.models import Party, Character, Store, Item, Wagon, Location, Event, Profession
+from mordor.models import Party, Character, Store, Item, Wagon, Location, Event, Profession, Iteminstance
 from django.contrib import  admin
 """
 @author: Alex Williams, Anthony Taormina, Daniel Whatley, Stephen Roca, Yuval Dekel
@@ -11,3 +11,4 @@ admin.site.register(Item)
 admin.site.register(Wagon)
 admin.site.register(Location)
 admin.site.register(Event)
+admin.site.register(Iteminstance)

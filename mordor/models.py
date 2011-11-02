@@ -16,11 +16,12 @@ class Party(models.Model):
     rations = models.FloatField()
     location = models.IntegerField(default=0)
 
-    def consumeFood(self, wag):
+    def consumeFood(self):
         """
         Attempts to consume a user determined amount of food.
         @return: boolean: True upon a successful consumption and False upon a failure.
         """
+        wag = self.wagon_set.all()[0]
         return wag.inventory.removeItem("food",self.rations)
 
     def remainingFood(self):
@@ -129,6 +130,7 @@ class Store(models.Model):
         @return: boolean: In the case of more things being removed than exist, it will return False.
         Returns True on a successful removal.
         """
+        ret = False
         for thing in self.items.all():
             if thing.base.name == itemName:
                 if thing.amount >= item.amount:
@@ -163,7 +165,7 @@ class Iteminstance(models.Model):
         """
         @return: String: String representation of a Iteminstance
         """
-        return u'<Iteminstance; Base:' + unicode(self.item) + ' >'
+        return u'<Iteminstance; Base:' + unicode(self.base) + ' >'
     
 
 
@@ -212,6 +214,8 @@ class Location(models.Model):
         @return: String: String representation of a Location
         """
         return u'<Location: u>'
+    def do(self):
+        pass
     
 
     
