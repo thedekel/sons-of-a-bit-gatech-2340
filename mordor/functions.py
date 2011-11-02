@@ -17,6 +17,9 @@ from coords import *
 #    astore = Store.objects.get(id=storeid)
 #    return astore;
 def takeATurn(partyid):
+    """
+    This takes a turn.  Shocking, no?
+    """
     party = Party.objects.get(id = partyid)
     party.consumeFood()
     moveLocation(partyid)
@@ -65,28 +68,20 @@ def moveLocation(partyid): #int
     Most of these parameters probably won't be needed
     -Anthony Taormina
     """
- 
-
     party = Party.objects.get(id=partyid)
-    party.location+=int(party.pace/.5)
-    party.save()
-    """
-    numSpaces = party.pace/6.25 # (each index is 6.25 miles)
-    place = locmap[party.location] # a Location
-    for x in range(1, int(numSpaces+1)):
+    for x in range(int(party.pace/.5)):
         party.location += 1
-        place = locmap[party.location] # a Location
-        if place.halt:
+        loc = Location.objects.get(index=party.location)
+        if loc.halt:
             break
     party.save()
-    place.do() 
-    """
-    return
+    loc.event_set.all()[0].do()
     
 
 def populateLocations():
     """
-    This generates the map, which is represented as a list of Locations
+    This generates the map, which sits in the database, referenced by an index element
+    Used once for instantiation
     @return: A list of Locations
     """
     locations=[]
