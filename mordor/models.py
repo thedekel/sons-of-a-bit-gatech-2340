@@ -23,13 +23,6 @@ class Party(models.Model):
         """
         wag = self.wagon_set.all()[0]
         return wag.inventory.removeItem("Food",self.rations)
-
-    def remainingFood(self):
-        count = 0;
-        for i in self.wagon_set.all()[0].inventory.iteminstance_set.all():
-            if i.base.name == "Food":
-                count+=1
-        return count
                 
     
     def __unicode__(self):
@@ -99,7 +92,7 @@ class Store(models.Model):
     Store
     """
     name = models.CharField(max_length=25, default = "")
-    items = models.ManyToManyField(Item)
+    items = models.ManyToManyField(Iteminstance)
     isVendor = models.BooleanField(default=True)
     price_mult = models.FloatField(default = 1)
     location = models.IntegerField(default = -1)
@@ -116,7 +109,7 @@ class Store(models.Model):
         @param item: the iteminstance to add 
         Adds the item given in as a parameter
         """
-        for thing in self.iteminstance_set.all():
+        for thing in self.items.all():
             if thing.base.name == itemName:
                 thing.amount += num
                 thing.save()
