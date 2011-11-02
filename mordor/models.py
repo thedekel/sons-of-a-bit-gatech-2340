@@ -13,9 +13,9 @@ class Party(models.Model):
     name = models.CharField(max_length=25)
     money = models.IntegerField()
     pace = models.IntegerField() 
-    rations = models.IntegerField()
+    rations = models.FloatField()
     location = models.IntegerField(default=0)
-    
+
     def consumeFood(self, wag):
         """
         Attempts to consume a user determined amount of food.
@@ -23,8 +23,13 @@ class Party(models.Model):
         """
         return wag.inventory.removeItem("food",self.rations)
 
-    def remainingRations(self):
-        return self.rations
+    def remainingFood(self):
+        count = 0;
+        for i in self.wagon_set.all()[0].inventory.iteminstance_set.all():
+            if i.name == "Food":
+                count++;
+        return count
+                
     
     def __unicode__(self):
         """
