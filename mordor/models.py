@@ -201,34 +201,7 @@ class Wagon(models.Model):
             return True
     
     
-    def buyItem(self, itemName, amountOfStuff, mult): # string, int, float
-        """
-        @param item: the item to buy 
-        @param amount: amount the user wants
-        Buys an items
-        Checks for sufficient money and capacity
-        @return: String: string based on the success of the transaction
-        """
-        msg = "Your transaction was successful."
-        # creating an item here
-        base = Item.objects.get(name=itemName)
-        if self.checkWagCap(base, amountOfStuff):
-            if (self.party.money - (mult * base.baseCost * amountOfStuff)) >= 0:
-                self.party.money -= mult * base.baseCost * amountOfStuff
-                self.party.save()
-                self.weight += base.weight * amountOfStuff
-                self.inventory.addItem(itemName, amountOfStuff)
-                self.save()
-            else:
-                msg = "You do not have enough money for this purchase."
-        else:
-            msg = "Your wagon cannot carry this much weight"
-            if self.party.money - item.calculatePrice() >= 0:
-                msg += "and you do not have enough money for this purchase."
-            else:
-                msg += "."
-        print msg
-    
+   
 
 class Location(models.Model):
     """
