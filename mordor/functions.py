@@ -39,7 +39,13 @@ def buyItem(partyid, itemName, amountOfStuff, mult): # string, string, int, floa
             wag.party.money -= mult * base.baseCost * amountOfStuff
             wag.party.save()
             wag.weight += base.weight * amountOfStuff
-            wag.inventory.addItem(itemName, amountOfStuff)
+            if not wag.hasItem(itemName):
+                newItem = Iteminstance(Item.objects.get(name=itemName),num,self)
+                newItem.save()
+            else:
+                thing = wag.iteminstance_set.get(name = itemName)
+                thing.amount += num
+                thing.save()
             wag.save()
         else:
             msg = "You do not have enough money for this purchase."
@@ -75,7 +81,7 @@ def moveLocation(partyid): #int
 def getFood(partyid):
     """
     @param wagon: takes in a wagon to access the player's inventory
-    This is used to find out how much food we have at any given point.
+    This is used to find out how much Food we have at any given point.
     @return: the amount of rations the player currently has left 
     """
     party = Party.objects.get(id=partyid)

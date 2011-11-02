@@ -16,20 +16,12 @@ class Party(models.Model):
     rations = models.FloatField()
     location = models.IntegerField(default=0)
 
-    def consumeFood(self):
+    def consumeFood(self, wag):
         """
-        Attempts to consume a user determined amount of food.
+        Attempts to consume a user determined amount of Food.
         @return: boolean: True upon a successful consumption and False upon a failure.
         """
-        wag = self.wagon_set.all()[0]
         return wag.inventory.removeItem("Food",self.rations)
-
-    def remainingFood(self):
-        count = 0;
-        for i in self.wagon_set.all()[0].inventory.iteminstance_set.all():
-            if i.base.name == "Food":
-                count+=1
-        return count
                 
     
     def __unicode__(self):
@@ -91,7 +83,7 @@ class Item(models.Model):
         """
         @return: String: String representation of a Item
         """
-        return u'<Item; Base:' + self.name + u'; cost:' + unicode(self.baseCost)+u' >'
+        return u'<Item; Base:'# + self.name + u'; cost:' + unicode(self.baseCost)+u' >'
     
 
 class Store(models.Model):
@@ -110,18 +102,6 @@ class Store(models.Model):
         """
         return u'<Store:'+self.name +u' >'
     
-
-    def addItem(self, itemName, num): # string, int
-        """
-        @param item: the iteminstance to add 
-        Adds the item given in as a parameter
-        """
-        for thing in self.iteminstance_set.all():
-            if thing.base.name == itemName:
-                thing.amount += num
-                thing.save()
-        self.save()
-    
     def removeItem(self, itemName, num): # string, int
         """
         @param itemName: the name of the item to remove
@@ -131,14 +111,11 @@ class Store(models.Model):
         Returns True on a successful removal.
         """
         ret = False
-        for thing in self.items.all():
-            if thing.base.name == itemName:
-                if thing.amount >= item.amount:
-                    thing.amount -= item.amount
-                    thing.save()
-                    ret = True
-                else:
-                    ret = False
+        for thing in self.iteminstance_set.all():
+            if thing.base.name == itemName and thing.amount >= item.amount:
+                thing.amount -= item.amount
+                thing.save()
+                ret = True
         self.save()
         return ret
         
@@ -146,15 +123,13 @@ class Store(models.Model):
     def hasItem(self, itemName):    #string
         """
         @param item: the item to check existence for
-        Checks whether the store has a certain AMOUNT of an ite
+        Checks whether the store has the item at all
         @return: boolean: True if item exists in the Store false otherwise.
         """
-        for thing in self.items.all():
+        for thing in self.iteminstance_set.all():
             if thing.base.name == itemName:
-                if thing.amount > 0:
-                    return True
-                else:
-                    return False
+                return True
+        return False
     
 class Iteminstance(models.Model):
     base = models.ForeignKey(Item)
@@ -165,7 +140,7 @@ class Iteminstance(models.Model):
         """
         @return: String: String representation of a Iteminstance
         """
-        return u'<Iteminstance; Base:' + unicode(self.base) + ' >'
+        return u'<Iteminstance; Base:'# + unicode(self.base.name) + u' >'
     
 
 
@@ -214,8 +189,6 @@ class Location(models.Model):
         @return: String: String representation of a Location
         """
         return u'<Location: u>'
-    def do(self):
-        pass
     
 
     
@@ -223,7 +196,7 @@ class Event(models.Model):
     """
     Event
     """
-    name = models.CharField(max_length=25, default = "")
+    name = models.CharField(max_length=25)
     location = models.ForeignKey(Location)
     
     def __unicode__(self):
@@ -242,14 +215,14 @@ class RiverCrossingEvent(Event):
     #TODO
     name = "River"
     waterdepth = models.IntegerField(default = 2)
-    bridgefee = models.IntegerField(default = 250)
+    ferryfee = models.IntegerField(default = 250)
     
-    def takeBridge(self, party): #Party
+    def takeFerry(self, party): #Party
         """
         Takes the Ferry. Takes a designated amount of money away from the player
         to use the ferry
         """
-        party.money -= self.bridgefee
+        party.money -= self.ferryfee
         return
     
     def ford(self):
@@ -274,9 +247,6 @@ class RiverCrossingEvent(Event):
         return
     #DEFINE DO!
     
-    def do(self):
-        return
-    
 class StoreEvent(Event):
     name = "Store"
     def do(self):
@@ -284,7 +254,8 @@ class StoreEvent(Event):
     
 
 class EndGame(Event):
-    name = "Game Over"
-    def do(self):
+    end = models.BooleanField(default = False)
+    
+    def cleanup(self):
         #TODO End game stuff. Messages etc.
         return
