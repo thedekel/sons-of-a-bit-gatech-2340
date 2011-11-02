@@ -27,11 +27,10 @@ def moveLocation(partyid): #int
     Moves along the map array to "change" location.
     Any locations that would force a halt will be checked for here (representing with a boolean field in Location, will change later to something else)
     Most of these parameters probably won't be needed
-    -Anthony Taormina
     """
 	
     party = Party.objects.get(id=partyid)
-    numSpaces = 2 * party.pace # (each index is .5 km)
+    numSpaces = party.pace/6.25 # (each index is 6.25 miles)
     for x in range(1, numSpaces+1):
         party.location += 1
         place = locmap[party.location] # a Location
@@ -59,10 +58,10 @@ def populateLocations():
     @return: A list of Locations
     """
     locations=[]
-    for x in range(50):
+    for x in range(178):
         locations.append(Location())
     locations[25] = Location(name = "Mines of Moria")
-    locations[49] = Location(name = "Mordor")
+    locations[177] = Location(name = "Mordor")
     return locations
  
 locmap = populateLocations()
