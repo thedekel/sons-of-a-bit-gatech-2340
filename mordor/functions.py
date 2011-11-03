@@ -1,28 +1,23 @@
 from models import *
 from coords import *
 
-#wagon = Wagon(partyz)Wo
-#wagon.save()
-
-
-
-            
-
-#def storeLoader(storeid):
-#    """
-#    The initializer for the initial store in the game.
-#    @param storeid the id of the store. if attached to location
-#    @return an object of the store just loaded. can be modified and .save()'d
-#    """
-#    astore = Store.objects.get(id=storeid)
-#    return astore;
 def takeATurn(partyid):
     """
     This takes a turn.  Shocking, no?
     """
     party = Party.objects.get(id = partyid)
-    party.consumeFood()
+    if not party.consumeFood():
+        stuck(partyid, "Your party is out of food and cannot proceed")
+        return
     moveLocation(partyid)
+    party.save()
+
+def stuck(partyid,msg):
+    party = Party.objects.get(id = partyid)
+    party.stopmsg = msg
+    party.pace = 0
+    party.rations = 0
+    party.save()
     
 def buyItem(partyid, itemName, num, mult): # string, string, int, float
     """
@@ -32,33 +27,36 @@ def buyItem(partyid, itemName, num, mult): # string, string, int, float
     Checks for sufficient money and capacity
     @return: String: string based on the success of the transaction
     """
-    msg = "Your transaction was successful."
-    # creating an item here
-    abase = Item.objects.get(name=itemName)
-    party = Party.objects.get(id = partyid)
-    wag = party.wagon_set.all()[0]
-    if wag.checkWagCap(abase, num):
-        if (wag.party.money - (mult * abase.baseCost * num)) >= 0:
-            wag.party.money -= mult * abase.baseCost * num
-            wag.party.save()
-            wag.weight += abase.weight * num
-            wag.save()
-            if not wag.inventory.hasItem(itemName):
-                newItem = Iteminstance(base=Item.objects.get(name=itemName),amount=num,inventory=wag.inventory)
-                newItem.save()
-            else:
-                thing = wag.inventory.iteminstance_set.get(base = abase)
-                thing.amount += num
-                thing.save()
-        else:
-            msg = "You do not have enough money for this purchase."
+    abase = Item.objects.get(name = itemName)
+    aparty = Party.objects.get(id = partyid)
+    if (num <=0):
+        aparty.stopmsg = "You can't buy a negative amount, that would be weird..."
+        aparty.save()
+        return
+    if (num*mult*abase.baseCost>aparty.money):
+        aparty.stopmsg = "You can't afford this purchase"
+        aparty.save()
+        return
+    wag = Wagon.objects.get(party=aparty)
+    if (wag.weight + abase.wight * num > wag.capacity):
+        aparty.stopmsg = "You can't buy these items; they're too heavy!"
+        aparty.save()
+        return
+    inv = Inventory.objects.get(wagon = wag)
+    if itemName in map(lambda q: q.base.name, inv.iteminstance_set.all()):
+        ii = inv.iteminstance_set.get(base = abase)
+        ii.amount += num
+        ii.save()
+        aparty.stopmsg = "Successfully added %d items of type %s" %(num, itemName)
+        aparty.save()
     else:
-        msg = "Your wagon cannot carry this much weight"
-        if wag.party.money - item.calculatePrice() >= 0:
-            msg += "and you do not have enough money for this purchase."
-        else:
-            msg += "."
-    return msg
+        ii = Iteminstance(base = abase, amount = num, inventory = inv)
+        ii.save()
+        aparty.stopmsg = "Successfully purchased %d items of type %s" %(num, itemName)
+        aparty.save()
+    return
+
+
 
 
 def moveLocation(partyid): #int
@@ -68,15 +66,24 @@ def moveLocation(partyid): #int
     Most of these parameters probably won't be needed
     -Anthony Taormina
     """
-    party = Party.objects.get(id=partyid)
-    for x in range(int(party.pace/.5)):
-        party.location += 1
-#        loc = Location.objects.get(index=party.location)
- #       if loc.halt:
-  #          break
-    party.save()
-   # loc.event_set.all()[0].do()
-    
+    aparty = Party.objects.get(id = partyid)
+    dl = int(aparty.pace/.5)
+    while q in range(dl):
+        aparty.location+=1
+        aparty.save()
+        if searchStore(partyid):
+            astore = Store.objects.get(location = aparty.location)
+            aparty.stopmsg = "You have arrived at %s, click on \"Store\" to browse the shop!" % astore.name
+            aparty.save()
+            return
+        if searchEvent(partyid):
+            ev = Event.objects.get(location = aparty.location)
+            evname = ev.name
+            evtype = ev.etype
+            aparty.stopmsg = ev.text()
+            aparty.save()
+
+
 
 def populateLocations():
     """

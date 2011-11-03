@@ -15,6 +15,7 @@ class Party(models.Model):
     pace = models.FloatField(default = 1.) 
     rations = models.FloatField(default = 1.)
     location = models.IntegerField(default=0)
+    stopmsg = models.CharField(max_length=1000, default="")
     
     def numAlive(self):
         """
@@ -29,8 +30,7 @@ class Party(models.Model):
         @return: boolean: True upon a successful consumption and False upon a failure.
         """
         wag = Wagon.objects.get(id = self.id)
-        ret = wag.inventory.removeItem("Food",self.rations*self.numAlive())
-        wag.save()
+        ret = Inventory.objects.get(wagon = wag).removeItem("Food",self.rations*self.numAlive())
         return ret
 
     def __unicode__(self):
@@ -114,6 +114,18 @@ class Inventory(models.Model):
         par = Party.objects.get(Inventory=self)
         return u'Inventory:'+ self(par.name)
     
+    def removeItem(self, iname, qty):
+        if iname in map(lambda q: q.base.name, Inventory.objects.get(id=self.id).iteminstance_set.all()):
+            iii=filter(lambda q: q.base.name==iname, Inventory.objects.get(id=self.id).iteminstance_set.all())[0]
+            if iii.amount > qty:
+                iii.amount -= qty
+                iii.save()
+                return True
+            elif iii.amount == qty:
+                iii.delete()
+                return True
+        return False
+    
 class Iteminstance(models.Model):
     base = models.ForeignKey(Item)
     amount = models.IntegerField(default = 1)
@@ -125,17 +137,11 @@ class Iteminstance(models.Model):
         """
         return u'Iteminstance:'+unicode(Item.objects.get(base.id).name)
     
-
-
-
-   
-    
 class Wagon(models.Model):
     """
     Wagon
     """
     party = models.ForeignKey(Party)
-    inventory = models.ForeignKey(Store, default=Store(name="Wagon", isVendor=False))
     weight = models.FloatField(default = 0)
     capacity = models.IntegerField(default=1000)
     
@@ -143,106 +149,36 @@ class Wagon(models.Model):
         """
         @return: String: String representation of a Wagon
         """
-        return u'<Wagon; Party:' + u'; inventory:' + unicode(self.inventory) + u'; totalWeight:' + unicode(self.weight)+u' >'
+        return u'Wagon:'+ unicode(self.party.name)
     
-    def checkWagCap(self, base, amountOfStuff): # item, int
+    def checkWagCap(self, base, amount): # item, int
         """
         @param item: the item to be added to the wagon 
         Checks to see if the added item exceeds the wagons capacity
         @return: boolean: True if adding the item does not exceed wagon capacity; false otherwise.
         """
-        if self.capacity < base.weight * amountOfStuff + self.weight:
-            return False
-        else:
-            return True
-    
-    
-   
+        return not self.capacity < base.weight * amount + self.weight:
 
-class Location(models.Model):
-    """
-    Location
-    """
-    name = models.CharField(max_length=25, default = "")
-    description = models.CharField(max_length=500, default = "")
-    halt = models.BooleanField(default=False) # used only for moveLocation.  Will probably be implemented in a different manner -A
-    x = models.IntegerField()
-    y = models.IntegerField()
-    index = models.IntegerField()
-    def __unicode__(self):
-        """
-        @return: String: String representation of a Location
-        """
-        return u'<Location: u>'
-    
-
-    
 class Event(models.Model):
     """
     Event
     """
     name = models.CharField(max_length=25)
-    location = models.ForeignKey(Location)
+    location = models.IntegerField(default = -1)
+    etype = models.IntegerField(default = 0)
+    #0 is river
+    #1 is ...
     
     def __unicode__(self):
         """
         @return: String: String representation of a Event
         """
-        return u'<Event' + self.name + u' >'
-    
-    def do(self):
-        return
-    
-class RiverCrossingEvent(Event):
-    """
-    River Crossing Event
-    """
-    name = "River"
-    waterdepth = models.IntegerField(default = 2)
-    ferryfee = models.IntegerField(default = 250)
-    
-    def takeFerry(self, partyid): #string
-        """
-        Takes the Ferry. Takes a designated amount of money away from the player
-        to use the ferry
-        """
-        party = Party.objects.get(id=partyid)
-        party.money -= self.ferryfee
-        party.save()
-        return "you paid money"
-    
-    def ford(self):
-        """
-        Attempts to ford the river. Fails if water depth is greater than 3 feet.
-        @return: String: The success or failure of fording the river
-        """
-        chance = random.randint(0,100)
-        percentChance = 5 * self.waterdepth
-        if (chance > (100 - percentChance)):
-            msg = "DUDE FLIP THE WAGON!"
-            return msg
-        return 0
-    
-    def caulk(self):
-        """
-        Attempts to float over the river on the wagon. Greater chance of wagon flip.
-        @return: String: The success or failure of caulking the river
-        """
-        chance = random.randint(0,100)
-        if (chance > 70):
-            msg = "DUDE FLIP THE WAGON"
-            return msg
-        return 0
-    
-    def do(self):
-        return
-    
-class StoreEvent(Event):
-    name = "Store"
-    def do(self):
-        return
-    
+        return u'Event:' + self.name
 
-class EndGame(Event):
+    def text(self):
+        return [
+                "You arrived at a River, What will you do?"
+                ][self.etype]
+
     def do(self):
-        return
+        return 
