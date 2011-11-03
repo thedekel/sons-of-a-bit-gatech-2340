@@ -81,9 +81,8 @@ class Store(models.Model):
     """
     Store
     """
-    name = models.CharField(max_length=25, default = "")
+    name = models.CharField(max_length=25, default = "General Store")
     items = models.ManyToManyField(Item)
-    isVendor = models.BooleanField(default=True)
     price_mult = models.FloatField(default = 1)
     location = models.IntegerField(default = -1)
     
@@ -91,47 +90,40 @@ class Store(models.Model):
         """
         @return: String: String representation of a Store
         """
-        return u'<Store:'+self.name +u' >'
+        return u'Store:'+ unicode(self.name)
     
-    def removeItem(self, itemName, num): # string, int
-        """
-        @param itemName: the name of the item to remove
-        @param num: the AMOUNT to be removed 
-        Removes a set number of items from a store.
-        @return: boolean: In the case of more things being removed than exist, it will return False.
-        Returns True on a successful removal.
-        """
-        ret = False
-        for thing in self.iteminstance_set.all():
-            if thing.base.name == itemName and thing.amount >= num:
-                thing.amount -= num
-                thing.save()
-                ret = True
-        self.save()
-        return ret
-        
-
     def hasItem(self, itemName):    #string
         """
         @param item: the item to check existence for
         Checks whether the store has the item at all
         @return: boolean: True if item exists in the Store false otherwise.
         """
-        for thing in self.iteminstance_set.all():
-            if thing.base.name == itemName:
-                return True
-        return False
+        return Item.objects.get(name = itemName) in Store.objects.get(id=self.id).items_set.all()
+
+
+class Inventory(models.Model):
+    """
+    Inventory
+    """
+    wagon = models.ForeginKey(Wagon)
+
+    def __unicode__(self):
+        """
+        @return: String: the string representation of Inventory
+        """
+        par = Party.objects.get(Inventory=self)
+        return u'Inventory:'+ self(par.name)
     
 class Iteminstance(models.Model):
     base = models.ForeignKey(Item)
     amount = models.IntegerField(default = 1)
-    inventory = models.ForeignKey(Store)
+    inventory = models.ForeignKey(Inventory)
     
     def __unicode__(self):
         """
         @return: String: String representation of a Iteminstance
         """
-        return u'<Iteminstance; Base:'# + unicode(self.base.name) + u' >'
+        return u'Iteminstance:'+unicode(Item.objects.get(base.id).name)
     
 
 
@@ -145,7 +137,7 @@ class Wagon(models.Model):
     party = models.ForeignKey(Party)
     inventory = models.ForeignKey(Store, default=Store(name="Wagon", isVendor=False))
     weight = models.FloatField(default = 0)
-    capacity = 1500
+    capacity = models.IntegerField(default=1000)
     
     def __unicode__(self):
         """
