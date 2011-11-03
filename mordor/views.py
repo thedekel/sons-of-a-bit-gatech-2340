@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse
-from mordor.models import Party, Character
+from mordor.models import *
 from mordor.functions import * 
 from mordor.coords import *
 
@@ -12,9 +12,91 @@ from mordor.coords import *
 """
 @author: Alex Williams, Anthony Taormina, Daniel Whatley, Stephen Roca, Yuval Dekel
 """
+def checkmsg(ret, pid):
+    print "gov"
+    aparty = Party.objects.get(id=pid)
+    if aparty.stopmsg!="":
+        print "NOOOOOO"
+        return [True, render_to_response("v/msg.html", {'msg':aparty.stopmsg, 'ret':ret, 'pid':pid})]
+    print "no"
+    return [False, 1]
+    
+@csrf_exempt
+def main(request):
+    return render_to_response("v/main.html")
+
 @csrf_exempt
 def start(request):
-    return render_to_response("mordor/styletest.html", {})
+    return render_to_response("v/start.html") 
+
+@csrf_exempt
+def newparty(request):
+    return render_to_response("v/newparty.html") 
+
+def status(request):
+  #  try:
+        aparty = Party.objects.get(id=request.GET['p'])
+        pace = aparty.pace
+        a=checkmsg("status",aparty.id)
+        print a
+        if a[0]:
+            aparty.stopmsg=""
+            aparty.save()
+            return a[1]
+        print "yes"
+        rations = aparty.rations
+        wag = Wagon.objects.get(party = aparty)
+        inv = Inventory.objects.get(wagon = wag)
+        fr = inv.foodCount()
+        dd = aparty.location*6.25
+        mons = aparty.money
+        return render_to_response("v/status.html", {'food_rem':fr, 'dist':dd, 'money':mons, 'pacer':pace*12.5, 'pace':pace, 'rations':rations, 'partyid':aparty.id})
+
+#    except:
+ #       return HttpResponse("<p class='subdiv'>There was an error loading your page, please start again</p>")
+
+
+@csrf_exempt
+def advanceTurn(request):
+    pid = request.GET['p']
+    takeATurn(pid)
+    return HttpResponse("")
+
+
+@csrf_exempt
+def changerats(request):
+    pid = request.GET['p']
+    newp = request.GET['newp']
+    newr = request.GET['newr']
+    aparty = Party.objects.get(id=pid)
+    aparty.pace = newp
+    aparty.rations = newr
+    aparty.save()
+    return HttpResponse("")
+
+@csrf_exempt
+def makeParty(request):
+    prof = request.GET['prof']
+    mon = {u'r_holder':10000, u'gardener':5000,u'tmaker':2500}.get(prof, 5000)
+    aparty = Party(name=request.GET['pname'],money=mon,pace=request.GET['pace'],rations=request.GET['rations'],location=0)
+    aparty.save()
+    for i in range(1,4):
+        m = Character(name = request.GET['m%i'%i], party=aparty)
+        m.save()
+    cha = Character(name = request.GET['playername'], profession = prof, isLeader=True, party=aparty) 
+    cha.save()
+    wag = Wagon(party = aparty)
+    wag.save()
+    inv = Inventory(wagon = wag)
+    inv.save()
+    aparty.stopmsg = 'Party successfully created!'
+    aparty.save()
+    return HttpResponse(unicode(aparty.id))
+
+
+#@csrf_exempt
+#def start(request):
+#    return render_to_response("mordor/styletest.html", {})
 
 @csrf_exempt
 def init(request):

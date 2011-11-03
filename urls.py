@@ -6,14 +6,16 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^start\.php', 'mordor.views.start'),
-    url(r'^config\.php', 'mordor.views.config'),
-    url(r'^start/submit\.php', 'mordor.views.submit'),
-	url(r'^wagon.php', 'mordor.views.wag'),
-	url(r'^shop.php', 'mordor.views.shop'),
-    url(r'^secret.php', 'mordor.views.init'),
     url(r'^inv.php', 'mordor.views.inv'),
-    # url(r'^$', 'CS2340OregonTrail.views.home', name='home'),
+    url(r'^$', 'mordor.views.main'),
+    url(r'^start', 'mordor.views.start'),
+    url(r'^status', 'mordor.views.status'),
+    url(r'^newparty', 'mordor.views.newparty'),
+
+    url(r'^advanceTurn', 'mordor.views.advanceTurn'),
+    url(r'^changerats', 'mordor.views.changerats'),
+    url(r'^makeParty', 'mordor.views.makeParty'),
+
     # url(r'^$', 'CS2340OregonTrail.views.home', name='home'),
     # url(r'^CS2340OregonTrail/', include('CS2340OregonTrail.foo.urls')),
 

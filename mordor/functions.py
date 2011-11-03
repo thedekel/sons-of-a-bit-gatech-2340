@@ -58,8 +58,21 @@ def buyItem(partyid, itemName, num, mult): # string, string, int, float
         aparty.save()
     return
 
+def searchStore(pid):
+    aparty = Party.objects.get(id=pid)
+    try:
+        Store.objects.get(location=aparty.location)
+        return True
+    except:
+        return False
 
-
+def searchEvent(pid):
+    aparty = Party.objects.get(id=pid)
+    try:
+        Event.objects.get(location=aparty.location)
+        return True
+    except:
+        return False
 
 def moveLocation(partyid): #int
     """
@@ -70,7 +83,8 @@ def moveLocation(partyid): #int
     """
     aparty = Party.objects.get(id = partyid)
     dl = int(aparty.pace/.5)
-    while q in range(dl):
+    aparty.consumeFood()
+    for q in range(dl):
         aparty.location+=1
         aparty.save()
         if searchStore(partyid):

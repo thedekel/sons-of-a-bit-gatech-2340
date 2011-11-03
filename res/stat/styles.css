@@ -2,12 +2,12 @@
 #main {
 	background-color: #222222;
 	font-family: Copperplate, Copperplate Gothic Light;
-	position: fixed;
-	left: 25%;
-	width: 50%;
-	height: 75%;
-	padding-left: 1em;
-	padding-right: 1em;
+	position: relative;
+	margin-left:auto;
+	margin-right:auto;
+	width: 800px;
+	min-height: 600px;
+    padding: 1em;
 	text-shadow: 2px 2px 3px #555;
 	-webkit-border-radius: 0.5em;
 }
@@ -45,33 +45,38 @@ option {
 }
 /* END GLOBAL STYLES */
 
+#inventory {
+	font-family: Copperplate, Copperplate Gothic Light;
+	
+}
+
 /* START SCREEN */
 #create_party {
-	position: absolute;
-	height: 20%;
+	height: 100px;
 	width: 98%;
+    clear:both;
 }
 
 #player {
 	position: absolute;
-	width: 47%;
-	height: 30%;	
-	top: 25%;
+	width: 45%;
+    margin-top: 20px;
+	height: 150px;
+    float:left;
 }
 
 #party {
-	width: 47%;
-	height: 30%;
-	position: absolute;
-	left: 51%;
-	top: 25%;
+	width: 45%;
+    margin-top:20px;
+	height: 150px;
+    float:right;
 }
 
 #initial {
 	width: 98%;
-	height: 20%;
-	position: absolute;
-	top: 60%;
+	height: 125px;
+    margin-top:190px;
+    clear:both;
 }
 /* END START SCREEN */
 

@@ -30,6 +30,7 @@ class Party(models.Model):
         @return: boolean: True upon a successful consumption and False upon a failure.
         """
         wag = Wagon.objects.get(id = self.id)
+        print 'removing food'
         ret = Inventory.objects.get(wagon = wag).removeItem("Food",self.rations*self.numAlive())
         return ret
 
@@ -44,10 +45,10 @@ class Character(models.Model):
     Character
     """
     name = models.CharField(max_length=25)
-    profession = models.CharField(max_length=25)
+    profession = models.CharField(max_length=25, default = "")
     status = models.IntegerField(default = 1) # what the hell is this for???  it's for health and such
     health = models.IntegerField(default = 1)
-    isLeader = models.BooleanField(defalut = False)
+    isLeader = models.BooleanField(default = False)
     party = models.ForeignKey(Party)
     
 
@@ -62,7 +63,7 @@ class Character(models.Model):
         Checks to see whether a player is dead or not
         @return: boolean: True if player is dead. False otherwise.
         """
-        return self.status == 0:
+        return self.status == 0
    
 class Item(models.Model):
     name = models.CharField(max_length=25, default = "Garbage")
@@ -99,19 +100,42 @@ class Store(models.Model):
         @return: boolean: True if item exists in the Store false otherwise.
         """
         return Item.objects.get(name = itemName) in Store.objects.get(id=self.id).items_set.all()
+ 
+class Wagon(models.Model):
+    """
+    Wagon
+    """
+    party = models.ForeignKey(Party)
+    weight = models.FloatField(default = 0)
+    capacity = models.IntegerField(default=1000)
+    
+    def __unicode__(self):
+        """
+        @return: String: String representation of a Wagon
+        """
+        return u'Wagon:'+ unicode(self.party.name)
+    
+    def checkWagCap(self, base, amount): # item, int
+        """
+        @param item: the item to be added to the wagon 
+        Checks to see if the added item exceeds the wagons capacity
+        @return: boolean: True if adding the item does not exceed wagon capacity; false otherwise.
+        """
+        return not self.capacity < base.weight * amount + self.weight
+
 
 
 class Inventory(models.Model):
     """
     Inventory
     """
-    wagon = models.ForeginKey(Wagon)
+    wagon = models.ForeignKey(Wagon)
 
     def __unicode__(self):
         """
         @return: String: the string representation of Inventory
         """
-        par = Party.objects.get(Inventory=self)
+        par = self.wagon.party
         return u'Inventory:'+ self(par.name)
     
     def removeItem(self, iname, qty):
@@ -125,6 +149,13 @@ class Inventory(models.Model):
                 iii.delete()
                 return True
         return False
+
+    def foodCount(self):
+        if "Food" in map(lambda q: q.base.name, Inventory.objects.get(id=self.id).iteminstance_set.all()):
+            iii=filter(lambda q: q.base.name=="Food", Inventory.objects.get(id=self.id).iteminstance_set.all())[0]
+            return iii.amount
+        else:
+            return 0
     
 class Iteminstance(models.Model):
     base = models.ForeignKey(Item)
@@ -135,7 +166,7 @@ class Iteminstance(models.Model):
         """
         @return: String: String representation of a Iteminstance
         """
-        return u'Iteminstance:'+unicode(Item.objects.get(base.id).name)
+        return u'Iteminstance:'+unicode(Item.objects.get(id=self.base.id).name)
     
 class Wagon(models.Model):
     """
@@ -157,7 +188,7 @@ class Wagon(models.Model):
         Checks to see if the added item exceeds the wagons capacity
         @return: boolean: True if adding the item does not exceed wagon capacity; false otherwise.
         """
-        return not self.capacity < base.weight * amount + self.weight:
+        return not self.capacity < base.weight * amount + self.weight
 
 class Event(models.Model):
     """
