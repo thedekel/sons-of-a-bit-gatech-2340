@@ -17,12 +17,16 @@ class Party(models.Model):
     location = models.IntegerField(default=0)
     stopmsg = models.CharField(max_length=1000, default="")
     
+    def move(self):
+        self.location += 1
+        self.save()
+
     def numAlive(self):
         """
         This function checks to see how many of the group members are still alive
         @return: The number of alive group members
         """
-        return len(filter(lambda a: a.checkIfDead(), self.character_set.all()))
+        return len(filter(lambda a: not a.checkIfDead(), self.character_set.all()))
 
     def consumeFood(self):
         """
@@ -30,8 +34,7 @@ class Party(models.Model):
         @return: boolean: True upon a successful consumption and False upon a failure.
         """
         wag = Wagon.objects.get(id = self.id)
-        print 'removing food'
-        ret = Inventory.objects.get(wagon = wag).removeItem("Food",self.rations*self.numAlive())
+        ret = Inventory.objects.get(wagon = wag).removeItem("Food",self.rations*self.numAlive()*.5)
         return ret
 
     def __unicode__(self):
@@ -136,9 +139,10 @@ class Inventory(models.Model):
         @return: String: the string representation of Inventory
         """
         par = self.wagon.party
-        return u'Inventory:'+ self(par.name)
+        return u'Inventory:'+ unicode(par.name)
     
     def removeItem(self, iname, qty):
+        print "removing item %s %i" % (iname, qty)
         if iname in map(lambda q: q.base.name, Inventory.objects.get(id=self.id).iteminstance_set.all()):
             iii=filter(lambda q: q.base.name==iname, Inventory.objects.get(id=self.id).iteminstance_set.all())[0]
             if iii.amount > qty:

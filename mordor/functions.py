@@ -40,7 +40,7 @@ def buyItem(partyid, itemName, num, mult): # string, string, int, float
         aparty.save()
         return
     wag = Wagon.objects.get(party=aparty)
-    if (wag.weight + abase.wight * num > wag.capacity):
+    if (wag.weight + abase.weight * num > wag.capacity):
         aparty.stopmsg = "You can't buy these items; they're too heavy!"
         aparty.save()
         return
@@ -48,12 +48,14 @@ def buyItem(partyid, itemName, num, mult): # string, string, int, float
     if itemName in map(lambda q: q.base.name, inv.iteminstance_set.all()):
         ii = inv.iteminstance_set.get(base = abase)
         ii.amount += num
+        aparty.money-=num*mult*abase.baseCost
         ii.save()
         aparty.stopmsg = "Successfully added %d items of type %s" %(num, itemName)
         aparty.save()
     else:
         ii = Iteminstance(base = abase, amount = num, inventory = inv)
         ii.save()
+        aparty.money-=num*mult*abase.baseCost
         aparty.stopmsg = "Successfully purchased %d items of type %s" %(num, itemName)
         aparty.save()
     return
@@ -65,6 +67,7 @@ def searchStore(pid):
         return True
     except:
         return False
+    return False
 
 def searchEvent(pid):
     aparty = Party.objects.get(id=pid)
@@ -73,6 +76,7 @@ def searchEvent(pid):
         return True
     except:
         return False
+    return False
 
 def moveLocation(partyid): #int
     """
@@ -84,9 +88,10 @@ def moveLocation(partyid): #int
     aparty = Party.objects.get(id = partyid)
     dl = int(aparty.pace/.5)
     aparty.consumeFood()
+    aparty.location=aparty.location+1
     for q in range(dl):
-        aparty.location+=1
-        aparty.save()
+        print "moving forward"
+        aparty.move()
         if searchStore(partyid):
             astore = Store.objects.get(location = aparty.location)
             aparty.stopmsg = "You have arrived at %s, click on \"Store\" to browse the shop!" % astore.name

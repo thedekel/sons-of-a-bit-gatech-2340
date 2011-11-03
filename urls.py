@@ -11,8 +11,11 @@ urlpatterns = patterns('',
     url(r'^start', 'mordor.views.start'),
     url(r'^status', 'mordor.views.status'),
     url(r'^newparty', 'mordor.views.newparty'),
+    url(r'^shop', 'mordor.views.visitstore'),
+    url(r'^inv', 'mordor.views.inventoryscr'),
 
     url(r'^advanceTurn', 'mordor.views.advanceTurn'),
+    url(r'^purchas', 'mordor.views.pur'),
     url(r'^changerats', 'mordor.views.changerats'),
     url(r'^makeParty', 'mordor.views.makeParty'),
 

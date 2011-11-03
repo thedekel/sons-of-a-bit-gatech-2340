@@ -50,10 +50,45 @@ def status(request):
         fr = inv.foodCount()
         dd = aparty.location*6.25
         mons = aparty.money
-        return render_to_response("v/status.html", {'food_rem':fr, 'dist':dd, 'money':mons, 'pacer':pace*12.5, 'pace':pace, 'rations':rations, 'partyid':aparty.id})
+        
+
+        xx, yy = get_player_coords(aparty.location)
+        xtop = (0 if xx<380 else (760 if xx>1220 else xx-380))
+        ytop = (0 if yy<300 else (600 if yy>900 else yy-300))
+        xx = 380 if 380<xx<1220 else (xx if xx<=380 else xx-760)
+        yy = 300 if 300<yy<900 else (yy if yy<=300 else xx-900)
+
+
+        return render_to_response("v/status.html", {'food_rem':fr, 'dist':dd, 'money':mons, 'pacer':pace*12.5, 'pace':pace, 'rations':rations, 'partyid':aparty.id, 'xtop':-xtop, 'ytop':-ytop, 'x':xx, 'y':yy, 'shoptest':(1 if searchStore(aparty.id) else 0) })
 
 #    except:
  #       return HttpResponse("<p class='subdiv'>There was an error loading your page, please start again</p>")
+
+def visitstore(request):
+    aparty = Party.objects.get(id=request.GET['p'])
+    wag = Wagon.objects.get(party=aparty)
+    astore = Store.objects.get(location = aparty.location)
+    pid = aparty.id
+    itemsset = astore.items.all()
+    mult = astore.price_mult
+    mon = aparty.money
+    wt = wag.weight
+    return render_to_response("v/store.html", {"money":mon, "weight":wt, "itemset":itemsset, "mult":mult, "partyid":pid, 'sname':astore.name }) 
+
+def inventoryscr(request):
+    aparty = Party.objects.get(id=request.GET['p'])
+    wag = Wagon.objects.get(party = aparty)
+    inv = Inventory.objects.get(wagon=wag)
+    return render_to_response("v/inventory.html", {"money":aparty.money, "weight":wag.weight, "itemset":inv.iteminstance_set.all()})
+    
+
+def pur(request):
+    pid = request.GET['p']
+    iname=request.GET['iname']
+    num=int(request.GET['val'])
+    mult = float(request.GET['mult'])
+    buyItem(pid, iname, num, mult)
+    return HttpResponse("")
 
 
 @csrf_exempt
