@@ -10,10 +10,10 @@ class Party(models.Model):
     """
     Party
     """
-    name = models.CharField(max_length=25)
-    money = models.IntegerField()
-    pace = models.FloatField() 
-    rations = models.FloatField()
+    name = models.CharField(max_length=50)
+    money = models.IntegerField(default = 5000)
+    pace = models.FloatField(default = 1.) 
+    rations = models.FloatField(default = 1.)
     location = models.IntegerField(default=0)
     
     def numAlive(self):
@@ -21,51 +21,33 @@ class Party(models.Model):
         This function checks to see how many of the group members are still alive
         @return: The number of alive group members
         """
-        num = 0
-        for person in self.character_set.all():
-            if not person.checkIfDead():
-                num += 1
-        return num
+        return len(filter(lambda a: a.checkIfDead(), self.character_set.all()))
 
     def consumeFood(self):
         """
         Attempts to consume a user determined amount of Food.
         @return: boolean: True upon a successful consumption and False upon a failure.
         """
-        wag = self.wagon_set.all()[0]
-        return wag.inventory.removeItem("Food",self.rations*self.numAlive())
-                
-    
+        wag = Wagon.objects.get(id = self.id)
+        ret = wag.inventory.removeItem("Food",self.rations*self.numAlive())
+        wag.save()
+        return ret
+
     def __unicode__(self):
         """
         @return: String: String representation of a Party
         """
-        return u'<Party:'+self.name+ u'; money:' + unicode(str(self.money))+u' >'
+        return u'Party' + unicode(self.name)
     
-    
-class Profession(models.Model):
-    """
-    Profession    
-    """
-    name = models.CharField(max_length=25)
-    
-    def __unicode__(self):
-        """
-        @return: String: String representation of a Profession
-        """
-        return u'<Profession:'+self.name+u' >'
-    
-    
-
 class Character(models.Model):
     """
     Character
     """
     name = models.CharField(max_length=25)
     profession = models.CharField(max_length=25)
-    status = models.IntegerField() # what the hell is this for???
-    health = models.IntegerField()
-    isLeader = models.BooleanField()
+    status = models.IntegerField(default = 1) # what the hell is this for???  it's for health and such
+    health = models.IntegerField(default = 1)
+    isLeader = models.BooleanField(defalut = False)
     party = models.ForeignKey(Party)
     
 
@@ -73,21 +55,18 @@ class Character(models.Model):
         """
         @return: String: String representation of a Character
         """
-        return u'<Name: '+ self.name+u'; profession:'+unicode(self.profession)+u'; party:'+unicode(self.party) + u' >'
+        return u'Char: '+ unicode(self.name)
 
     def checkIfDead(self):
         """
         Checks to see whether a player is dead or not
         @return: boolean: True if player is dead. False otherwise.
         """
-        if self.health == 0:
-            return True
-        else:
-            return False
+        return self.status == 0:
    
 class Item(models.Model):
-    name = models.CharField(max_length=25, default = "")
-    description = models.CharField(max_length=500, default = "")
+    name = models.CharField(max_length=25, default = "Garbage")
+    description = models.CharField(max_length=500, default = "This item seems useless to your quest.")
     baseCost = models.IntegerField(default = 10)
     weight = models.IntegerField(default = 10)
     
@@ -95,7 +74,7 @@ class Item(models.Model):
         """
         @return: String: String representation of a Item
         """
-        return u'<Item; Base:'# + self.name + u'; cost:' + unicode(self.baseCost)+u' >'
+        return u'Baseitem:'+unicode(self.name)
     
 
 class Store(models.Model):

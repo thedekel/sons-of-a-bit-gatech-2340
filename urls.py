@@ -12,6 +12,8 @@ urlpatterns = patterns('',
 	url(r'^wagon.php', 'mordor.views.wag'),
 	url(r'^shop.php', 'mordor.views.shop'),
     url(r'^secret.php', 'mordor.views.init'),
+    url(r'^inv.php', 'mordor.views.inv'),
+    # url(r'^$', 'CS2340OregonTrail.views.home', name='home'),
     # url(r'^$', 'CS2340OregonTrail.views.home', name='home'),
     # url(r'^CS2340OregonTrail/', include('CS2340OregonTrail.foo.urls')),
 

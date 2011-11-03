@@ -44,7 +44,7 @@ def buyItem(partyid, itemName, num, mult): # string, string, int, float
             wag.weight += abase.weight * num
             wag.save()
             if not wag.inventory.hasItem(itemName):
-                newItem = Iteminstance(Item.objects.get(name=itemName),num,wag.inventory)
+                newItem = Iteminstance(base=Item.objects.get(name=itemName),amount=num,inventory=wag.inventory)
                 newItem.save()
             else:
                 thing = wag.inventory.iteminstance_set.get(base = abase)
@@ -117,7 +117,7 @@ def takeFerry(partyid): #string
     party = Party.objects.get(id=partyid)
     party.money -= 250
     party.save()
-    return "you paid money"
+    return "you paid 250 currency to cross the bridge"
     
 def ford():
     """

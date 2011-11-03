@@ -94,16 +94,20 @@ def wag(request):
     yy = 300 if 300<yy<900 else (yy if yy<=300 else xx-900)
 
     return render_to_response("mordor/wag.html", {"partyid":request.GET['p'],"dt":party.location*6.25, "fpd":party.rations, "dpd":party.pace*12.5, 'rate2':party.pace, "fr":qq,"x":xx-24, "y":yy-20, "ytop":-ytop, "xtop":-xtop, 'testShop':ts, "alert":alert, 'msg':msg,"river":river})
+@csrf_exempt
+def inv(request):
+    party = Party.objects.get(id=request.GET['p'])
+    astore = party.wagon_set.all()[0].inventory
+    items = map(lambda q: q.base, astore.iteminstance_set.all())
+    return render_to_response("mordor/shoptest.html", {'partyid':request.GET['p'],"shopname":astore.name ,"items":items})
+
 
 @csrf_exempt
 def shop(request):
     party = Party.objects.get(id=request.GET['p'])
     print party.location
     try:
-         astore= Store.objects.get(location=int(party.location-1-(int(party.pace/6.25)-qqq)))
-         party.location -=qqq
-         party.save()
-         break;
+         astore= Store.objects.get(location=int(party.location-1))
     except:
          astore = Store.objects.get(location=0)
     items = astore.items.all()
