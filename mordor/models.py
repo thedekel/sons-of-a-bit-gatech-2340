@@ -19,7 +19,10 @@ class Party(models.Model):
     
     def move(self):
         self.location += 1
-        self.save()
+        print "in move"
+        print self.location
+        print self.location
+        return self.location
 
     def numAlive(self):
         """
@@ -47,7 +50,7 @@ class Character(models.Model):
     """
     Character
     """
-    name = models.CharField(max_length=25)
+    name = models.CharField(max_length=25, default="Character")
     profession = models.CharField(max_length=25, default = "")
     status = models.IntegerField(default = 1) # what the hell is this for???  it's for health and such
     health = models.IntegerField(default = 1)
