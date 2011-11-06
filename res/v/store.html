@@ -1,0 +1,28 @@
+<div id="store" class = 'subdiv' style='height:inherit;'>
+<p>Current Money: {{money}}</p>
+<p>Current Weight: {{weight}}</p>
+
+<!-- What's What:
+num_item: total number of items the user has
+item_name: self-explanatory
+unit_weight: total weight of all of that item the user has
+price: self-explanatory
+ -->
+<form action="/store/submit.php" method="post">
+<table>
+    <tr><td>Amount</td><td>Item</td><td style="width:120px">description</td><td>Unit Weight</td><td>Unit Price</td></tr>
+{% for it in itemset %}
+<tr><td><input type='number' min=0 step = 1 id="{{it.name}}" class="pur" /></td><td>{{it.name}}</td><td>{{it.description}}</td><td>{{it.weight}}</td><td class="pricebox">{{it.baseCost}}</td></tr>
+{% endfor %}
+</table>
+
+
+<div>
+    <p style="display:none;">total price: <span id='pri'>0.0</span>; total weight: <span id='wei'>0.0</span></p>
+</div>
+<div align="right"><input type="button" value="buy items" onclick="buyItems()"  /></div>
+
+<input type='hidden' id='pid' value='{{ partyid  }}' />
+<input type='hidden' id='pidinput' value='{{ partyid  }}' />
+<input type='hidden' id='mult' value='{{ mult }}' />
+<input type='hidden' id='sname' value='{{ sname }}' />

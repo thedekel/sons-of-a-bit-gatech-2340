@@ -1,0 +1,20 @@
+<div id='inventory' class = 'subdiv'>
+<p>Current Money: {{money}}</p>
+<p>Current Weight: {{weight}}</p>
+
+<!-- What's What:
+num_item: total number of items the user has
+item_name: self-explanatory
+item_weight: total weight of all of that item the user has
+ -->
+ 
+<div align="center">
+<table align="center">
+{% for it in itemset %}
+<tr><td>{{it.amount}}</td><td>{{it.base.name}}</td><td>{{it.base.weight}}</td></tr>
+{% empty %}
+<p style='text-align:center'> Inventory Empty </p>
+{% endfor %}
+</table>
+</div>
+</div>
