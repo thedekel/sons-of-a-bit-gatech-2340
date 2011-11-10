@@ -38,6 +38,9 @@ class Party(models.Model):
         """
         wag = Wagon.objects.get(id = self.id)
         ret = Inventory.objects.get(wagon = wag).removeItem("Food",self.rations*self.numAlive()*.5)
+        if ret:
+            wag.weight -= self.numAlive()
+            wag.save()
         return ret
 
     def __unicode__(self):

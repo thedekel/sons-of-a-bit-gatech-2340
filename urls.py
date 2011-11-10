@@ -6,7 +6,6 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^inv.php', 'mordor.views.inv'),
     url(r'^$', 'mordor.views.main'),
     url(r'^start', 'mordor.views.start'),
     url(r'^status', 'mordor.views.status'),

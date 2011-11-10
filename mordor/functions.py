@@ -10,7 +10,6 @@ def takeATurn(partyid):
         stuck(partyid, "Your party is out of food and cannot proceed")
         return
     moveLocation(partyid)
-    party.save()
 
 def stuck(partyid,msg):
     party = Party.objects.get(id = partyid)
@@ -54,6 +53,8 @@ def buyItem(partyid, itemName, num, mult): # string, string, int, float
         ii = Iteminstance(base = abase, amount = num, inventory = inv)
         ii.save()
         aparty.money-=num*mult*abase.baseCost
+        wag.weight += abase.weight * num
+        wag.save()
         aparty.stopmsg = "Successfully purchased %d items of type %s" %(num, itemName)
         aparty.save()
     return
@@ -87,7 +88,8 @@ def moveLocation(partyid): #int
     dl = int(aparty.pace/.5)
     aparty.consumeFood()
     for q in range(dl):
-        aparty.location = aparty.move()
+        aparty.location+=1;
+        aparty.save()
         if searchStore(partyid):
             astore = Store.objects.get(location = aparty.location)
             aparty.stopmsg = "You have arrived at %s, click on \"Store\" to browse the shop!" % astore.name
@@ -100,7 +102,6 @@ def moveLocation(partyid): #int
             aparty.stopmsg = ev.text()
             aparty.save()
             return "event"
-        aparty.save()
     return
 
 def takeFerry(partyid): #string
