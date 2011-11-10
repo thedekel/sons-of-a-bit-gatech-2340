@@ -84,7 +84,7 @@ def determineEv(e, p):
        p.stopmsg = "River"
        p.save()
    #Mordor
-   elif e.etype==99:
+   elif e.etype==99 or p.location>=130:
        p.stopmsg = "You reach the border of Mordor. You are preparing to enter your final destination and... you die of dysentery. One does not simply walk into Mordor."
        p.save()
        
@@ -104,6 +104,9 @@ def moveLocation(partyid): #int
     for q in range(dl):
         aparty.location+=1;
         aparty.save()
+        if aparty.location>=130:
+            aparty.location=130;
+            aparty.save()
         if searchStore(partyid):
             astore = Store.objects.get(location = aparty.location)
             aparty.stopmsg = "You have arrived at %s, click on \"Store\" to browse the shop!" % astore.name
