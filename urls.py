@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^newparty', 'mordor.views.newparty'),
     url(r'^shop', 'mordor.views.visitstore'),
     url(r'^inv', 'mordor.views.inventoryscr'),
+    url(r'^rivstat.html', 'mordor.views.riv'),
 
     url(r'^advanceTurn', 'mordor.views.advanceTurn'),
     url(r'^purchas', 'mordor.views.pur'),

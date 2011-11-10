@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from mordor.models import *
 from mordor.functions import * 
 from mordor.coords import *
+import random
 
 
 
@@ -12,13 +13,45 @@ from mordor.coords import *
 @author: Alex Williams, Anthony Taormina, Daniel Whatley, Stephen Roca, Yuval Dekel
 """
 def checkmsg(ret, pid):
-    print "gov"
     aparty = Party.objects.get(id=pid)
     if aparty.stopmsg!="":
-        print "NOOOOOO"
+        if aparty.stopmsg=="River":
+            return [True, render_to_response("v/river.html", {'ret':ret, 'pid':pid})]
         return [True, render_to_response("v/msg.html", {'msg':aparty.stopmsg, 'ret':ret, 'pid':pid})]
-    print "no"
     return [False, 1]
+
+def riv(request):
+    q = int(request.GET['c'])
+    p = Party.objects.get(id=request.GET['p'])
+    print q, p
+    if q==0 and p.money>=250:
+        print 1
+        p.money-=250
+        p.stopmsg="You have successfully paid 250 gold to cross the river"
+        p.save()
+        return status(request)
+    elif q==0:
+        print 2
+        p.stopmsg="River"
+        p.save()
+        return status(request)
+    elif q==1 or q==0:
+        if random.random()>0.7:
+            print 3
+            p.stopmsg="Your wagon flipped and you lost food."
+            p.save()
+            p.consumeFood()
+            return status(request)
+        else:
+            print 4
+            p.stopmsg="You successfully crossed the river"
+            p.save()
+            return status(request)
+    else:
+        print 5
+        p.stopmsg="You magically crossed the river"
+        p.save()
+        return status(rquest)
     
 @csrf_exempt
 def main(request):

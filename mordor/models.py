@@ -37,9 +37,9 @@ class Party(models.Model):
         @return: boolean: True upon a successful consumption and False upon a failure.
         """
         wag = Wagon.objects.get(id = self.id)
-        ret = Inventory.objects.get(wagon = wag).removeItem("Food",self.rations*self.numAlive()*.5)
+        ret = Inventory.objects.get(wagon = wag).removeItem("Food",self.rations*self.numAlive())
         if ret:
-            wag.weight -= self.numAlive()
+            wag.weight -= self.numAlive()*self.rations
             wag.save()
         return ret
 

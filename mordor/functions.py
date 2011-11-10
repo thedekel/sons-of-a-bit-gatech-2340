@@ -1,5 +1,6 @@
 from models import *
 from coords import *
+from views  import *
 
 def takeATurn(partyid):
     """
@@ -9,7 +10,7 @@ def takeATurn(partyid):
     if not party.consumeFood():
         stuck(partyid, "Your party is out of food and cannot proceed")
         return
-    moveLocation(partyid)
+    return moveLocation(partyid)
 
 def stuck(partyid,msg):
     party = Party.objects.get(id = partyid)
@@ -47,7 +48,7 @@ def buyItem(partyid, itemName, num, mult): # string, string, int, float
         ii.amount += num
         aparty.money-=num*mult*abase.baseCost
         ii.save()
-        aparty.stopmsg = "Successfully added %d items of type %s" %(num, itemName)
+        aparty.stopmsg += "\nSuccessfully added %d items of type %s" %(num, itemName)
         aparty.save()
     else:
         ii = Iteminstance(base = abase, amount = num, inventory = inv)
@@ -55,7 +56,7 @@ def buyItem(partyid, itemName, num, mult): # string, string, int, float
         aparty.money-=num*mult*abase.baseCost
         wag.weight += abase.weight * num
         wag.save()
-        aparty.stopmsg = "Successfully purchased %d items of type %s" %(num, itemName)
+        aparty.stopmsg += "\nSuccessfully purchased %d items of type %s" %(num, itemName)
         aparty.save()
     return
 
@@ -77,6 +78,20 @@ def searchEvent(pid):
         return False
     return False
 
+def determineEv(e, p):
+   #River
+   if e.etype==0:
+       p.stopmsg = "River"
+       p.save()
+   #Mordor
+   elif e.etype==99:
+       p.stopmsg = "You reach the border of Mordor. You are preparing to enter your final destination and... you die of dysentery. One does not simply walk into Mordor."
+       p.save()
+       
+       
+       
+
+
 def moveLocation(partyid): #int
     """
     Moves along the map array to "change" location.
@@ -86,7 +101,6 @@ def moveLocation(partyid): #int
     """
     aparty = Party.objects.get(id = partyid)
     dl = int(aparty.pace/.5)
-    aparty.consumeFood()
     for q in range(dl):
         aparty.location+=1;
         aparty.save()
@@ -96,12 +110,11 @@ def moveLocation(partyid): #int
             aparty.save()
             return
         if searchEvent(partyid):
+            print "Found Event"
             ev = Event.objects.get(location = aparty.location)
             evname = ev.name
             evtype = ev.etype
-            aparty.stopmsg = ev.text()
-            aparty.save()
-            return "event"
+            return determineEv(ev, aparty)
     return
 
 def takeFerry(partyid): #string
