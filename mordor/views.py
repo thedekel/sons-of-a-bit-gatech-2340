@@ -54,7 +54,7 @@ def status(request):
     yy = 300 if 300<yy<900 else (yy if yy<=300 else xx-900)
 
 
-        return render_to_response("v/status.html", {'food_rem':fr, 'dist':dd, 'money':mons, 'pacer':pace*12.5, 'pace':pace, 'rations':rations, 'partyid':aparty.id, 'xtop':-xtop, 'ytop':-ytop, 'x':xx, 'y':yy, 'shoptest':(1 if searchStore(aparty.id) else 0) })
+    return render_to_response("v/status.html", {'food_rem':fr, 'dist':dd, 'money':mons, 'pacer':pace*12.5, 'pace':pace, 'rations':rations, 'partyid':aparty.id, 'xtop':-xtop, 'ytop':-ytop, 'x':xx, 'y':yy, 'shoptest':(1 if searchStore(aparty.id) else 0) })
 
 def visitstore(request):
     aparty = Party.objects.get(id=request.GET['p'])
