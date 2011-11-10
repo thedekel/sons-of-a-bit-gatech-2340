@@ -86,23 +86,20 @@ def moveLocation(partyid): #int
     aparty = Party.objects.get(id = partyid)
     dl = int(aparty.pace/.5)
     aparty.consumeFood()
-#    aparty.location=aparty.location+1
     for q in range(dl):
-        print "moving forward"
         aparty.location = aparty.move()
-        print "after move", aparty.location
-#        if searchStore(partyid):
-#            astore = Store.objects.get(location = aparty.location)
-#            aparty.stopmsg = "You have arrived at %s, click on \"Store\" to browse the shop!" % astore.name
-#            aparty.save()
-#            return
-#        if searchEvent(partyid):
-#            ev = Event.objects.get(location = aparty.location)
-#            evname = ev.name
-#            evtype = ev.etype
-#            aparty.stopmsg = ev.text()
-#            aparty.save()
-#            return "event"
+        if searchStore(partyid):
+            astore = Store.objects.get(location = aparty.location)
+            aparty.stopmsg = "You have arrived at %s, click on \"Store\" to browse the shop!" % astore.name
+            aparty.save()
+            return
+        if searchEvent(partyid):
+            ev = Event.objects.get(location = aparty.location)
+            evname = ev.name
+            evtype = ev.etype
+            aparty.stopmsg = ev.text()
+            aparty.save()
+            return "event"
         aparty.save()
     return
 
