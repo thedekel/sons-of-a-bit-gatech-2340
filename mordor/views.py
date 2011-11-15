@@ -35,7 +35,7 @@ def riv(request):
         p.stopmsg="River"
         p.save()
         return status(request)
-    elif q==1 or q==0:
+    elif q==1 or q==2:
         if random.random()>0.7:
             print 3
             p.stopmsg="Your wagon flipped and you lost food."

@@ -1,0 +1,11 @@
+<div class = 'subdiv' style = 'padding:2em 0 2em 0;'>
+<p style="text-align:center">
+You have arrived at a river, please pick an action to continue:
+<select id="Raction">
+  <option value='0'>Pay for a Ferry (250 gold)</option>
+  <option value='1'>Ford the River (May lose food)</option>
+  <option value='2'>Use the wagon to Caulk the river (My lose food)</option>
+</select>
+<input type="button" onclick="page('rivstat.html?p={{ pid }}&c='+document.getElementById('Raction').value)" value="Click to continue" />
+</p>
+</div>

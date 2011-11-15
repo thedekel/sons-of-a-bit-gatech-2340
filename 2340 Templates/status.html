@@ -1,0 +1,26 @@
+<div id="status">
+
+<div id="map">
+</div>
+
+<form action="/config.php?p=18" method="post">
+	<label> Pace:  <select name="pace">
+			<option value=".5">6.25 miles per day</option>
+			<option value="1">12.5 miles per day</option>
+			<option value="1.5">18.75 miles per day</option>
+		</select>		
+	</label>
+	<label> Rations:  <select name="ration">
+			<option value=".5">.5 unit per day</option>
+			<option value="1">1 unit per day</option>
+			<option value="1.5">1.5 units per day</option>
+		</select>
+	</label>
+    <br />
+	<label> Current Food:  </label> {{food_rem}} units per person<br /> 
+	<label> Current Location:  </label>{{dist}} miles travelled<br />
+    <label> Party Money: </label>${{money}}<br />
+	<div align="right"><input type="submit" value="play turn" /></div>
+</form>
+
+</div>

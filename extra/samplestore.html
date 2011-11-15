@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Shop Interface</title>
+<link rel="Stylesheet" href="samplestyles.css" />
+</head>
+
+<body>
+<div id='global'>
+	<div id='header'>
+		
+<h1>Shop: Shire Walmart</h1>
+
+	</div>
+	<div id='content'>
+		<div id='navbar'>
+		
+<ul>
+	<li><a href="start.php">home</a></li>
+	<li><a href="config.php">config</a></li>
+</ul>
+
+		</div>
+		<div id='main'>
+		
+<div id="form">
+	<div id='title' class='subdiv'>
+		<h3>Shire Walmart</h3>
+		<h4> Available Money: 10000 </h4>
+	</div>
+	<div id="shop" class = "subdiv">
+		<div id="items">
+
+			<div class="item">
+				<form action="shop.php?p=2" method="POST">
+					<p style="display:inline">Food : </p>
+					<p style="display:inline">Edible, Eatable, and probably delicious.</p><br />
+					<label>Price: 10.0</label><br />
+					<label>Weight: 1</label><br />
+					<label>Qty: <input type='number' name ='qty' /></label>
+					<input type='hidden' value='Food' name='item' />
+					<input type='hidden' value='2' name='party' />
+					<input type='submit' />
+				</form>
+			</div>
+
+			<div class="item">
+				<form action="shop.php?p=2" method="POST">
+					<p style="display:inline">Traveling Supplies : </p>
+					<p style="display:inline">May just save your life, never leave home without &#39;em.</p><br />
+					<label>Price: 200.0</label><br />
+					<label>Weight: 20</label><br />
+					<label>Qty: <input type='number' name ='qty' /></label>
+					<input type='hidden' value='Traveling Supplies' name='item' />
+					<input type='hidden' value='2' name='party' />
+					<input type='submit' />
+				</form>
+			</div>
+
+			<div class="item">
+				<form action="shop.php?p=2" method="POST">
+					<p style="display:inline">Computer : </p>
+					<p style="display:inline">Wouldn&#39;t internet be nice on the journey?</p><br />
+					<label>Price: 999999.0</label><br />
+					<label>Weight: 500</label><br />
+					<label>Qty: <input type='number' name ='qty' /></label>
+					<input type='hidden' value='Computer' name='item' />
+					<input type='hidden' value='2' name='party' />
+					<input type='submit' />
+				</form>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+		</div>
+	</div>
+</div>
+</body>
+
+</html>
+

@@ -1,0 +1,125 @@
+/* GLOBAL STYLES */
+#main {
+	background-color: #222222;
+	font-family: Copperplate, Copperplate Gothic Light;
+	position: relative;
+	margin-left:auto;
+	margin-right:auto;
+	width: 800px;
+	min-height: 600px;
+	padding-left: 1em;
+	padding-right: 1em;
+	text-shadow: 2px 2px 3px #555;
+	-webkit-border-radius: 0.5em;
+}
+
+#main::selection {
+	background: #c22;
+}
+
+.subdiv {
+	background-color: #999999;
+	padding-left: 2%;
+	-webkit-border-radius: 0.5em;
+	-webkit-box-shadow: 1px 1px 1px #fff;
+}
+
+input, select {
+	color: white;
+	border: 1px solid #555;
+	background: #555;
+	background: -webkit-gradient(linear, left top, left bottom, from(#777), to(#555));
+	-webkit-appearance: none;
+	-webkit-box-shadow: 1px 1px 1px #fff;
+	-webkit-border-radius: 0.5em;
+}
+
+option {
+	-webkit-appearance: none;
+	background: #555;
+}
+
+#form {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+/* END GLOBAL STYLES */
+
+#inventory {
+	font-family: Copperplate, Copperplate Gothic Light;
+	
+}
+
+/* START SCREEN */
+#create_party {
+	position: absolute;
+	height: 20%;
+	width: 98%;
+}
+
+#player {
+	position: absolute;
+	width: 47%;
+	height: 30%;	
+	top: 25%;
+}
+
+#party {
+	width: 47%;
+	height: 30%;
+	position: absolute;
+	left: 51%;
+	top: 25%;
+}
+
+#initial {
+	width: 98%;
+	height: 20%;
+	position: absolute;
+	top: 60%;
+}
+/* END START SCREEN */
+
+/* GAME SCREEN */
+
+#header {
+	font-family: Copperplate, Copperplate Gothic Light;
+}
+
+#navbar {
+	font-family: Copperplate, Copperplate Gothic Light;
+}
+
+ul {
+	list-style-type:none;
+	margin:0;
+	padding:0;
+}
+
+li {
+	display: inline;
+}
+
+#picture {
+	position: absolute;
+	height: 53%;
+	width: 98%;
+	bottom: 45%;
+}
+
+#pace_rations {
+	position: absolute;
+	height: 10%;
+	width: 98%;
+	bottom: 31%;
+}
+
+#current {
+	width: 98%;
+	height: 20%;
+	position: absolute;
+	bottom: 7%;
+}
+
+/* END GAME SCREEN */
