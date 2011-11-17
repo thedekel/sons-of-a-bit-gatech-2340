@@ -9,7 +9,7 @@ def takeATurn(partyid):
     party = Party.objects.get(id = partyid)
     if not party.consumeFood():
         stuck(partyid, "Your party is out of food and cannot proceed")
-        return
+        return 'stuck'
     return moveLocation(partyid)
 
 def stuck(partyid,msg):
@@ -79,14 +79,28 @@ def searchEvent(pid):
     return False
 
 def determineEv(e, p):
+   a=5
    #River
    if e.etype==0:
        p.stopmsg = "River"
        p.save()
+   #Battle
+   elif e.etype==1:
+       a
+   #Wagon Breaks
+   elif e.etype==2:
+       a
+   #Balrog
+   elif e.etype==3:
+       a
+   #dysentery
+   elif e.etype==4:
+       a
    #Mordor
    elif e.etype==99 or p.location>=130:
-       p.stopmsg = "You reach the border of Mordor. You are preparing to enter your final destination and... you die of dysentery. One does not simply walk into Mordor."
+       p.stopmsg = "You reach the border of Mordor. You are preparing to enter your final destination and... you die of dysentery. One does not simply walk into Mordor.<br />"
        p.save()
+   return 'stuck'
        
        
        
@@ -111,13 +125,17 @@ def moveLocation(partyid): #int
             astore = Store.objects.get(location = aparty.location)
             aparty.stopmsg = "You have arrived at %s, click on \"Store\" to browse the shop!" % astore.name
             aparty.save()
-            return
+            return 'stuck'
         if searchEvent(partyid):
             print "Found Event"
             ev = Event.objects.get(location = aparty.location)
             evname = ev.name
             evtype = ev.etype
             return determineEv(ev, aparty)
+        if random.random()>.9:
+            ev = Event(location = aparty.location, etype = random.choice(range(1,5)), name="gazeeng")
+            return determineEv(ev,aparty)
+
     return
 
 def takeFerry(partyid): #string

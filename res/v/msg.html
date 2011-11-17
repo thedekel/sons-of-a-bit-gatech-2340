@@ -1,6 +1,7 @@
 <div class = 'subdiv' style = 'padding:2em 0 2em 0;'>
 <p style="text-align:center">
 {{ msg }}
-<input type="button" onclick="page('{{ ret }}?p={{ pid }}')" value="Click to continue" />
+<input type="button" onclick='page("status?p="+document.getElementById("pid").value, "Party Status");' value="Continue" />
 </p>
+<input type="hidden" id="pid" value="{{ pid }}" />
 </div>

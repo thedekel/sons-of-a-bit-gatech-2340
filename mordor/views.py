@@ -17,6 +17,8 @@ def checkmsg(ret, pid):
     if aparty.stopmsg!="":
         if aparty.stopmsg=="River":
             return [True, render_to_response("v/river.html", {'ret':ret, 'pid':pid})]
+        if aparty.location>=130:
+            return [True, render_to_response("v/endgame.html", {'msg':aparty.stopmsg, 'pid':pid})]
         return [True, render_to_response("v/msg.html", {'msg':aparty.stopmsg, 'ret':ret, 'pid':pid})]
     return [False, 1]
 
@@ -59,7 +61,8 @@ def main(request):
 
 @csrf_exempt
 def start(request):
-    return render_to_response("v/start.html") 
+    plist = Party.objects.all()
+    return render_to_response("v/start.html",{"plist":plist}) 
 
 @csrf_exempt
 def newparty(request):
@@ -119,8 +122,19 @@ def pur(request):
 @csrf_exempt
 def advanceTurn(request):
     pid = request.GET['p']
-    takeATurn(pid)
-    return HttpResponse("")
+    q = takeATurn(pid)
+    if q=='stuck':
+        return HttpResponse("stuck")
+    pp = Party.objects.get(id=pid)
+    c = get_player_coords(pp.location)
+    wag = Wagon.objects.get(party = pp)
+    inv = Inventory.objects.get(wagon = wag)
+    xx, yy = c
+    xtop = (0 if xx<380 else (760 if xx>1220 else xx-380))
+    ytop = (0 if yy<300 else (600 if yy>900 else yy-300))
+    xx = 380 if 380<xx<1220 else (xx if xx<=380 else xx-760)
+    yy = 300 if 300<yy<900 else (yy if yy<=300 else xx-900)
+    return HttpResponse('{"xtop":"'+str(xtop)+'","ytop":"'+str(ytop)+'","y":"'+str(yy)+'","x":"'+str(xx)+'"}')
 
 
 @csrf_exempt

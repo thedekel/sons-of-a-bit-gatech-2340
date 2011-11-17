@@ -62,8 +62,19 @@ playTurn = function(){
     newp = document.getElementById("pace").value;
     newr = document.getElementById("ration").value;
     act("changerats?p="+pid+"&newp="+newp+"&newr="+newr,function(){});
-    act("advanceTurn?p="+pid, function(){});
-    page("status?p="+pid, "Party Status");
+    act("advanceTurn?p="+pid, function(q){
+        //page("status?p="+pid, "Party Status");
+        return;
+        console.log(q);
+        coords = JSON.parse(q);
+        m = document.getElementById("map");
+        c = document.getElementById("qcart");
+        m.style.backgroundPosition="-"+coords.xtop+"px -"+coords.ytop+"px";
+        c.style.left = coords.x + "px";
+        c.style.right= coords.y + "px";
+        return;
+    });
+    page('status?p='+pid, "Party Status");
 }
 createParty = function(){
     pname = document.getElementById("pname").value;
