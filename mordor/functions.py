@@ -1,6 +1,7 @@
 from models import *
 from coords import *
 from views  import *
+import random
 
 def takeATurn(partyid):
     """
