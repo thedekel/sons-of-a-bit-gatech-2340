@@ -80,28 +80,65 @@ def searchEvent(pid):
     return False
 
 def determineEv(e, p):
-   a=5
-   #River
-   if e.etype==0:
-       p.stopmsg = "River"
-       p.save()
-   #Battle
-   elif e.etype==1:
-       a
-   #Wagon Breaks
-   elif e.etype==2:
-       a
-   #Balrog
-   elif e.etype==3:
-       a
-   #dysentery
-   elif e.etype==4:
-       a
-   #Mordor
-   elif e.etype==99 or p.location>=130:
-       p.stopmsg = "You reach the border of Mordor. You are preparing to enter your final destination and... you die of dysentery. One does not simply walk into Mordor.<br />"
-       p.save()
-   return 'stuck'
+    w = Wagon.objects.get(party = p)
+    i = Inventory.objects.get(wagon = w) 
+    a=5
+    #River
+    if e.etype==0:
+        p.stopmsg = "River"
+        p.save()
+    #Battle
+    elif e.etype==1:
+        if i.itemCount("Swords") >= p.numAlive():
+            # if number of swords is >= number of party members, lose 1 sword
+            p.stopmsg = "You encountered some Orcs. After a fierce battle, all party members survived, but one Sword broke."
+            i.removeItem("Swords", 1)
+        elif i.itemCount("Swords") < p.numAlive() and p.numAlive > 1:
+            # if not enough swords, a person dies...
+            qq = p.kill()
+            p.money = p.money*2/3.
+            p.stopmsg = "You encountered some Orcs. After a fierce battle, party member '" + qq + "' died. You lost a third of your money to looters."
+        else:
+            # if anything else, you died
+            p.stopmsg = 'death'
+            p.killall()
+        p.save()
+        return
+    #Wagon Breaks
+    elif e.etype==2:
+        if i.itemCount("Supplies") >= 1:
+            p.stopmsg = "The Wagon broke, but you had the supplies to fix it. Lost 1 Supply package"
+        else:
+            p.stopmsg = "broken"
+            p.killall()
+        p.save()
+        return
+    #Balrog
+    elif e.etype==3 and __import__("random").random()>.75:
+        if i.itemCount("Gandalf") >= 1:
+            p.stopmsg = "You encountered a Balrog, but a Gandalf in your inventory took care of it."
+            i.removeItem("Gandalf", 1)
+        else:
+            p.stopmsg = "balrog"
+            p.killall()
+        p.save()
+    #dysentery
+    elif e.etype==4:
+        if __import__('random').random()>.95:
+            qq = p.kill()
+            if qq:
+                p.stopmsg = "Party Member '" + qq + "' died of dysentery."
+            else:
+                p.killall()
+                p.stopmsg = "death"
+            p.save()
+        return
+    #Mordor
+    elif e.etype==99 or p.location>=130:
+        p.stopmsg = "You reach the border of Mordor. You are preparing to enter your final destination and... you die of dysentery. One does not simply walk into Mordor.<br />"
+        p.name+="--DONE--"
+        p.save()
+    return 'stuck'
        
        
        
@@ -124,7 +161,7 @@ def moveLocation(partyid): #int
             aparty.save()
         if searchStore(partyid):
             astore = Store.objects.get(location = aparty.location)
-            aparty.stopmsg = "You have arrived at %s, click on \"Store\" to browse the shop!" % astore.name
+            aparty.stopmsg = "You have arrived at %s, click on \"Shop\" to browse the shop!" % astore.name
             aparty.save()
             return 'stuck'
         if searchEvent(partyid):
@@ -133,7 +170,7 @@ def moveLocation(partyid): #int
             evname = ev.name
             evtype = ev.etype
             return determineEv(ev, aparty)
-        if random.random()>.9:
+        if random.random()>.84:
             ev = Event(location = aparty.location, etype = random.choice(range(1,5)), name="gazeeng")
             return determineEv(ev,aparty)
 

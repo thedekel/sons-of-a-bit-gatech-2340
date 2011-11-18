@@ -10,6 +10,7 @@ item_weight: total weight of all of that item the user has
  
 <div align="center">
 <table align="center">
+    <tr><td>Amount</td><td>Name</td><td>Weight per Item</td></tr>
 {% for it in itemset %}
 <tr><td>{{it.amount}}</td><td>{{it.base.name}}</td><td>{{it.base.weight}}</td></tr>
 {% empty %}

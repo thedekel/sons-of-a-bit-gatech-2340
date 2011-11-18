@@ -19,6 +19,12 @@ def checkmsg(ret, pid):
             return [True, render_to_response("v/river.html", {'ret':ret, 'pid':pid})]
         if aparty.location>=130:
             return [True, render_to_response("v/endgame.html", {'msg':aparty.stopmsg, 'pid':pid})]
+        if aparty.stopmsg=="death":
+            return [True, render_to_response("v/endgame.html", {'msg':'Your character died in battle. I guess one does not simply walk into Mordor.', 'pid':pid})]
+        if aparty.stopmsg=="broken":
+            return [True, render_to_response("v/endgame.html", {'msg':'Your wagon broke and you were killed off by a passing group of orcs. One does not simply walk into Mordor', 'pid':pid})]
+        if aparty.stopmsg=="balrog":
+            return [True, render_to_response("v/endgame.html", {'msg':'You encountered a Balrog, he passed. You did not simply walk into Mordor.', 'pid':pid})]
         return [True, render_to_response("v/msg.html", {'msg':aparty.stopmsg, 'ret':ret, 'pid':pid})]
     return [False, 1]
 
@@ -70,6 +76,8 @@ def newparty(request):
 
 def status(request):
     aparty = Party.objects.get(id=request.GET['p'])
+    if aparty.numAlive==0:
+        return [True, render_to_response("v/msg.html", {'msg':"This party is Dead", 'ret':ret, 'pid':pid})]
     pace = aparty.pace
     a=checkmsg("status",aparty.id)
     if a[0]:

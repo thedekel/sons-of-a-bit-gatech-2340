@@ -15,15 +15,23 @@ act = function(pname,cb){
     ajaxers.push(new XMLHttpRequest());
     temp = ajaxers[ajaxers.length-1];
     temp.onreadystatechange = function(){
-        console.log('here');
-        console.log(temp.readyState);
-        console.log(temp.status);
+//        console.log('here');
+ //       console.log(temp.readyState);
+  //      console.log(temp.status);
         if (temp.readyState == 4 && temp.status==200){
             cb(temp.responseText);
         }
     }
     temp.open("GET", pname, true);
     temp.send()
+}
+changep = function(){
+    console.log("yes");
+    mult = parseFloat(document.getElementById('mult').value);
+    q = document.getElementsByClassName("pricebox");
+    for (i in q){
+        q[i].innerHTML = parseInt(q[i].innerHTML)*mult;
+    }
 }
 page = function(pname, title){
     title = title || "Mordor Trail"
@@ -34,9 +42,9 @@ page = function(pname, title){
     ajaxers.push(new XMLHttpRequest());
     temp = ajaxers[ajaxers.length-1];
     temp.onreadystatechange = function(){
-        console.log('here');
-        console.log(temp.readyState);
-        console.log(temp.status);
+//        console.log('here');
+        //console.log(temp.readyState);
+        //console.log(temp.status);
         if (temp.readyState == 4 && temp.status==200){
             document.getElementById("main").innerHTML = temp.responseText;
             if (document.getElementById("page")){
@@ -46,11 +54,16 @@ page = function(pname, title){
                     document.getElementById("navbar").innerHTML = "<ul><li><a href=# onclick=\"page('status?p="+document.getElementById('pidinput').value +"')\"> Status </a></li><li><a href=# onclick='page(\"inv?p="+document.getElementById("pidinput").value +"\")'>Inventory</a></li></ul>"
                 }
             }
+                if (document.getElementById("mult")){
+                    changep();
+                }
         }
     }
     temp.open("GET", pname, true);
-    temp.send()
+    temp.send();
 }
+
+
 loadGame = function(){
     page("status?p="+document.getElementById('pid').value, "Party Status");
 }
@@ -65,7 +78,7 @@ playTurn = function(){
     act("advanceTurn?p="+pid, function(q){
         //page("status?p="+pid, "Party Status");
         return;
-        console.log(q);
+        //console.log(q);
         coords = JSON.parse(q);
         m = document.getElementById("map");
         c = document.getElementById("qcart");

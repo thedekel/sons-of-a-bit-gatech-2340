@@ -31,6 +31,24 @@ class Party(models.Model):
         """
         return len(filter(lambda a: not a.checkIfDead(), self.character_set.all()))
 
+    def kill(self):
+        b = filter(lambda a: not a.isLeader, self.character_set.all())
+        if b:
+            q = b[__import__("random").randint(0,len(b)-1)]
+            q.status = 0
+            q.save()
+            return q.name
+        return ""
+
+    def killall(self):
+        for i in self.character_set.all():
+            i.status = 0
+            i.save()
+            self.name += "--DEAD--"
+
+
+
+
     def consumeFood(self):
         """
         Attempts to consume a user determined amount of Food.
@@ -55,7 +73,7 @@ class Character(models.Model):
     """
     name = models.CharField(max_length=25, default="Character")
     profession = models.CharField(max_length=25, default = "")
-    status = models.IntegerField(default = 1) # what the hell is this for???  it's for health and such
+    status = models.IntegerField(default = 1) 
     health = models.IntegerField(default = 1)
     isLeader = models.BooleanField(default = False)
     party = models.ForeignKey(Party)
@@ -116,7 +134,7 @@ class Wagon(models.Model):
     """
     party = models.ForeignKey(Party)
     weight = models.FloatField(default = 0)
-    capacity = models.IntegerField(default=1000)
+    capacity = models.IntegerField(default=500)
     
     def __unicode__(self):
         """
@@ -166,6 +184,12 @@ class Inventory(models.Model):
             return iii.amount
         else:
             return 0
+    def itemCount(self, iname):
+        if iname in map(lambda q: q.base.name, Inventory.objects.get(id=self.id).iteminstance_set.all()):
+            iii=filter(lambda q: q.base.name==iname, Inventory.objects.get(id=self.id).iteminstance_set.all())[0]
+            return iii.amount
+        else:
+            return 0 
     
 class Iteminstance(models.Model):
     base = models.ForeignKey(Item)
