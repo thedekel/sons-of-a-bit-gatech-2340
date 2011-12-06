@@ -170,7 +170,7 @@ def moveLocation(partyid): #int
             evname = ev.name
             evtype = ev.etype
             return determineEv(ev, aparty)
-        if random.random()>.84:
+        if random.random()>.5:
             ev = Event(location = aparty.location, etype = random.choice(range(1,5)), name="gazeeng")
             return determineEv(ev,aparty)
 
