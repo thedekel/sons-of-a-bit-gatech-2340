@@ -148,7 +148,7 @@ class Wagon(models.Model):
         Checks to see if the added item exceeds the wagons capacity
         @return: boolean: True if adding the item does not exceed wagon capacity; false otherwise.
         """
-        return not self.capacity < base.weight * amount + self.weight
+        return not self.capacity < base.weight * amount + self.weight and base.weight*amount+self.weight>=0
 
 
 
