@@ -29,12 +29,15 @@ class WagonTestCase(unittest.TestCase):
         self.assertFalse(self.wagon.checkWagCap(self.nonexistent,50))
         self.assertFalse(self.wagon.checkWagCap(self.alottaNothing,1))
 
-class SearchEventTestCase(unittest.TestCase):
+class FunctionsTestCase(unittest.TestCase):
     def setUp(self):
-    	self.party = Party(name="testPartyEvent")
-	self.event = Event(name="testEvent", location=25)
+        self.party = Party(name="testPartyEvent")
+        self.party.save()
+        self.event = Event(name="testEvent", location=25)
+        self.event.save()
 
     def testSearchEvent(self):
-    	self.assertFalse(searchEvent(self.party.id))
-	self.party.location = 25
-	self.assertTrue(searchEvent(self.party.id))
+        self.assertFalse(searchEvent(self.party.id))
+        self.party.location = 25
+        self.party.save()
+        self.assertTrue(searchEvent(self.party.id))
