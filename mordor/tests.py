@@ -19,11 +19,13 @@ class WagonTestCase(unittest.TestCase):
         self.party = Party(name="testPartyWagon")
         self.wagon = Wagon(party=self.party) #capacity initially 500
         self.anorexic = Item(name = "Feather",description = "Can fit in the wagon easily",weight = 1)
-        self.obese = Item("Lard", "Bigger than the wagon capacity",weight = 5001)
-        
+        self.obese = Item("Lard", "Bigger than the wagon capacity",weight = 501)
+        self.nonexistent = Item("Nothing", weight = -1)
+        self.alottaNothing = Item("NOTHINGNESS", weight= -501)
 
     def testCheckWagCap(self):
         self.assertTrue(self.wagon.checkWagCap(self.anorexic,50))
         self.assertFalse(self.wagon.checkWagCap(self.obese,1))
-
+        self.assertFalse(self.wagon.checkWagCap(self.nonexistent,50))
+        self.assertFalse(self.wagon.checkWagCap(self.alottaNothing,1))
 
