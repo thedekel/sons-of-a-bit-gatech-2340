@@ -2,7 +2,7 @@ from django.utils import unittest
 from mordor.models import *
 from mordor.functions import *
 
-class CharaterTestCase(unittest.TestCase):
+class CharacterTestCase(unittest.TestCase):
     def setUp(self):
         self.party = Party(name="testParty")
         self.defaultChar = Character(party=self.party)
@@ -29,3 +29,12 @@ class WagonTestCase(unittest.TestCase):
         self.assertFalse(self.wagon.checkWagCap(self.nonexistent,50))
         self.assertFalse(self.wagon.checkWagCap(self.alottaNothing,1))
 
+class SearchEventTestCase(unittest.TestCase):
+    def setUp(self):
+    	self.party = Party(name="testPartyEvent")
+	self.event = Event(name="testEvent", location=25)
+
+    def testSearchEvent(self):
+    	self.assertFalse(searchEvent(self.party.id))
+	self.party.location = 25
+	self.assertTrue(searchEvent(self.party.id))
