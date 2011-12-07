@@ -14,4 +14,16 @@ class CharaterTestCase(unittest.TestCase):
         self.assertEqual(self.aliveChar.checkIfDead(), False)
         self.assertEqual(self.deadChar.checkIfDead(), True)
 
+class WagonTestCase(unittest.TestCase):
+    def setUp(self):
+        self.party = Party(name="testPartyWagon")
+        self.wagon = Wagon(party=self.party) #capacity initially 500
+        self.anorexic = Item(name = "Feather",description = "Can fit in the wagon easily",weight = 1)
+        self.obese = Item("Lard", "Bigger than the wagon capacity",weight = 5001)
+        
+
+    def testCheckWagCap(self):
+        self.assertTrue(self.wagon.checkWagCap(self.anorexic,50))
+        self.assertFalse(self.wagon.checkWagCap(self.obese,1))
+
 
