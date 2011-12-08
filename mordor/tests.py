@@ -35,9 +35,17 @@ class FunctionsTestCase(unittest.TestCase):
         self.party.save()
         self.event = Event(name="testEvent", location=25)
         self.event.save()
+        self.store = Store(name="testStore", location=26)
+        self.store.save()
 
     def testSearchEvent(self):
         self.assertFalse(searchEvent(self.party.id))
         self.party.location = 25
         self.party.save()
         self.assertTrue(searchEvent(self.party.id))
+
+    def testSearchStore(self):
+        self.assertFalse(searchStore(24))
+        self.store.location = 26
+        self.store.save()
+        self.assertEqual(self.testStore.searchStore(), True)
