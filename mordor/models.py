@@ -166,7 +166,6 @@ class Inventory(models.Model):
         return u'Inventory:'+ unicode(par.name)
     
     def removeItem(self, iname, qty):
-        print "removing item %s %i" % (iname, qty)
         if iname in map(lambda q: q.base.name, Inventory.objects.get(id=self.id).iteminstance_set.all()):
             iii=filter(lambda q: q.base.name==iname, Inventory.objects.get(id=self.id).iteminstance_set.all())[0]
             if iii.amount > qty:
