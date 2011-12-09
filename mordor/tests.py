@@ -45,7 +45,11 @@ class FunctionsTestCase(unittest.TestCase):
         self.assertTrue(searchEvent(self.party.id))
 
     def testSearchStore(self):
-        self.assertFalse(searchStore(24))
-        self.store.location = 26
-        self.store.save()
-        self.assertEqual(self.testStore.searchStore(), True)
+        self.party.location = self.store.location = 888
+
+        self.party.save()
+        self.assertTrue(searchStore(self.party.id))
+        self.party.location = 26
+        self.store.location = 9876
+        self.party.save()
+        self.assertTrue(searchStore(self.party.id))

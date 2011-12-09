@@ -64,7 +64,7 @@ def buyItem(partyid, itemName, num, mult): # string, string, int, float
 def searchStore(pid):
     aparty = Party.objects.get(id=pid)
     try:
-        Store.objects.get(location=aparty.location)
+        Store.objects.get(location=int(aparty.location))
         return True
     except:
         return False
