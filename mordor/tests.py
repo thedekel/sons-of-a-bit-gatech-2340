@@ -53,3 +53,18 @@ class FunctionsTestCase(unittest.TestCase):
         self.store.location = 9876
         self.party.save()
         self.assertTrue(searchStore(self.party.id))
+
+class RemoveItemTestCase(unittest.TestCase):
+    def setUp(self):
+        self.party = Party(name="testPartyWagon")
+        self.wagon = Wagon(party=self.party) #capacity initially 500
+        self.anorexic = Item(name = "Feather",description = "Can fit in the wagon easily",weight = 1)
+        self.obese = Item("Lard", "Bigger than the wagon capacity",weight = 501)
+        self.nonexistent = Item("Nothing", weight = -1)
+    
+    def testRemoveItem(self):
+        self.assertTrue(self.inventory.removeItem("Feather", 1))
+        self.assertTrue(self.inventory.removeItem("Lard", 1))
+        self.assertFalse(self.inventory.removeItem("Lard", 1))
+        self.assertTrue(self.inventory.removeItem("Nothing", 1))
+        
